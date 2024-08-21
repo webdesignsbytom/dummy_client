@@ -1,27 +1,48 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 // Components
 import RegisterForm from '../../components/forms/RegisterForm';
 import Navbar from '../../components/nav/Navbar';
-// Context
+// Utils
+import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
-import { SIGN_UP_PAGE_URL } from '../../utils/Constants';
+import { CompanyName } from '../../utils/Constants';
 
 function RegisterPage() {
   return (
-    <div className='bg-black main__bg h-screen grid'>
-      <div className='grid grid-rows-reg lg:grid-cols-reg lg:grid-rows-1 h-full w-full'>
-        <Navbar />
-        <main className='grid bg-white h-full items-center justify-center'>
-          <section className='bg-white rounded p-4 shadow-xl my-10 lg:my-0 grid justify-center'>
-            <article className='text-center my-4'>
-              <h1 className='text-2xl font-semibold'>Sign Up Now</h1>
-              <h2 className='text-xl font-semibold'>Join</h2>
-            </article>
-            <RegisterForm />
-          </section>
-        </main>
+    <>
+      {/* Tab Data */}
+      <HelmetItem
+        PageName={'Login'}
+        desc={`Log in to your ${CompanyName} account to access exclusive features.`}
+      />
+
+      {/* Page */}
+      <div className='grid h-screen min-h-screen max-h-screen overflow-hidden w-full bg-main-background'>
+        <div className='grid grid-rows-reg w-full h-full overflow-hidden'>
+          {/* Navigation */}
+          <Navbar />
+
+          {/* Main content */}
+          <main role='main' className='grid w-full h-full overflow-hidden'>
+            <div className='grid w-full h-full justify-center items-center p-2 overflow-hidden'>
+              {/* Login component */}
+              <section className='grid border-[1px] border-border-main border-solid rounded-xl shadow-2xl bg-white'>
+                <div className='grid grid-rows-reg gap-4 w-full h-full px-8 py-6'>
+                  <header>
+                    <h1 className='text-2xl font-semibold'>Sign Up Now</h1>
+                  </header>
+
+                  {/* Register form */}
+                  <section>
+                    <RegisterForm />
+                  </section>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

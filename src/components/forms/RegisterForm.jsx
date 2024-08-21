@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 // API
 import client from '../../api/client';
+// Context
+import { UserContext } from '../../context/UserContext';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 // Utils
@@ -12,6 +14,7 @@ import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 import { ButtonStyle, InputStyle } from '../../utils/Styles';
 
 function RegisterForm() {
+  const { setUser } = useContext(UserContext)
   const [registerFormData, setRegisterFormData] = useState({
     email: '',
     password: '',
@@ -32,7 +35,9 @@ function RegisterForm() {
       .then((res) => {
         console.log('');
         setRegistrationInProgress(true);
+        setUser(res.data.data.user)
       })
+      
       .catch((err) => {
         setRegisterError(true);
         setRegistrationInProgress(true);
