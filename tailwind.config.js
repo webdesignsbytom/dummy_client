@@ -7,9 +7,11 @@ module.exports = {
         'bg': "url('../assets')",
       },
       colors: {
-        'main-colour': '#4AAD37',
+        'main-background': '#f8fafc',
+        'nav-background': '#334155',
         'alt-colour': '#dcbc90',
-        'error-red': '#',
+        'border-main': '#cbd5e1',
+        'error-red': '#dc2626',
         'success-green': '#',
         'hyperlink-blue': '#2563EB',
       },

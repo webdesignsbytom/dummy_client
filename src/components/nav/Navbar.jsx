@@ -12,7 +12,11 @@ import {
 
 function Navbar() {
   return (
-    <nav role="navigation" aria-label="Main Navigation" className='grid bg-slate-700'>
+    <nav
+      role='navigation'
+      aria-label='Main Navigation'
+      className='grid bg-nav-background'
+    >
       <div className='grid grid-cols-reg px-4 py-2'>
         <section>
           <div className='grid h-fit items-center justify-center'>

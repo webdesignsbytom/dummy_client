@@ -1,64 +1,12 @@
-import React, { useContext, useState } from 'react';
-// Context
-import { UserContext } from '../../context/UserContext';
-// API
-import client from '../../api/client';
+import React from 'react';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import LoginForm from '../../components/forms/LoginForm';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
-import { CompanyName, LOGIN_API } from '../../utils/Constants';
+import { CompanyName } from '../../utils/Constants';
 
 function LoginPage() {
-  const { setUser } = useContext(UserContext);
-
-  const [loginInProgress, setLoginInProgress] = useState(false);
-  const [loginError, setLoginError] = useState(false);
-  const [loginFormData, setLoginFormData] = useState({
-    email: '',
-    password: '',
-    keepMeLoggedIn: false,
-  });
-
-  const handleLogin = (event) => {
-    event.preventDefault();
-
-    setLoginInProgress(true);
-    client
-      .post(LOGIN_API, loginFormData, false)
-      .then((res) => {
-        localStorage.setItem(
-          process.env.REACT_APP_USER_TOKEN,
-          res.data.data.token
-        );
-        setLoginInProgress(false);
-        setUser(res.data.data.existingUser);
-      })
-
-      .catch((err) => {
-        setLoginError(true);
-        console.error('Unable to login', err);
-      });
-  };
-
-  const handleChange = (event) => {
-    setLoginError(false);
-    const { name, value } = event.target;
-
-    setLoginFormData({
-      ...loginFormData,
-      [name]: value,
-    });
-  };
-
-  const handleCheckedKeepMeLoggedIn = (event) => {
-    setLoginFormData({
-      ...loginFormData,
-      keepMeLoggedIn: true,
-    });
-  };
-
   return (
     <>
       {/* Tab Data */}
@@ -68,34 +16,30 @@ function LoginPage() {
       />
 
       {/* Page */}
-      <div className='h-screen overflow-hidden grid bg-gray-50 dark:bg-black dark:text-gray-100'>
-        <div className='grid grid-rows-reg lg:grid-cols-reg lg:grid-rows-1 h-full w-full'>
+      <div className='grid h-screen min-h-screen max-h-screen overflow-hidden w-full bg-main-background'>
+        <div className='grid grid-rows-reg w-full h-full overflow-hidden'>
           {/* Navigation */}
           <Navbar />
 
           {/* Main content */}
-          <main
-            role='main'
-            className='bg-white main__bg grid items-center justify-center'
-          >
-            <div className='grid justify-center items-center w-full bg-white rounded-lg shadow-xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
-              <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
-                {/* Header */}
-                <header>
-                  <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
-                    Sign in to your account
-                  </h1>
-                </header>
+          <main role='main' className='grid w-full h-full overflow-hidden'>
+            <div className='grid w-full h-full justify-center items-center p-2 overflow-hidden'>
+              {/* Login component */}
+              <section className='grid border-[1px] border-border-main border-solid rounded-xl shadow-2xl bg-white'>
+                <div className='grid grid-rows-reg gap-4 w-full h-full px-8 py-6'>
+                  {/* Header */}
+                  <header className='grid'>
+                    <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
+                      Sign in to your account
+                    </h1>
+                  </header>
 
-                {/* Login form */}
-                <section>
-                  <LoginForm
-                    handleCheckedKeepMeLoggedIn={handleCheckedKeepMeLoggedIn}
-                    handleLogin={handleLogin}
-                    handleChange={handleChange}
-                  />
-                </section>
-              </div>
+                  {/* Login form */}
+                  <section>
+                    <LoginForm />
+                  </section>
+                </div>
+              </section>
             </div>
           </main>
         </div>

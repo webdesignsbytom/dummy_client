@@ -16,7 +16,7 @@ function HomePage() {
           <Navbar />
 
           {/* Main page content */}
-          HomePage
+          <main role='main'>HomePage</main>
         </div>
       </div>
     </>
