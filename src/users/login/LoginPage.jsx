@@ -16,7 +16,7 @@ function LoginPage() {
       />
 
       {/* Page */}
-      <div className='grid h-screen min-h-screen max-h-screen overflow-hidden w-full bg-main-background'>
+      <div className='grid h-screen min-h-screen max-h-screen overflow-hidden w-full bg-main-background font-poppins'>
         <div className='grid grid-rows-reg w-full h-full overflow-hidden'>
           {/* Navigation */}
           <Navbar />

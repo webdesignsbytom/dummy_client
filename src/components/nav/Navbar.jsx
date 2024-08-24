@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+// Icons
+import { IoMdMenu } from 'react-icons/io';
 // Images
 import LogoWhite from '../../assets/images/logos/tech-design-tavistock-logo-white.svg';
 // Constants
@@ -9,8 +11,6 @@ import {
   LOGIN_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from '../../utils/Constants';
-// Icons
-import { IoMdMenu } from 'react-icons/io';
 
 function Navbar() {
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
@@ -46,59 +46,60 @@ function Navbar() {
   };
 
   return (
-    <nav
-      role='navigation'
-      aria-label='Main Navigation'
-      className='relative grid bg-nav-background'
-    >
-      <div className='grid grid-cols-reg px-4 py-2'>
-        <section>
-          <div className='grid h-fit items-center justify-center'>
-            <NavLink to={HOME_PAGE_URL}>
-              <img
-                src={LogoWhite}
-                alt={`${CompanyName} business logo - White Logo`}
-                className='w-12 h-12 cursor-pointer active:scale-95'
-                loading='lazy'
-              />
-            </NavLink>
-          </div>
-        </section>
-
-        <section className='grid justify-end'>
-          {/* Mobile screen */}
-          <section className='grid md:hidden pr-4 items-center justify-end h-full'>
-            <button
-              onClick={togglePhoneNav}
-              aria-label='Toggle navigation menu'
-              className='grid w-fit p-1 h-fit items-center justify-center text-4xl text-white dark:text-dark-text-light active:brightness-90'
-            >
-              <IoMdMenu className='active:scale-90 duration-300' />
-            </button>
+      <nav
+        role='navigation'
+        aria-label='Main Navigation'
+        className='relative grid bg-nav-background'
+      >
+        <div className='grid grid-cols-reg px-4 py-4'>
+          <section>
+            <div className='grid h-fit items-center justify-center'>
+              <NavLink to={HOME_PAGE_URL}>
+                <img
+                  src={LogoWhite}
+                  alt={`${CompanyName} business logo - White Logo`}
+                  className='w-10 h-10 cursor-pointer active:scale-95'
+                  loading='lazy'
+                />
+              </NavLink>
+            </div>
           </section>
 
-          {/* Large screen */}
-          <ul className='hidden md:grid grid-flow-col gap-6 items-center text-orange-600'>
-            <NavItem url={HOME_PAGE_URL} title={'Home'} />
-            <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
-            <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
-          </ul>
-        </section>
-      </div>
+          <section className='grid justify-end'>
 
-      {/* Phone navbar when active */}
-      {isPhoneNavOpen && (
-        <div
-          className={`grid z-40 absolute top-[100%] bg-nav-background h-full w-full`}
-        >
-          <ul className='grid gap-6 justify-center items-center text-orange-600 h-full w-full'>
-            <NavItem url={HOME_PAGE_URL} title={'Home'} />
-            <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
-            <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
-          </ul>
+            {/* Mobile screen */}
+            <section className='grid md:hidden items-center justify-end h-full'>
+              <button
+                onClick={togglePhoneNav}
+                aria-label='Toggle navigation menu'
+                className='grid w-fit h-fit items-center justify-center text-4xl text-white dark:text-dark-text-light active:brightness-90'
+              >
+                <IoMdMenu className='active:scale-90 duration-300' />
+              </button>
+            </section>
+
+            {/* Large screen */}
+            <ul className='hidden md:grid grid-flow-col gap-6 items-center text-orange-600'>
+              <NavItem url={HOME_PAGE_URL} title={'Home'} />
+              <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
+              <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
+            </ul>
+          </section>
         </div>
-      )}
-    </nav>
+
+        {/* Phone navbar when active */}
+        {isPhoneNavOpen && (
+          <div
+            className={`grid z-40 absolute top-[100%] bg-nav-background h-fit w-full pb-6`}
+          >
+            <ul className='grid gap-6 items-center justify-center text-center text-orange-600'>
+              <NavItem url={HOME_PAGE_URL} title={'Home'} />
+              <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
+              <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
+            </ul>
+          </div>
+        )}
+      </nav>
   );
 }
 

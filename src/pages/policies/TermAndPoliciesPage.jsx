@@ -24,7 +24,7 @@ function TermAndPoliciesPage() {
       />
 
       {/* Page */}
-      <div className='grid min-h-screen bg-slate-50 font-poppins'>
+      <div className='grid min-h-screen bg-main-background font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />

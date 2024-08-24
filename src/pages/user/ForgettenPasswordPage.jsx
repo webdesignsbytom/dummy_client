@@ -13,7 +13,7 @@ function ForgettenPasswordPage() {
       <HelmetItem PageName={'Reset Password'} desc={`Reset your password for ${CompanyName}.`} />
 
       {/* Page */}
-      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-slate-50'>
+      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />

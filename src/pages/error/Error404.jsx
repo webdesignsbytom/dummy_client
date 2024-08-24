@@ -12,7 +12,7 @@ function Error404() {
       <HelmetItem PageName={'Error'} desc={`Error page Not Found.`} />
 
       {/* Page */}
-      <div className='grid min-h-screen h-screen max-h-screen overflow-hidden w-full bg-main-background'>
+      <div className='grid min-h-screen h-screen max-h-screen overflow-hidden w-full bg-main-background font-poppins'>
         <div className='grid grid-rows-reg h-full w-full overflow-hidden'>
           {/* Navigation */}
           <Navbar />

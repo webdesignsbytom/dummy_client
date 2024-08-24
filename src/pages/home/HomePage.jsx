@@ -12,7 +12,7 @@ function HomePage() {
       <HelmetItem PageName={'Home'} desc={`Home page of ${CompanyName}.`} />
 
       {/* Page */}
-      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-slate-50'>
+      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
