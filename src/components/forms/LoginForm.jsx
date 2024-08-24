@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 // Api
 import client from '../../api/client';
@@ -77,7 +77,15 @@ function LoginForm() {
           placeholder='name@email.com'
           onChange={handleChange}
           required
+          //ref={emailInputRef}
+          aria-invalid={loginError ? 'true' : 'false'}
+          aria-describedby={loginError ? 'email-error' : undefined}
         />
+        {loginError && (
+          <p id='email-error' className='text-red-600 text-sm'>
+            Invalid email address or password.
+          </p>
+        )}
       </div>
       <div>
         <label
@@ -94,6 +102,8 @@ function LoginForm() {
           className={InputStyle}
           required
           onChange={handleChange}
+          aria-invalid={loginError ? 'true' : 'false'}
+          aria-describedby={loginError ? 'password-error' : undefined}
         />
       </div>
       <div className='grid gap-2 items-center justify-between'>
@@ -105,6 +115,7 @@ function LoginForm() {
             name='keepMeLoggedIn'
             checked={loginFormData.keepMeLoggedIn}
             onChange={handleCheckedKeepMeLoggedIn}
+            aria-label='Keep me logged in'
           />
           <label
             className='form-check-label inline-block text-gray-800'
@@ -118,6 +129,7 @@ function LoginForm() {
         <Link
           to={RESET_PASS_PAGE_URL}
           className='text-sm font-medium text-blue-600 hover:underline'
+          aria-label='Forgot password?'
         >
           Forgot password?
         </Link>
@@ -128,6 +140,7 @@ function LoginForm() {
           type='submit'
           className='w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
           aria-label='Sign in to your account'
+          disabled={loginInProgress}
         >
           {loginInProgress ? (
             <LoadingSpinner sm={true} />
@@ -143,6 +156,7 @@ function LoginForm() {
           <Link
             to={SIGN_UP_PAGE_URL}
             className='font-medium text-blue-600 hover:underline'
+            aria-label='Sign up for a new account'
           >
             Sign up
           </Link>

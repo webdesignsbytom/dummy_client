@@ -5,11 +5,11 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 
-function HomePage() {
+function ForgettenPasswordPage() {
   return (
     <>
       {/* Tab Data */}
-      <HelmetItem PageName={'Home'} desc={`Home page of ${CompanyName}.`} />
+      <HelmetItem PageName={'Reset Password'} desc={`Reset your password for ${CompanyName}.`} />
 
       {/* Page */}
       <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-slate-50'>
@@ -18,11 +18,11 @@ function HomePage() {
           <Navbar />
 
           {/* Main page content */}
-          <main role='main'>HomePage</main>
+          <main role='main'>ForgettenPasswordPage</main>
         </div>
       </div>
     </>
   );
 }
 
-export default HomePage;
+export default ForgettenPasswordPage;

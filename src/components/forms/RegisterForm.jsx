@@ -14,7 +14,7 @@ import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 import { ButtonStyle, InputStyle } from '../../utils/Styles';
 
 function RegisterForm() {
-  const { setUser } = useContext(UserContext)
+  const { setUser } = useContext(UserContext);
   const [registerFormData, setRegisterFormData] = useState({
     email: '',
     password: '',
@@ -34,13 +34,13 @@ function RegisterForm() {
       .post(REGISTER_API, registerFormData, false)
       .then((res) => {
         console.log('');
-        setRegistrationInProgress(true);
-        setUser(res.data.data.user)
+        setRegistrationInProgress(false);
+        setUser(res.data.data.user);
       })
-      
+
       .catch((err) => {
         setRegisterError(true);
-        setRegistrationInProgress(true);
+        setRegistrationInProgress(false);
         console.error('Unable to register new user', err);
       });
   };
@@ -80,6 +80,7 @@ function RegisterForm() {
           name='username'
           onChange={handleChange}
           required
+          aria-required='true'
         />
       </div>
       <div>
@@ -94,6 +95,8 @@ function RegisterForm() {
           placeholder='Email address'
           onChange={handleChange}
           required
+          aria-required='true'
+          aria-describedby={registerError ? 'email-error' : undefined}
         />
       </div>
       <div>
@@ -108,6 +111,8 @@ function RegisterForm() {
           placeholder='Password'
           onChange={handleChange}
           required
+          aria-required='true'
+          aria-describedby={registerError ? 'password-error' : undefined}
         />
       </div>
       <div>
@@ -122,6 +127,10 @@ function RegisterForm() {
           placeholder='Confirm Password'
           onChange={handleChange}
           required
+          aria-required='true'
+          aria-describedby={
+            registerError ? 'confirm-password-error' : undefined
+          }
         />
       </div>
       <div className=''>
@@ -139,15 +148,17 @@ function RegisterForm() {
           checked={registerFormData.agreedToTerms}
           onChange={handleCheckboxChange}
           required
+          aria-required='true'
+          aria-label='I agree to all terms and conditions'
         />
         <label
-          className='form-check-label inline-block text-gray-800'
+          className='form-check-label inline-block cursor-pointer text-gray-800 no__highlights'
           htmlFor='agreedToTerms'
         >
           I agree to all terms and conditions.
         </label>
       </div>
-      
+
       {/* Submit button */}
       <div>
         <button
@@ -156,8 +167,14 @@ function RegisterForm() {
           data-mdb-ripple-color='light'
           className={ButtonStyle}
           disabled={registrationInProgress}
+          aria-disabled={registrationInProgress}
+          aria-label='Register your account'
         >
-          {registrationInProgress ? <LoadingSpinner /> : <span>Register Now</span>}
+          {registrationInProgress ? (
+            <LoadingSpinner />
+          ) : (
+            <span>Register Now</span>
+          )}
         </button>
       </div>
 
@@ -166,20 +183,26 @@ function RegisterForm() {
           role='alert'
           aria-live='assertive'
           className='text-center'
+          id='form-error'
         >
-          <span className='font-semibold text-error-red'>REGISTRATION FAILED</span>
+          <span className='font-semibold text-error-red' id='register-error'>
+            REGISTRATION FAILED
+          </span>
         </div>
       )}
 
-      <p className='font-light text-gray-500 dark:text-gray-400'>
-        Already a member?{' '}
-        <Link
-          to={LOGIN_PAGE_URL}
-          className='font-medium text-blue-600 hover:underline'
-        >
-          Login Now
-        </Link>
-      </p>
+      <div className='grid justify-center'>
+        <p className='font-light text-gray-500 dark:text-gray-400'>
+          Already a member?{' '}
+          <Link
+            to={LOGIN_PAGE_URL}
+            className='font-medium text-hyperlink-blue hover:underline'
+            aria-label='Go to login page'
+          >
+            Login Now
+          </Link>
+        </p>
+      </div>
     </form>
   );
 }

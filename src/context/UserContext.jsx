@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // Api
 import client from '../api/client';
 // Constants
-import { HOME_PAGE_URL } from '../utils/Constants';
+import { GET_LOGGED_IN_USER_API, HOME_PAGE_URL } from '../utils/Constants';
 // Helpers
 import LoggedInUser from '../utils/LoggedInUser';
 // Hooks
@@ -14,23 +14,30 @@ export const UserContext = React.createContext();
 const UserContextProvider = ({ children }) => {
   const navigateToPage = useNavigateToPage();
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    id: null,
+  });
+
+  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(false);
+
   console.log('USER >>> userContext >>> state = user');
 
   const [token, setToken] = useState(
     localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || ''
   );
 
-  const [toggleCookiePolicy, setToggleCookiePolicy] = useState(false);
-
   useEffect(() => {
     const decodedUserData = LoggedInUser();
-    console.log('DecodedUserData >>> useEffect() UserContext: ', decodedUserData);
+    console.log(
+      'DecodedUserData >>> useEffect() UserContext: ',
+      decodedUserData
+    );
 
     if (decodedUserData !== null) {
       const userId = decodedUserData.id;
+
       client
-        .get(`/users/user/userId/${userId}`)
+        .get(`${GET_LOGGED_IN_USER_API}/${userId}`)
         .then((res) => {
           setUser(res.data.data.user);
         })
@@ -42,12 +49,11 @@ const UserContextProvider = ({ children }) => {
     }
 
     const cookie = localStorage.getItem('CookiePolicy');
-
+    console.log('cookie', cookie);
     if (cookie) {
-      setToggleCookiePolicy(true);
+      setHasAgreedToCookies(true);
     }
   }, []);
-
 
   return (
     <UserContext.Provider
@@ -56,8 +62,8 @@ const UserContextProvider = ({ children }) => {
         setUser,
         token,
         setToken,
-        toggleCookiePolicy,
-        setToggleCookiePolicy,
+        hasAgreedToCookies,
+        setHasAgreedToCookies,
       }}
     >
       {children}

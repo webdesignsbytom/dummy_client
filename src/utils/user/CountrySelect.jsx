@@ -1,4 +1,6 @@
 import React from 'react';
+// Styles
+import { InputStyle } from '../Styles';
 
 function CountrySelect({ handleChange }) {
   return (
@@ -7,10 +9,12 @@ function CountrySelect({ handleChange }) {
         id='country'
         name='country'
         onChange={handleChange}
-        className='form-control block w-full px-3 py-1.5 mb-6 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+        className={InputStyle}
         required
+        aria-label='Select your country'
+        defaultValue='United Kingdom'
       >
-        <option defaultValue='United Kingdom'>United Kingdom</option>
+        <option value='United Kingdom'>United Kingdom</option>
         <option value='United States'>United States</option>
         <option value='Afghanistan'>Afghanistan</option>
         <option value='Åland Islands'>Åland Islands</option>

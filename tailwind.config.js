@@ -6,6 +6,9 @@ module.exports = {
       backgroundImage: {
         'bg': "url('../assets')",
       },
+      boxShadow: {
+        input: 'inset 1px 1px 6px 1px #00000014'
+      },
       colors: {
         'main-background': '#f8fafc',
         'nav-background': '#334155',
@@ -28,6 +31,9 @@ module.exports = {
         rev: '1fr auto',
         a1a: 'auto 1fr auto',
       },
+      zIndex: {
+        max: '999'
+      }
     },
   },
   plugins: [],
