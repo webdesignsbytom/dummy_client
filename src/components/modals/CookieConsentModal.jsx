@@ -1,12 +1,16 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 // Context
 import { UserContext } from '../../context/UserContext';
 // Constants
-import { ButtonStyle, CancelButtonStyle } from '../../utils/Styles';
+import { POLICIES_PAGE_URL } from '../../utils/Constants';
+// Styles
+import { ButtonStyle, CancelButtonStyle, LinkStyle } from '../../utils/Styles';
 
 function CookieConsentModal() {
   const { hasAgreedToCookies, setHasAgreedToCookies } = useContext(UserContext);
   console.log('aaaaaaa');
+
   const handleAgree = () => {
     localStorage.setItem('CookiePolicy', 'true');
     setHasAgreedToCookies(true);
@@ -38,6 +42,17 @@ function CookieConsentModal() {
                 <p>
                   We currently use <span className='text-green-600'>{0}</span>{' '}
                   cookies.
+                </p>
+                <p>
+                  You can read futher and find out more about our policies and
+                  how we use your data by{' '}
+                  <Link
+                    to={POLICIES_PAGE_URL}
+                    className={LinkStyle}
+                    aria-label='Forgot password?'
+                  >
+                    Following this Link.
+                  </Link>
                 </p>
               </div>
             </div>

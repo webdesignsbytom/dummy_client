@@ -82,7 +82,7 @@ function LoginForm() {
           aria-describedby={loginError ? 'email-error' : undefined}
         />
         {loginError && (
-          <p id='email-error' className='text-red-600 text-sm'>
+          <p id='email-error' className='text-error-red text-sm'>
             Invalid email address or password.
           </p>
         )}
@@ -164,7 +164,7 @@ function LoginForm() {
       </div>
 
       {loginError && (
-        <div role='alert' aria-live='assertive' className='text-red-600'>
+        <div role='alert' aria-live='assertive' className='text-error-red'>
           Unable to login. Please check your credentials.
         </div>
       )}

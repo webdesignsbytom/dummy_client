@@ -7,6 +7,8 @@ import App from './App';
 import UserContextProvider from './context/UserContext';
 // Styles
 import './styles/index.css';
+import './styles/components.css';
+import './styles/animations.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

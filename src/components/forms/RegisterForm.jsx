@@ -11,7 +11,7 @@ import CountrySelect from '../../utils/user/CountrySelect';
 // Constants
 import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 // Styles
-import { ButtonStyle, InputStyle } from '../../utils/Styles';
+import { ButtonStyle, InputStyle, LinkStyle } from '../../utils/Styles';
 
 function RegisterForm() {
   const { setUser } = useContext(UserContext);
@@ -196,7 +196,7 @@ function RegisterForm() {
           Already a member?{' '}
           <Link
             to={LOGIN_PAGE_URL}
-            className='font-medium text-hyperlink-blue hover:underline'
+            className={LinkStyle}
             aria-label='Go to login page'
           >
             Login Now

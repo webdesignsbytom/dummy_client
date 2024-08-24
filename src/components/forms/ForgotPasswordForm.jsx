@@ -10,7 +10,7 @@ import {
   SIGN_UP_PAGE_URL,
 } from '../../utils/Constants';
 // Styles
-import { ButtonStyle, InputStyle } from '../../utils/Styles';
+import { ButtonStyle, InputStyle, LinkStyle } from '../../utils/Styles';
 
 function ForgotPasswordForm() {
   const [resetRequestInProgress, setResetRequestInProgress] = useState(false);
@@ -92,7 +92,7 @@ function ForgotPasswordForm() {
           Don’t have an account yet?
           <Link
             to={SIGN_UP_PAGE_URL}
-            className='font-medium text-blue-600 hover:underline'
+            className={LinkStyle}
             aria-label='Sign up for a new account'
           >
             Sign up
@@ -101,7 +101,7 @@ function ForgotPasswordForm() {
       </div>
 
       {resetRequestError && (
-        <div role='alert' aria-live='assertive' className='text-red-600'>
+        <div role='alert' aria-live='assertive' className='text-error-red'>
           Unable to request password reset. Please try again.
         </div>
       )}
