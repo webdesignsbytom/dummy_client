@@ -9,11 +9,13 @@ import ForgettenPasswordPage from './pages/user/ForgettenPasswordPage';
 import {
   HOME_PAGE_URL,
   LOGIN_PAGE_URL,
+  POLICIES_PAGE_URL,
   RESET_PASS_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from './utils/Constants';
 // Components
 import CookieConsentModal from './components/modals/CookieConsentModal';
+import TermAndPoliciesPage from './pages/policies/TermAndPoliciesPage';
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
         <Route path={LOGIN_PAGE_URL} element={<LoginPage />} />
         <Route path={SIGN_UP_PAGE_URL} element={<RegisterPage />} />
         <Route path={RESET_PASS_PAGE_URL} element={<ForgettenPasswordPage />} />
+        <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
         <Route path='*' element={<Error404 />} />
       </Routes>
     </>

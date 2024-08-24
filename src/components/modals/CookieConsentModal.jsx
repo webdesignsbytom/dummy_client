@@ -20,7 +20,10 @@ function CookieConsentModal() {
     return null; // Don't render if the user has already agreed
   } else {
     return (
-      <section className='grid fixed transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max'>
+      <section
+        aria-label='Cookie policy consent form'
+        className='grid fixed transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max'
+      >
         <div className='grid rounded-xl px-4 py-6 shadow-xl h-full w-full bg-white'>
           <article className='grid gap-4 h-full w-full grid-rows-rev'>
             <div className='grid gap-4 w-full h-full'>

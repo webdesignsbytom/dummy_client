@@ -1,6 +1,7 @@
 import React from 'react';
 // Components
 import Navbar from '../../components/nav/Navbar';
+import ForgotPasswordForm from '../../components/forms/ForgotPasswordForm';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
@@ -18,7 +19,9 @@ function ForgettenPasswordPage() {
           <Navbar />
 
           {/* Main page content */}
-          <main role='main'>ForgettenPasswordPage</main>
+          <main role='main'>
+            <ForgotPasswordForm />
+          </main>
         </div>
       </div>
     </>

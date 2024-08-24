@@ -15,7 +15,7 @@ module.exports = {
         'alt-colour': '#dcbc90',
         'border-main': '#cbd5e1',
         'error-red': '#dc2626',
-        'success-green': '#',
+        'success-green': '#16a34a',
         'hyperlink-blue': '#2563EB',
       },
       fontFamily: {

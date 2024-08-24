@@ -10,11 +10,6 @@ const paramsConfig = {
   '/portfolio-item/:itemId': [
     { itemId: '0' },
     { itemId: '1' },
-    { itemId: '2' },
-    { itemId: '3' },
-    { itemId: '4' },
-    { itemId: '5' },
-    { itemId: '6' },
   ],
 };
 
