@@ -10,7 +10,7 @@ import {
 } from '../../utils/Constants';
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Styles
-import { InputStyle } from '../../utils/Styles';
+import { ButtonStyle, InputStyle } from '../../utils/Styles';
 
 function LoginForm() {
   const [loginInProgress, setLoginInProgress] = useState(false);
@@ -138,7 +138,7 @@ function LoginForm() {
       <div>
         <button
           type='submit'
-          className='w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
+          className={ButtonStyle}
           aria-label='Sign in to your account'
           disabled={loginInProgress}
         >
