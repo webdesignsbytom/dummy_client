@@ -8,6 +8,7 @@ export const SIGN_UP_PAGE_URL = '/sign-up';
 export const CONTACT_PAGE_URL = '/contact';
 export const RESET_PASS_PAGE_URL = '/reset-password';
 export const POLICIES_PAGE_URL = '/user-agreements';
+export const ADMIN_PAGE_URL = '/admin';
 export const ERROR_404_PAGE_URL = '*';
 
 // API
