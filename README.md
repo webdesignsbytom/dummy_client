@@ -50,3 +50,5 @@ Different branches are a base for different websites. All rely on the 'master' b
    2. User Profiles: Detailed user profiles with badges, posts history, etc.
    3. Private Messaging: Direct messaging functionality between users.
    4. Moderation Tools: Tools for moderators to manage the forum.
+6. Management - business or community management tools
+   1. Calander functions
