@@ -125,7 +125,7 @@ function LoginForm() {
           </label>
         </div>
       </div>
-      <div>
+      <div className='grid justify-center'>
         <Link
           to={RESET_PASS_PAGE_URL}
           className='text-sm font-medium text-blue-600 hover:underline'
@@ -150,15 +150,15 @@ function LoginForm() {
         </button>
       </div>
 
-      <div>
+      <div className='text-center'>
         <p className='font-light text-gray-500 dark:text-gray-400'>
-          Don’t have an account yet?
+          Don’t have an account yet?{" "}
           <Link
             to={SIGN_UP_PAGE_URL}
             className='font-medium text-blue-600 hover:underline'
             aria-label='Sign up for a new account'
           >
-            Sign up
+            Sign up now!
           </Link>
         </p>
       </div>

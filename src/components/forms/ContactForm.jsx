@@ -10,8 +10,8 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 import { SUBMIT_CONTACT_FORM_API } from '../../utils/Constants';
 
 function ContactForm() {
-  const submitStates = ["waiting", "inprogress", "failed", "success"];
-  
+  const submitStates = ['waiting', 'inprogress', 'failed', 'success'];
+
   const [formData, setFormData] = useState(emptyContactFormData);
   const [submitState, setSubmitState] = useState(submitStates[0]); // Default to "waiting"
   const [errors, setErrors] = useState({});
@@ -60,193 +60,198 @@ function ContactForm() {
   };
 
   return (
-      <form
-        onSubmit={handleSubmit}
-        className='bg-white shadow-md rounded px-8 py-8 w-full max-w-lg'
-      >
-        <section className='lg:grid lg:grid-cols-2 gap-2'>
-          <div className='mb-4'>
-            <label
-              className='block text-gray-700 text-sm font-bold mb-2'
-              htmlFor='firstName'
-            >
-              First Name <span className='text-red-500'>*</span>
-            </label>
-            <input
-              type='text'
-              id='firstName'
-              name='firstName'
-              value={formData.firstName}
-              onChange={handleChange}
-              autoComplete='on'
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                errors.firstName ? 'border-red-500' : ''
-              }`}
-              required
-              aria-required="true"
-              aria-invalid={errors.firstName ? "true" : "false"}
-              aria-describedby="firstNameError"
-            />
-            {errors.firstName && (
-              <p id="firstNameError" className='text-red-500 text-xs italic'>{errors.firstName}</p>
-            )}
-          </div>
-          <div className='mb-4'>
-            <label
-              className='block text-gray-700 text-sm font-bold mb-2'
-              htmlFor='lastName'
-            >
-              Last Name <span className='text-red-500'>*</span>
-            </label>
-            <input
-              type='text'
-              id='lastName'
-              name='lastName'
-              value={formData.lastName}
-              onChange={handleChange}
-              autoComplete='on'
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                errors.lastName ? 'border-red-500' : ''
-              }`}
-              required
-              aria-required="true"
-              aria-invalid={errors.lastName ? "true" : "false"}
-              aria-describedby="lastNameError"
-            />
-            {errors.lastName && (
-              <p id="lastNameError" className='text-red-500 text-xs italic'>{errors.lastName}</p>
-            )}
-          </div>
-        </section>
-        <div className='mb-4'>
+    <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
+      <section className='lg:grid lg:grid-cols-2 gap-2'>
+        <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold mb-2'
-            htmlFor='email'
+            className='block text-gray-700 text-sm font-bold'
+            htmlFor='firstName'
           >
-            Email <span className='text-red-500'>*</span>
+            First Name <span className='text-error-red'>*</span>
           </label>
           <input
-            type='email'
-            id='email'
-            name='email'
-            value={formData.email}
+            type='text'
+            id='firstName'
+            name='firstName'
+            value={formData.firstName}
             onChange={handleChange}
             autoComplete='on'
             className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.email ? 'border-red-500' : ''
+              errors.firstName ? 'border-error-red' : ''
             }`}
             required
-            aria-required="true"
-            aria-invalid={errors.email ? "true" : "false"}
-            aria-describedby="emailError"
+            aria-required='true'
+            aria-invalid={errors.firstName ? 'true' : 'false'}
+            aria-describedby='firstNameError'
           />
-          {errors.email && (
-            <p id="emailError" className='text-red-500 text-xs italic'>{errors.email}</p>
+          {errors.firstName && (
+            <p id='firstNameError' className='text-error-red text-xs italic'>
+              {errors.firstName}
+            </p>
           )}
         </div>
-        <section className='lg:grid lg:grid-cols-2 gap-2'>
-          <div className='mb-4'>
-            <label
-              className='block text-gray-700 text-sm font-bold mb-2'
-              htmlFor='businessName'
-            >
-              Business Name (optional)
-            </label>
-            <input
-              type='text'
-              id='businessName'
-              name='businessName'
-              value={formData.businessName}
-              onChange={handleChange}
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-            />
-          </div>
-         
-        </section>
-        <section className='lg:grid lg:grid-cols-2 gap-2'>
-          <div className='mb-4'>
-            <label
-              className='block text-gray-700 text-sm font-bold mb-2'
-              htmlFor='phoneNumber'
-            >
-              Phone Number (optional)
-            </label>
-            <input
-              type='tel'
-              id='phoneNumber'
-              name='phoneNumber'
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-            />
-          </div>
-          <div className='mb-4'>
-            <label
-              className='block text-gray-700 text-sm font-bold mb-2'
-              htmlFor='location'
-            >
-              Location (optional)
-            </label>
-            <input
-              type='text'
-              id='location'
-              name='location'
-              value={formData.location}
-              onChange={handleChange}
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-            />
-          </div>
-        </section>
-        <div className='mb-6'>
+        <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold mb-2'
-            htmlFor='message'
+            className='block text-gray-700 text-sm font-bold'
+            htmlFor='lastName'
           >
-            Message <span className='text-red-500'>*</span>
+            Last Name <span className='text-error-red'>*</span>
           </label>
-          <textarea
-            id='message'
-            name='message'
-            value={formData.message}
+          <input
+            type='text'
+            id='lastName'
+            name='lastName'
+            value={formData.lastName}
             onChange={handleChange}
+            autoComplete='on'
             className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.message ? 'border-red-500' : ''
+              errors.lastName ? 'border-error-red' : ''
             }`}
             required
-            aria-required="true"
-            aria-invalid={errors.message ? "true" : "false"}
-            aria-describedby="messageError"
+            aria-required='true'
+            aria-invalid={errors.lastName ? 'true' : 'false'}
+            aria-describedby='lastNameError'
           />
-          {errors.message && (
-            <p id="messageError" className='text-red-500 text-xs italic'>{errors.message}</p>
+          {errors.lastName && (
+            <p id='lastNameError' className='text-error-red text-xs italic'>
+              {errors.lastName}
+            </p>
           )}
         </div>
-        <div className='grid items-center'>
-          <button
-            type='submit'
-            className={ButtonStyle}
-            aria-label='Submit your form'
-            disabled={submitState === submitStates[1]} // "inprogress"
+      </section>
+      <div className=''>
+        <label
+          className='block text-gray-700 text-sm font-bold'
+          htmlFor='email'
+        >
+          Email <span className='text-error-red'>*</span>
+        </label>
+        <input
+          type='email'
+          id='email'
+          name='email'
+          value={formData.email}
+          onChange={handleChange}
+          autoComplete='on'
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            errors.email ? 'border-error-red' : ''
+          }`}
+          required
+          aria-required='true'
+          aria-invalid={errors.email ? 'true' : 'false'}
+          aria-describedby='emailError'
+        />
+        {errors.email && (
+          <p id='emailError' className='text-error-red text-xs italic'>
+            {errors.email}
+          </p>
+        )}
+      </div>
+      <section className='lg:grid lg:grid-cols-2 gap-2'>
+        <div className=''>
+          <label
+            className='block text-gray-700 text-sm font-bold'
+            htmlFor='businessName'
           >
-            {submitState === submitStates[1] ? (
-              <LoadingSpinner sm={true} />
-            ) : (
-              <span>Submit</span>
-            )}
-          </button>
+            Business Name (optional)
+          </label>
+          <input
+            type='text'
+            id='businessName'
+            name='businessName'
+            value={formData.businessName}
+            onChange={handleChange}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+          />
         </div>
+      </section>
+      <section className='lg:grid lg:grid-cols-2 gap-2'>
+        <div className=''>
+          <label
+            className='block text-gray-700 text-sm font-bold'
+            htmlFor='phoneNumber'
+          >
+            Phone Number (optional)
+          </label>
+          <input
+            type='tel'
+            id='phoneNumber'
+            name='phoneNumber'
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+          />
+        </div>
+        <div className=''>
+          <label
+            className='block text-gray-700 text-sm font-bold'
+            htmlFor='location'
+          >
+            Location (optional)
+          </label>
+          <input
+            type='text'
+            id='location'
+            name='location'
+            value={formData.location}
+            onChange={handleChange}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+          />
+        </div>
+      </section>
+      <div className='mb-6'>
+        <label
+          className='block text-gray-700 text-sm font-bold'
+          htmlFor='message'
+        >
+          Message <span className='text-error-red'>*</span>
+        </label>
+        <textarea
+          id='message'
+          name='message'
+          value={formData.message}
+          rows={6}
+          onChange={handleChange}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            errors.message ? 'border-error-red' : ''
+          }`}
+          required
+          aria-required='true'
+          aria-invalid={errors.message ? 'true' : 'false'}
+          aria-describedby='messageError'
+        />
+        {errors.message && (
+          <p id='messageError' className='text-error-red text-xs italic'>
+            {errors.message}
+          </p>
+        )}
+      </div>
+      <div className='grid items-center'>
+        <button
+          type='submit'
+          className={ButtonStyle}
+          aria-label='Submit your form'
+          disabled={submitState === submitStates[1]} // "inprogress"
+        >
+          {submitState === submitStates[1] ? (
+            <LoadingSpinner sm={true} />
+          ) : (
+            <span>Submit</span>
+          )}
+        </button>
+      </div>
 
-        {submitState === submitStates[2] && ( // "failed"
-          <div role='alert' aria-live='assertive' className='text-red-500 mt-4'>
-            Unable to submit the form. Please try again.
-          </div>
-        )}
-        {submitState === submitStates[3] && ( // "success"
-          <div role='alert' aria-live='polite' className='text-green-500 mt-4'>
-            Form submitted successfully!
-          </div>
-        )}
-      </form>
+      {submitState === submitStates[2] && ( // "failed"
+        <div role='alert' aria-live='assertive' className='text-error-red mt-4'>
+          Unable to submit the form. Please try again.
+        </div>
+      )}
+      {submitState === submitStates[3] && ( // "success"
+        <div role='alert' aria-live='polite' className='text-green-500 mt-4'>
+          Form submitted successfully!
+        </div>
+      )}
+    </form>
   );
 }
 
