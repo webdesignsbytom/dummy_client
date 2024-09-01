@@ -9,6 +9,7 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
   - [General Info](#general-info)
   - [Completing project](#completing-project)
   - [Versions](#versions)
+  - [Analytics](#analytics)
 
 ## General Info
 
@@ -55,3 +56,10 @@ Different branches are a base for different websites. All rely on the 'master' b
    4. Moderation Tools: Tools for moderators to manage the forum.
 7. Management - business or community management tools
    1. Calander functions
+
+## Analytics
+
+The dummy comes with a set up for using google analytics.
+Using the GA4 library `npm install react-ga4`
+
+We create the useAnalytics hook to import a tracking helper into any page or component.
