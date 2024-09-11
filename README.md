@@ -7,6 +7,7 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
 - [Client](#client)
   - [Table of Contents](#table-of-contents)
   - [General Info](#general-info)
+  - [Technologies](#technologies)
   - [Completing project](#completing-project)
   - [Versions](#versions)
   - [Analytics](#analytics)
@@ -14,6 +15,13 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
 ## General Info
 
 **Client** is....
+
+## Technologies
+
+1. React - Frontend framework
+2. Tailwind - Style sheets
+3. Axios - API management
+4. Google OAuth - creating a login and sign up through google account.
 
 ## Completing project
 
