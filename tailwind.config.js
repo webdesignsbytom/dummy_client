@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         'main-background': '#f8fafc',
         'nav-background': '#334155',
+        'alt-background': '#334155',
         'alt-colour': '#dcbc90',
         'border-main': '#cbd5e1',
         'error-red': '#dc2626',

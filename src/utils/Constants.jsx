@@ -18,3 +18,5 @@ export const REGISTER_API = '/users/register';
 export const RESET_PASSWORD_API = '/users/user/reset-password'; // userId
 export const SUBMIT_CONTACT_FORM_API = '/contact/submit-form'; // userId
 
+// Bot Data
+export const BotName = 'Jerry'

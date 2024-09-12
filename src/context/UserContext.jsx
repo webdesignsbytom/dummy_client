@@ -20,18 +20,12 @@ const UserContextProvider = ({ children }) => {
 
   const [hasAgreedToCookies, setHasAgreedToCookies] = useState(false);
 
-  console.log('USER >>> userContext >>> state = user');
-
   const [token, setToken] = useState(
     localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || ''
   );
 
   useEffect(() => {
     const decodedUserData = LoggedInUser();
-    console.log(
-      'DecodedUserData >>> useEffect() UserContext: ',
-      decodedUserData
-    );
 
     if (decodedUserData !== null) {
       const userId = decodedUserData.id;
@@ -49,7 +43,6 @@ const UserContextProvider = ({ children }) => {
     }
 
     const cookie = localStorage.getItem('CookiePolicy');
-    console.log('cookie', cookie);
     if (cookie) {
       setHasAgreedToCookies(true);
     }
