@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // Icons
 import { IoMdMenu } from 'react-icons/io';
 // Images
 import LogoWhite from '../../assets/images/logos/tech-design-tavistock-logo-white.svg';
 // Context
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 // Constants
 import {
   ADMIN_PAGE_URL,
@@ -16,7 +16,7 @@ import {
 } from '../../utils/Constants';
 
 function Navbar() {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
   const [animationClass, setAnimationClass] = useState('');
 

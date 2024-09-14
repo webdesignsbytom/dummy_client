@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import { useEffect, useState } from 'react';
 // Api
 import client from '../api/client';
@@ -9,9 +9,10 @@ import LoggedInUser from '../utils/LoggedInUser';
 // Hooks
 import useNavigateToPage from '../hooks/useNavigateToPage';
 
-export const UserContext = React.createContext();
+// Create the context
+export const UserContext = createContext();
 
-const UserContextProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
   const navigateToPage = useNavigateToPage();
 
   const [user, setUser] = useState({
@@ -56,19 +57,18 @@ const UserContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        setUser,
-        token,
-        setToken,
-        hasAgreedToCookies,
-        setHasAgreedToCookies,
-      }}
-    >
+    <UserContext.Provider value={{ user, setUser, token, setToken, hasAgreedToCookies, setHasAgreedToCookies }}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export default UserContextProvider;
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
+};
+
+export default UserProvider;

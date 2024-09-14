@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 // Context
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 // Constants
 import { POLICIES_PAGE_URL } from '../../utils/Constants';
 // Styles
 import { ButtonStyle, CancelButtonStyle, LinkStyle } from '../../utils/Styles';
 
 function CookieConsentModal() {
-  const { hasAgreedToCookies, setHasAgreedToCookies } = useContext(UserContext);
+  const { hasAgreedToCookies, setHasAgreedToCookies } = useUser();
   console.log('aaaaaaa');
 
   const handleAgree = () => {
