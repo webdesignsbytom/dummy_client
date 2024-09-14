@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // API
 import client from '../../api/client';
 // Context
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 // Utils
@@ -14,7 +14,8 @@ import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 import { ButtonStyle, InputStyle, LinkStyle } from '../../utils/Styles';
 
 function RegisterForm() {
-  const { setUser } = useContext(UserContext);
+  const { setUser } = useUser();
+  
   const [registerFormData, setRegisterFormData] = useState({
     email: '',
     password: '',

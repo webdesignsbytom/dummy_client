@@ -1,9 +1,8 @@
-import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 // Constants
 import { HOME_PAGE_URL } from './Constants';
 // Context
-import { UserContext } from '../context/UserContext';
+import { useUser } from '../context/UserContext';
 // Utils
 import LoggedInUser from './LoggedInUser';
 
@@ -16,7 +15,7 @@ export function AuthenticateUser({ children, redirectPath = HOME_PAGE_URL }) {
 }
 
 export function AuthenticateAdmin({ children, redirectPath = HOME_PAGE_URL }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   if (user.role !== 'ADMIN' && user.role !== 'DEVELOPER') {
     return <Navigate to={redirectPath} replace />;
   } else {
@@ -25,7 +24,7 @@ export function AuthenticateAdmin({ children, redirectPath = HOME_PAGE_URL }) {
 }
 
 export function AuthenticateDeveloper({ children, redirectPath = HOME_PAGE_URL }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   if (user.role !== 'DEVELOPER') {
     return <Navigate to={redirectPath} replace />;
   } else {
