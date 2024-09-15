@@ -20,8 +20,15 @@ function LoginPage() {
         <div className='grid grid-rows-reg w-full h-full overflow-hidden'>
           {/* Navigation */}
           <Navbar />
-
-          {/* Main content */}
+          <button
+            type='button'
+            onClick={() => {
+              throw new Error('Sentry Test Error');
+            }}
+          >
+            Break the world
+          </button>
+          ;{/* Main content */}
           <main role='main' className='grid w-full h-full overflow-hidden'>
             <div className='grid w-full h-full justify-center items-center p-2 overflow-hidden'>
               {/* Login component */}

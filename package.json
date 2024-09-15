@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sentry/cli": "^2.36.1",
+    "@sentry/react": "^8.30.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.4",
     "jwt-decode": "^4.0.0",
@@ -17,9 +19,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run sentry:sourcemaps",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org webdesignsbytom --project work-coverage ./build && sentry-cli sourcemaps upload --org webdesignsbytom --project work-coverage ./build"
   },
   "eslintConfig": {
     "extends": [
