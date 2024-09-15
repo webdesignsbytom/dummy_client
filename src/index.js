@@ -5,7 +5,7 @@ import ReactGA from 'react-ga4';
 // App
 import App from './App';
 // Context
-import UserContextProvider from './context/UserContext';
+import UserProvider from './context/UserContext';
 // Styles
 import './styles/index.css';
 import './styles/components.css';
@@ -17,8 +17,8 @@ ReactGA.initialize(process.env.REACT_APP_ANALYTICS_ID);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <UserContextProvider>
+    <UserProvider>
       <App />
-    </UserContextProvider>
+    </UserProvider>
   </BrowserRouter>
 );
