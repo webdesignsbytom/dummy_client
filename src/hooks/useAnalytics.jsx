@@ -95,3 +95,9 @@ export const useCustomMetrics = () => {
 //   const handleShare = () => {
 //     trackSocial('Facebook', 'Share', '/home');
 //   };
+
+
+// Progressive Web App (PWA) Features: If relevant to your project, consider adding PWA functionality:
+
+// Add a service worker and configure a manifest.json for offline support.
+// You already have a manifest.json in public, so you could consider integrating with Workbox for easier caching strategies.

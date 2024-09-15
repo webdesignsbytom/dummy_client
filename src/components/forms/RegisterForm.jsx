@@ -25,30 +25,26 @@ function RegisterForm() {
     agreedToTerms: true,
   });
   
-  const [registerError, setRegisterError] = useState(false);
+  const [registerError, setRegisterError] = useState(null); // Store error message or null
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
 
-  const handleSubmitRegisterForm = (event) => {
+  const handleSubmitRegisterForm = async (event) => {
     event.preventDefault();
     setRegistrationInProgress(true);
+    setRegisterError(null); // Reset error before new attempt
 
-    client
-      .post(REGISTER_API, registerFormData, false)
-      .then((res) => {
-        console.log('');
-        setRegistrationInProgress(false);
-        setUser(res.data.data.user);
-      })
-
-      .catch((err) => {
-        setRegisterError(true);
-        setRegistrationInProgress(false);
-        console.error('Unable to register new user', err);
-      });
+    try {
+      const res = await client.post(REGISTER_API, registerFormData, false);
+      setUser(res.data.data.user); // Set the user in context
+      setRegistrationInProgress(false);
+    } catch (error) {
+      setRegisterError(error.message); // Display detailed error from the API
+      setRegistrationInProgress(false);
+    }
   };
 
   const handleChange = (event) => {
-    setRegisterError(false);
+    setRegisterError(null); // Reset error when input changes
     const { name, value } = event.target;
 
     setRegisterFormData({
@@ -184,11 +180,11 @@ function RegisterForm() {
         <div
           role='alert'
           aria-live='assertive'
-          className='text-center'
+          className='text-center text-error-red'
           id='form-error'
         >
-          <span className='font-semibold text-error-red' id='register-error'>
-            REGISTRATION FAILED
+          <span className='font-semibold' id='register-error'>
+            {registerError || 'REGISTRATION FAILED'}
           </span>
         </div>
       )}

@@ -14,37 +14,34 @@ import { ButtonStyle, InputStyle } from '../../utils/Styles';
 
 function LoginForm() {
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState(null); // Set null initially for error message
   const [loginFormData, setLoginFormData] = useState({
     email: '',
     password: '',
     keepMeLoggedIn: false,
   });
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setLoginInProgress(true);
+    setLoginError(null); // Reset error state
 
-    client
-      .post(LOGIN_API, loginFormData, false)
-      .then((res) => {
-        localStorage.setItem(
-          process.env.REACT_APP_USER_TOKEN,
-          res.data.data.token
-        );
-        setLoginInProgress(false);
-        // setUser(res.data.data.existingUser);
-      })
-
-      .catch((err) => {
-        setLoginError(true);
-        setLoginInProgress(false);
-        console.error('Unable to login', err);
-      });
+    try {
+      const data = await client.post(LOGIN_API, loginFormData, false);
+      localStorage.setItem(
+        process.env.REACT_APP_USER_TOKEN,
+        data.data.token // Adjust based on your API response
+      );
+      setLoginInProgress(false);
+      // Optionally, update user context or redirect the user
+    } catch (error) {
+      setLoginError(error.message); // Set detailed error message from the API
+      setLoginInProgress(false);
+    }
   };
 
   const handleChange = (event) => {
-    setLoginError(false);
+    setLoginError(null); // Reset error state when user types
     const { name, value } = event.target;
 
     setLoginFormData({
@@ -77,15 +74,9 @@ function LoginForm() {
           placeholder='name@email.com'
           onChange={handleChange}
           required
-          //ref={emailInputRef}
           aria-invalid={loginError ? 'true' : 'false'}
           aria-describedby={loginError ? 'email-error' : undefined}
         />
-        {loginError && (
-          <p id='email-error' className='text-error-red text-sm'>
-            Invalid email address or password.
-          </p>
-        )}
       </div>
       <div>
         <label
@@ -150,9 +141,15 @@ function LoginForm() {
         </button>
       </div>
 
+      {loginError && (
+        <div role='alert' aria-live='assertive' className='text-error-red'>
+          {loginError || 'Unable to login. Please check your credentials.'}
+        </div>
+      )}
+
       <div className='text-center'>
         <p className='font-light text-gray-500 dark:text-gray-400'>
-          Don’t have an account yet?{" "}
+          Don’t have an account yet?{' '}
           <Link
             to={SIGN_UP_PAGE_URL}
             className='font-medium text-blue-600 hover:underline'
@@ -162,12 +159,6 @@ function LoginForm() {
           </Link>
         </p>
       </div>
-
-      {loginError && (
-        <div role='alert' aria-live='assertive' className='text-error-red'>
-          Unable to login. Please check your credentials.
-        </div>
-      )}
     </form>
   );
 }
