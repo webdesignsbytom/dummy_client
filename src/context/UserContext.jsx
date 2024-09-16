@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import client from '../api/client';
 import { GET_LOGGED_IN_USER_API, HOME_PAGE_URL } from '../utils/Constants';
 import useNavigateToPage from '../hooks/useNavigateToPage';
+import LoggedInUser from '../utils/LoggedInUser';
 
 // Create the context
 export const UserContext = createContext();

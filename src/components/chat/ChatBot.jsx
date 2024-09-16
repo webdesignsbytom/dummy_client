@@ -9,9 +9,11 @@ import { InputStyle } from '../../utils/Styles';
 
 export const ChatBot = ({ flow, settings, styles, themes }) => {
   const [currentStep, setCurrentStep] = useState('start'); // Track the current step in the flow
-  const [userInput, setUserInput] = useState(''); // Track user input
+
+  const [userInput, setUserInput] = useState(''); // Track user input fron text input
   const [conversation, setConversation] = useState([]); // Store conversation history
   const [isChatOpen, setIsChatOpen] = useState(false); // Track if the chat window is open
+
   console.log('userInput', userInput);
   console.log('conversation', conversation);
   // Get the current step from the flow
@@ -19,35 +21,47 @@ export const ChatBot = ({ flow, settings, styles, themes }) => {
   console.log('current step: ', currentFlowStep);
 
   useEffect(() => {
-    console.log('ppppppppppppppppppppppppp');
+    // Load initial messages and handle function-based messages
+    const botMessage =
+      typeof currentFlowStep.message === 'function'
+        ? currentFlowStep.message({ userInput })  // Call function if message is a function
+        : currentFlowStep.message;
+  
     setConversation([
       ...conversation,
-      { owner: BotName, message: currentFlowStep.message },
+      { owner: BotName, message: botMessage },
     ]);
-  }, []);
+  }, [currentStep]);  // Make sure it updates whenever the current step changes
 
-  // Handle sending user input
-  const handleSendInput = () => {
-    // Add current bot message and user input to the conversation
-    console.log('');
-    setConversation([
-      ...conversation,
-      { owner: 'you', message: currentFlowStep?.message, user: userInput },
-    ]);
+// Handle sending user input
+const handleSendInput = () => {
+  // Add current bot message and user input to the conversation
+  console.log('-- IN --');
 
-    // Call the function associated with the current step if it exists
-    if (currentFlowStep?.function) {
-      currentFlowStep.function({ userInput });
-    }
+  console.log('userInput', userInput);
 
-    // Move to the next step in the flow if a path is provided
-    if (currentFlowStep?.path) {
-      setCurrentStep(currentFlowStep.path);
-    }
+  setConversation([
+    ...conversation,
+    { owner: 'you', message: userInput },
+  ]);
 
-    // Clear the input field after the message is sent
-    setUserInput('');
-  };
+  console.log('2. currentFlowStep?.function', currentFlowStep?.function);
+  
+  // Call the function associated with the current step if it exists
+  if (currentFlowStep?.function) {
+    currentFlowStep.function({ userInput });
+  }
+
+  // Move to the next step in the flow if a path is provided
+  console.log('3. currentFlowStep?.path', currentFlowStep?.path);
+  if (currentFlowStep?.path) {
+    setCurrentStep(currentFlowStep.path);
+  }
+
+  // Clear the input field after the message is sent
+  setUserInput('');
+};
+
 
   const chatButton =
     'fixed bottom-4 right-4 bg-alt-background rounded-full w-12 h-12 hover:brightness-125 text-orange-600 font-medium';
@@ -58,7 +72,7 @@ export const ChatBot = ({ flow, settings, styles, themes }) => {
     <section>
       {/* Render "Chat" button if the chat window is closed */}
       {!isChatOpen && (
-        <button className={chatButton} onClick={() => setIsChatOpen(true)}>
+        <button id='chatbot_button' className={chatButton} onClick={() => setIsChatOpen(true)}>
           Chat
         </button>
       )}
