@@ -19,7 +19,7 @@ const UserProvider = ({ children }) => {
     id: null,
   });
 
-  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(false);
+  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(true);
 
   console.log('USER >>> userContext >>> state = user');
 
@@ -53,7 +53,10 @@ const UserProvider = ({ children }) => {
     console.log('cookie', cookie);
     if (cookie) {
       setHasAgreedToCookies(true);
+    } else {
+      setHasAgreedToCookies(false);
     }
+    
   }, []);
 
   return (
