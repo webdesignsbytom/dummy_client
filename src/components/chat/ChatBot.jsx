@@ -44,8 +44,6 @@ const handleSendInput = () => {
     ...conversation,
     { owner: 'you', message: userInput },
   ]);
-
-  console.log('2. currentFlowStep?.function', currentFlowStep?.function);
   
   // Call the function associated with the current step if it exists
   if (currentFlowStep?.function) {
@@ -53,7 +51,6 @@ const handleSendInput = () => {
   }
 
   // Move to the next step in the flow if a path is provided
-  console.log('3. currentFlowStep?.path', currentFlowStep?.path);
   if (currentFlowStep?.path) {
     setCurrentStep(currentFlowStep.path);
   }

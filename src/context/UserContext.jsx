@@ -18,8 +18,6 @@ const UserProvider = ({ children }) => {
 
   const [hasAgreedToCookies, setHasAgreedToCookies] = useState(true);
 
-  console.log('USER >>> userContext >>> state = user');
-
   const [token, setToken] = useState(
     localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || ''
   );

@@ -3,16 +3,21 @@ import ChatBot from './ChatBot'; // Assuming you put the ChatBot component in th
 
 function ChatBotComponent() {
   const [userform, setUserform] = useState({
+    requestTypes: null,
     name: '',
     age: null,
   });
+
   console.log('userform', userform);
+
+  const requestTypes = ['project', 'contact', 'gallery', 'help']
+  
   const flow = {
     start: {
       message: 'Online',
-      path: 'second',
+      path: 'ask_name',
     },
-    second: {
+    ask_name: {
       message: 'Hello there! What is your name?',
       function: (params) =>
         setUserform({ ...userform, name: params.userInput }),
