@@ -14,11 +14,8 @@ export const ChatBot = ({ flow, settings, styles, themes }) => {
   const [conversation, setConversation] = useState([]); // Store conversation history
   const [isChatOpen, setIsChatOpen] = useState(false); // Track if the chat window is open
 
-  console.log('userInput', userInput);
-  console.log('conversation', conversation);
   // Get the current step from the flow
   const currentFlowStep = flow?.[currentStep];
-  console.log('current step: ', currentFlowStep);
 
   useEffect(() => {
     // Load initial messages and handle function-based messages
@@ -35,11 +32,11 @@ export const ChatBot = ({ flow, settings, styles, themes }) => {
 
 // Handle sending user input
 const handleSendInput = () => {
-  // Add current bot message and user input to the conversation
   console.log('-- IN --');
-
+  
   console.log('userInput', userInput);
-
+  
+  // Add current bot message and user input to the conversation
   setConversation([
     ...conversation,
     { owner: 'you', message: userInput },
