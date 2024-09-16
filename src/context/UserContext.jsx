@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-// Models
-import LoggedInUser from '../utils/LoggedInUser';
+import React, { createContext, useContext } from 'react';
+import { useEffect, useState } from 'react';
+// Api
 import client from '../api/client';
 import { GET_LOGGED_IN_USER_API, HOME_PAGE_URL } from '../utils/Constants';
 import useNavigateToPage from '../hooks/useNavigateToPage';
@@ -10,11 +10,18 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const navigateToPage = useNavigateToPage();
-  
-  // Define states
-  const [user, setUser] = useState(null); // Initial user state can be null
-  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || '');
+
+  const [user, setUser] = useState({
+    id: null,
+  });
+
+  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(true);
+
+  console.log('USER >>> userContext >>> state = user');
+
+  const [token, setToken] = useState(
+    localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || ''
+  );
 
   useEffect(() => {
     const decodedUserData = LoggedInUser();
@@ -35,8 +42,11 @@ const UserProvider = ({ children }) => {
 
     const cookie = localStorage.getItem('CookiePolicy');
     if (cookie) {
-      setHasAgreedToCookies(true); // Set cookie agreement status
+      setHasAgreedToCookies(true);
+    } else {
+      setHasAgreedToCookies(false);
     }
+    
   }, []);
 
   return (
