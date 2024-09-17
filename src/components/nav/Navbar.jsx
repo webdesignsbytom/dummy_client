@@ -86,6 +86,8 @@ function Navbar() {
             <NavItem url={HOME_PAGE_URL} title={'Home'} />
             <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
             <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
+
+            {/* Secure routes */}
             {user?.role === ('ADMIN' || 'DEVELOPER') && (
               <NavItem url={ADMIN_PAGE_URL} title={'Admin'} />
             )}
@@ -102,6 +104,8 @@ function Navbar() {
             <NavItem url={HOME_PAGE_URL} title={'Home'} />
             <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
             <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
+
+            {/* Secure routes */}
             {user?.role === ('ADMIN' || 'DEVELOPER') && (
               <NavItem url={ADMIN_PAGE_URL} title={'Admin'} />
             )}
@@ -121,7 +125,7 @@ const NavItem = ({ url, title }) => {
         className={`text-lg font-semibold font-poppins hover:brightness-90 duration-200 active:scale-75`}
         aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
         style={({ isActive }) => {
-          return isActive ? { color: 'white' } : {};
+          return isActive ? { color: '#f8fafc' } : {};
         }}
       >
         {title}

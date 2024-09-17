@@ -1,7 +1,8 @@
 // Company data
 export const CompanyName = 'Client';
 export const NumberOfCookies = 0;
-export const COOKIE_TIMER = 4000;
+export const COOKIE_TIMER = 1000;
+export const CookiePolicyName = 'CookiePolicy';
 
 
 // Pages

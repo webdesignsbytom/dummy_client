@@ -1,9 +1,15 @@
-import React, { createContext, useContext } from 'react';
-import { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 // Api
 import client from '../api/client';
-import { GET_LOGGED_IN_USER_API, HOME_PAGE_URL } from '../utils/Constants';
+// Constants
+import {
+  CookiePolicyName,
+  GET_LOGGED_IN_USER_API,
+  HOME_PAGE_URL,
+} from '../utils/Constants';
+// Hooks
 import useNavigateToPage from '../hooks/useNavigateToPage';
+// Utils
 import LoggedInUser from '../utils/LoggedInUser';
 
 // Create the context
@@ -39,17 +45,26 @@ const UserProvider = ({ children }) => {
         });
     }
 
-    const cookie = localStorage.getItem('CookiePolicy');
+    const cookie = localStorage.getItem(CookiePolicyName);
+
     if (cookie) {
       setHasAgreedToCookies(true);
     } else {
       setHasAgreedToCookies(false);
     }
-    
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, token, setToken, hasAgreedToCookies, setHasAgreedToCookies }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        token,
+        setToken,
+        hasAgreedToCookies,
+        setHasAgreedToCookies,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
