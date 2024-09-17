@@ -9,6 +9,7 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
   - [General Info](#general-info)
   - [Technologies](#technologies)
   - [Completing project](#completing-project)
+  - [Chatbot](#chatbot)
   - [Versions](#versions)
   - [Analytics](#analytics)
 
@@ -27,6 +28,17 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
 
 Make a file structure
 `find . -path './node_modules' -prune -o -path './logs' -prune -o -path './.git' -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' > file_structure.txt`
+
+## Chatbot
+
+The chatbot component is available with premade conversation structures.
+
+Features:
+
+- Easy to edit chat text in flow sheet.
+- HTML components inserted into chat from the bot
+- Browser tab notifications of new messages
+- Can lead you to specific pages or forms.
 
 ## Versions
 

@@ -10,24 +10,24 @@ function ChatBotComponent() {
 
   console.log('userform', userform);
 
-  const requestTypes = ['project', 'contact', 'gallery', 'help']
-  
+  const requestTypes = ['project', 'contact', 'gallery', 'help'];
+
   const flow = {
     start: {
-      message: 'Online',
-      path: 'ask_name',
-    },
-    ask_name: {
       message: 'Hello there! What is your name?',
-      function: (params) =>
-        setUserform({ ...userform, name: params.userInput }),
+      function: (params) => {
+        console.log('START FUNCTION >>>');
+        setUserform({ ...userform, name: params.userInput });
+      },
       path: 'ask_age',
     },
     ask_age: {
       message: (params) =>
         `Nice to meet you ${params.userInput}, what is your age?`,
-      function: (params) =>
-        setUserform({ ...userform, age: params.userInput }),
+      function: (params) => {
+        console.log('AGE FUNCTION >>>');
+        setUserform({ ...userform, age: params.userInput });
+      },
       path: 'end',
     },
     end: {
