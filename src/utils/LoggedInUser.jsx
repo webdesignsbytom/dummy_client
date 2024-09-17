@@ -2,7 +2,6 @@ import { jwtDecode } from "jwt-decode";
 
 export default function LoggedInUser() {
   const loadedToken = localStorage.getItem('token');
-  console.log('Loaded token >>> LoggedInUser(): ', loadedToken);
 
   // Check if the token exists
   if (!loadedToken) {
@@ -12,7 +11,6 @@ export default function LoggedInUser() {
   try {
     // Decode the token
     const decoded = jwtDecode(loadedToken);
-    console.log('Decoded >>> LoggedInUser(): ', decoded);
 
     // Optionally: Check if token has expired (check the exp field in the decoded token)
     if (decoded.exp && Date.now() >= decoded.exp * 1000) {

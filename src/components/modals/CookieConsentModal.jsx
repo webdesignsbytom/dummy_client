@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 // Context
 import { useUser } from '../../context/UserContext';
 // Constants
-import { COOKIE_TIMER, NumberOfCookies, POLICIES_PAGE_URL } from '../../utils/Constants';
+import {
+  CookiePolicyName,
+  NumberOfCookies,
+  POLICIES_PAGE_URL,
+} from '../../utils/Constants';
 // Styles
 import { ButtonStyle, CancelButtonStyle, LinkStyle } from '../../utils/Styles';
 
 function CookieConsentModal() {
-  const { hasAgreedToCookies, setHasAgreedToCookies } = useUser();
-  const [isVisible, setIsVisible] = useState(false);
+  const { setHasAgreedToCookies } = useUser();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, COOKIE_TIMER);
-
-    return () => clearTimeout(timer); // Clean up the timer when component unmounts
-  }, []);
+  console.log('cookie');
 
   const handleAgree = () => {
-    localStorage.setItem('CookiePolicy', 'true');
+    localStorage.setItem(CookiePolicyName, 'true');
     setHasAgreedToCookies(true);
   };
 
@@ -28,15 +25,11 @@ function CookieConsentModal() {
     setHasAgreedToCookies(true);
   };
 
-  if (hasAgreedToCookies || !isVisible) {
-    return null;
-  }
-
   return (
     <section
       aria-label='Cookie policy consent form'
-      role="dialog"
-      aria-modal="true"
+      role='dialog'
+      aria-modal='true'
       className='grid fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max w-full justify-center px-2 md:px-0'
     >
       <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-full w-full bg-main-background max-w-md'>
@@ -47,8 +40,8 @@ function CookieConsentModal() {
             </div>
             <div className='grid gap-2 h-full w-full px-2'>
               <p>
-                We use cookies to improve your experience on our site.
-                Please accept cookies before continuing.
+                We use cookies to improve your experience on our site. Please
+                accept cookies before continuing.
               </p>
               <p>
                 We currently use{' '}
@@ -75,7 +68,7 @@ function CookieConsentModal() {
               <button
                 className={CancelButtonStyle}
                 onClick={handleDisagree}
-                aria-label="Disagree to cookie usage"
+                aria-label='Disagree to cookie usage'
               >
                 Disagree
               </button>
@@ -84,7 +77,7 @@ function CookieConsentModal() {
               <button
                 className={ButtonStyle}
                 onClick={handleAgree}
-                aria-label="Agree to cookie usage"
+                aria-label='Agree to cookie usage'
               >
                 I Agree
               </button>

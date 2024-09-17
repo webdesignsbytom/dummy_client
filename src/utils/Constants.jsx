@@ -1,7 +1,8 @@
 // Company data
 export const CompanyName = 'Client';
 export const NumberOfCookies = 0;
-export const COOKIE_TIMER = 4000;
+export const COOKIE_TIMER = 1000;
+export const CookiePolicyName = 'CookiePolicy';
 
 
 // Pages
@@ -21,3 +22,5 @@ export const REGISTER_API = '/users/register';
 export const RESET_PASSWORD_API = '/users/user/reset-password'; // userId
 export const SUBMIT_CONTACT_FORM_API = '/contact/submit-form'; // userId
 
+// Bot Data
+export const BotName = 'Jerry'

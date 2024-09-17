@@ -1,16 +1,22 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+// Google
 import ReactGA from 'react-ga4';
 
 // Initialize Google Analytics
-ReactGA.initialize(process.env.REACT_APP_ANALYTICS_ID);  // Replace with your GA tracking ID
+ReactGA.initialize(process.env.REACT_APP_ANALYTICS_ID); // Replace with your GA tracking ID
 
 // Hook to track page views
 export const usePageTracking = () => {
   const location = useLocation();
 
+  console.log('ANALYTICS');
+  
   useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: location.pathname + location.search });
+    ReactGA.send({
+      hitType: 'pageview',
+      page: location.pathname + location.search,
+    });
   }, [location]);
 };
 
@@ -22,7 +28,7 @@ export const useEventTracking = () => {
       eventCategory: category,
       eventAction: action,
       eventLabel: label,
-      eventValue: value
+      eventValue: value,
     });
   };
 
@@ -60,13 +66,12 @@ export const useExceptionTracking = () => {
 export const useCustomMetrics = () => {
   const setCustomMetric = (dimension, metric) => {
     ReactGA.set({
-      [dimension]: metric
+      [dimension]: metric,
     });
   };
 
   return setCustomMetric;
 };
-
 
 //   const trackEvent = useEventTracking();
 //   const trackSocial = useSocialTracking();
