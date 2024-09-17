@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 // Context
 import { useUser } from '../../context/UserContext';
 // Constants
-import { COOKIE_TIMER, NumberOfCookies, POLICIES_PAGE_URL } from '../../utils/Constants';
+import { NumberOfCookies, POLICIES_PAGE_URL } from '../../utils/Constants';
 // Styles
 import { ButtonStyle, CancelButtonStyle, LinkStyle } from '../../utils/Styles';
 
 function CookieConsentBar() {
-  const { hasAgreedToCookies, setHasAgreedToCookies } = useUser();
-  const [isVisible, setIsVisible] = useState(false);
+  const { setHasAgreedToCookies } = useUser();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, COOKIE_TIMER);
-
-    return () => clearTimeout(timer); // Clean up the timer
-  }, []);
 
   const handleAgree = () => {
     localStorage.setItem('CookiePolicy', 'true');
@@ -27,10 +19,6 @@ function CookieConsentBar() {
   const handleDisagree = () => {
     setHasAgreedToCookies(true);
   };
-
-  if (hasAgreedToCookies || !isVisible) {
-    return null; // If already agreed or the component is not visible, render nothing
-  }
 
   return (
     <section
