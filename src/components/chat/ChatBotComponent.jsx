@@ -8,7 +8,7 @@ function ChatBotComponent() {
     age: null,
   });
 
-  console.log('userform', userform);
+  console.log('CHATBOT');
 
   const requestTypes = ['project', 'contact', 'gallery', 'help'];
 
@@ -16,7 +16,7 @@ function ChatBotComponent() {
     start: {
       message: 'Hello there! What is your name?',
       function: (params) => {
-        console.log('START FUNCTION >>>');
+        console.log('START FUNCTION >>>', params);
         setUserform({ ...userform, name: params.userInput });
       },
       path: 'ask_age',
