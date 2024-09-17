@@ -8,7 +8,9 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 import { CompanyName } from '../../utils/Constants';
 
 // Lazy-loaded ChatBotComponent
-const ChatBotComponent = lazy(() => import('../../components/chat/ChatBotComponent'));
+const ChatBotComponent = lazy(() =>
+  import('../../components/chat/ChatBotComponent')
+);
 
 const HomePage = React.memo(() => {
   usePageTracking(); // Tracks page views
@@ -19,18 +21,18 @@ const HomePage = React.memo(() => {
       <HelmetItem PageName={'Home'} desc={`Home page of ${CompanyName}.`} />
 
       {/* Lazy-loaded ChatBot */}
-      <Suspense>
+      {/* <Suspense>
         <ChatBotComponent />
-      </Suspense>
-      
+      </Suspense> */}
+
       {/* Page */}
-      <div className="grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins">
-        <div className="grid grid-rows-reg">
+      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
+        <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
 
           {/* Main page content */}
-          <main role="main">Home</main>
+          <main role='main'>Home</main>
         </div>
       </div>
     </>
