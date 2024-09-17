@@ -1,7 +1,7 @@
 // Company data
 export const CompanyName = 'Client';
 export const NumberOfCookies = 0;
-export const COOKIE_TIMER = 1000;
+export const COOKIE_TIMER = 5000;
 export const CookiePolicyName = 'CookiePolicy';
 
 
@@ -13,6 +13,7 @@ export const CONTACT_PAGE_URL = '/contact';
 export const RESET_PASS_PAGE_URL = '/reset-password';
 export const POLICIES_PAGE_URL = '/user-agreements';
 export const ADMIN_PAGE_URL = '/admin';
+export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
 export const ERROR_404_PAGE_URL = '*';
 
 // API

@@ -7,21 +7,20 @@ import {
   COOKIE_TIMER,
   HOME_PAGE_URL,
   LOGIN_PAGE_URL,
+  MAINTENANCE_PAGE_URL,
   POLICIES_PAGE_URL,
   RESET_PASS_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from './utils/Constants';
 // Utils
 import { AuthenticateAdmin } from './utils/AuthenticateUser';
-
-// Normal import for HomePage (no lazy loading)
-import HomePage from './pages/home/HomePage';
-
 // Context
 import { useUser } from './context/UserContext';
-
+// Normal import for HomePage (no lazy loading)
+import HomePage from './pages/home/HomePage';
 // Lazy-loaded Pages
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
+const MaintenancePage = lazy(() => import('./pages/maintenance/MaintenancePage'));
 const ContactPage = lazy(() => import('./pages/contact/ContactPage'));
 const Error404 = lazy(() => import('./pages/error/Error404'));
 const ForgettenPasswordPage = lazy(() =>
@@ -69,9 +68,11 @@ function App() {
         <Routes>
           {/* Main page routes */}
           <Route path={HOME_PAGE_URL} index element={<HomePage />} />
+
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
           <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
+
           {/* User routes */}
           <Route path={LOGIN_PAGE_URL} element={<LoginPage />} />
           <Route path={SIGN_UP_PAGE_URL} element={<RegisterPage />} />
@@ -79,6 +80,10 @@ function App() {
             path={RESET_PASS_PAGE_URL}
             element={<ForgettenPasswordPage />}
           />
+
+          {/* Other */}
+          <Route path={MAINTENANCE_PAGE_URL} element={<MaintenancePage />} />
+
           {/* Secured routes */}
           <Route
             path={ADMIN_PAGE_URL}
