@@ -57,6 +57,37 @@ function LoginForm() {
     });
   };
 
+  const handleLoginWith = (service) => {
+    switch (service) {
+      case 'facebook':
+        // Call Facebook login API
+        console.log('Logging in with Facebook');
+        break;
+      case 'instagram':
+        // Call Instagram login API
+        console.log('Logging in with Instagram');
+        break;
+      case 'google':
+        // Call Google login API
+        console.log('Logging in with Google');
+        break;
+      case 'github':
+        // Call GitHub login API
+        console.log('Logging in with GitHub');
+        break;
+      case 'apple':
+        // Call Apple login API
+        console.log('Logging in with Apple');
+        break;
+      case 'x':
+        // Call X login API
+        console.log('Logging in with X');
+        break;
+      default:
+        console.log('Unsupported service');
+    }
+  };
+
   return (
     <form className='space-y-4 md:space-y-6' onSubmit={handleLogin}>
       <div>

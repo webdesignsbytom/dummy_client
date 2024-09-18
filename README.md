@@ -105,6 +105,7 @@ Login to google tags and create one for each site and get the DNS code.
 10. Edit license
 11. Edit htaccess
 12. Check privacy of github
+13. Delete unused media icons
 
 ### Build
 
