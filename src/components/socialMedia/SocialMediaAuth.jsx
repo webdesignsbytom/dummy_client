@@ -74,8 +74,17 @@ function SocialMediaAuth({ func, text }) {
 
 const SocialMediaButton = ({ serviceName, func, background, text, icon }) => {
   return (
-    <button onClick={func} style={background} className='p-2 rounded-lg text-white'>
-      <div><div>{`${text} ${serviceName}`}</div><div><img src={icon} alt={`${serviceName} icon`} /></div></div>
+    <button
+      onClick={func}
+      style={background}
+      className='p-2 rounded-lg text-white'
+    >
+      <div>
+        <div>{`${text} ${serviceName}`}</div>
+        <div>
+          <img src={icon} alt={`${serviceName} icon`} />
+        </div>
+      </div>
     </button>
   );
 };
