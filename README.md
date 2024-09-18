@@ -12,6 +12,9 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
   - [Chatbot](#chatbot)
   - [Versions](#versions)
   - [Analytics](#analytics)
+  - [Launch](#launch)
+    - [Checklist](#checklist)
+    - [Build](#build)
 
 ## General Info
 
@@ -83,3 +86,26 @@ The dummy comes with a set up for using google analytics.
 Using the GA4 library `npm install react-ga4`
 
 We create the useAnalytics hook to import a tracking helper into any page or component.
+
+Login to google tags and create one for each site and get the DNS code.
+
+## Launch
+
+### Checklist
+
+1. Remove unused pages and components
+2. Update the site map
+3. Edit the index.html names and meta data
+4. Edit constants
+5. Change favicon
+6. Connect to google analytics and any test servers
+7. Uninstall from npm unused packages
+8. Convert images to modern WebP formats
+9. Update env
+10. Edit license
+11. Edit htaccess
+12. Check privacy of github
+
+### Build
+
+1. `npm run build` to create build directory
