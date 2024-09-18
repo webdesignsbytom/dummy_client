@@ -64,27 +64,27 @@ function RegisterForm() {
     switch (service) {
       case 'facebook':
         // Call Facebook login API
-        console.log('Logging in with Facebook');
+        console.log('Register with Facebook');
         break;
       case 'instagram':
         // Call Instagram login API
-        console.log('Logging in with Instagram');
+        console.log('Register with Instagram');
         break;
       case 'google':
         // Call Google login API
-        console.log('Logging in with Google');
+        console.log('Register with Google');
         break;
       case 'github':
         // Call GitHub login API
-        console.log('Logging in with GitHub');
+        console.log('Register with GitHub');
         break;
       case 'apple':
         // Call Apple login API
-        console.log('Logging in with Apple');
+        console.log('Register with Apple');
         break;
       case 'x':
         // Call X login API
-        console.log('Logging in with X');
+        console.log('Register with X');
         break;
       default:
         console.log('Unsupported service');

@@ -7,6 +7,7 @@ import SocialMediaAuth from '../../components/socialMedia/SocialMediaAuth';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
+import SocialMediaCTA from '../../components/socialMedia/SocialMediaCTA';
 
 // Lazy-loaded ChatBotComponent
 const ChatBotComponent = lazy(() =>
@@ -67,6 +68,9 @@ const HomePage = React.memo(() => {
           <main role='main'>
             <div>home</div>
             <SocialMediaAuth func={handleLoginWith} text={'Login with'} />
+            <div>
+              <SocialMediaCTA />
+            </div>
           </main>
         </div>
       </div>

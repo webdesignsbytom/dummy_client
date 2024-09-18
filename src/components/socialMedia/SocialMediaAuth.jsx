@@ -1,11 +1,11 @@
 import React from 'react';
 // Images
-import FacebookLogo from '../../assets/images/media_icons/facebook_logo.png';
-import InstagramLogo from '../../assets/images/media_icons/facebook_logo.png';
-import GoogleLogo from '../../assets/images/media_icons/facebook_logo.png';
-import AppleLogo from '../../assets/images/media_icons/facebook_logo.png';
-import GithubLogo from '../../assets/images/media_icons/facebook_logo.png';
-import XLogo from '../../assets/images/media_icons/facebook_logo.png';
+import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon.png';
+import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon.png';
+import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_icon.png';
+import AppleLogo from '../../assets/images/media_icons/apple_computers_white_logo_icon.png';
+import GithubLogo from '../../assets/images/media_icons/github_code_octopus_logo_icon.png';
+import XLogo from '../../assets/images/media_icons/x_twitter_social_media_white_logo_icon.png';
 
 function SocialMediaAuth({ func, text }) {
   return (
@@ -65,7 +65,7 @@ function SocialMediaAuth({ func, text }) {
           text={text}
           icon={XLogo}
           func={() => func('x')}
-          background={{ background: '#1DA1F2' }}
+          background={{ background: '#000' }}
         />
       </div>
     </section>
@@ -77,13 +77,13 @@ const SocialMediaButton = ({ serviceName, func, background, text, icon }) => {
     <button
       onClick={func}
       style={background}
-      className='p-2 rounded-lg text-white'
+      className='p-2 rounded-lg text-white max-w-xl'
     >
-      <div>
-        <div>{`${text} ${serviceName}`}</div>
-        <div>
-          <img src={icon} alt={`${serviceName} icon`} />
+      <div className='grid grid-cols-reg w-full mx-auto gap-4 px-1'>
+        <div className='grid items-center justify-center'>
+          <img src={icon} alt={`${serviceName} icon`} className='w-6 h-6' />
         </div>
+        <div>{`${text} ${serviceName}`}</div>
       </div>
     </button>
   );
