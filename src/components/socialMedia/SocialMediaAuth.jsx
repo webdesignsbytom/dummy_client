@@ -38,7 +38,7 @@ function SocialMediaAuth({ func, text }) {
           text={text}
           icon={GoogleLogo}
           func={() => func('google')}
-          background={{ background: '#4285F4' }}
+          background={{ background: '#1185F4' }}
         />
 
         {/* GitHub Button */}
