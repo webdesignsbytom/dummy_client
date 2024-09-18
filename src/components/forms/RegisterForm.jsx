@@ -7,7 +7,7 @@ import { useUser } from '../../context/UserContext';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 // Utils
-import CountrySelect from '../../utils/user/CountrySelect';
+import CountrySelect from '../utils/CountrySelect'
 // Constants
 import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 // Styles
@@ -59,6 +59,38 @@ function RegisterForm() {
       agreedToTerms: !registerFormData.agreedToTerms,
     });
   };
+
+  const handleRegisterWith = (service) => {
+    switch (service) {
+      case 'facebook':
+        // Call Facebook login API
+        console.log('Logging in with Facebook');
+        break;
+      case 'instagram':
+        // Call Instagram login API
+        console.log('Logging in with Instagram');
+        break;
+      case 'google':
+        // Call Google login API
+        console.log('Logging in with Google');
+        break;
+      case 'github':
+        // Call GitHub login API
+        console.log('Logging in with GitHub');
+        break;
+      case 'apple':
+        // Call Apple login API
+        console.log('Logging in with Apple');
+        break;
+      case 'x':
+        // Call X login API
+        console.log('Logging in with X');
+        break;
+      default:
+        console.log('Unsupported service');
+    }
+  };
+  
 
   return (
     <form
