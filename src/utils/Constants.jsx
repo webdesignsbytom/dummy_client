@@ -1,9 +1,13 @@
 // Company data
 export const CompanyName = 'Client';
+export const CompanyPhoneNumber = '07000000000';
+export const ContactEmailAddress = 'hello@company.com';
+export const DirectorName = 'Me Myself';
+
+// Cookie data
 export const NumberOfCookies = 0;
 export const COOKIE_TIMER = 5000;
 export const CookiePolicyName = 'CookiePolicy';
-
 
 // Pages
 export const HOME_PAGE_URL = '/';
