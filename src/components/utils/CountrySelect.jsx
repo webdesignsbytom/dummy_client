@@ -1,6 +1,6 @@
 import React from 'react';
 // Styles
-import { InputStyle } from '../Styles';
+import { InputStyle } from '../../utils/Styles';
 
 function CountrySelect({ handleChange }) {
   return (
