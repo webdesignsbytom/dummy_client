@@ -21,6 +21,8 @@ module.exports = {
         'hover-colour-dark': '#222533',
         'border-main': '#cbd5e1',
         'border-main-dark': '#42434a',
+        'active-colour': '#42434a',
+        'active-colour-dark': '#5e63ff',
         'error-red': '#dc2626',
         'success-green': '#16a34a',
         'hyperlink-blue': '#2563EB',

@@ -16,6 +16,15 @@
 #toggle-btn {
     transition: transform 300ms ease-in-out;
 }
+
+.down_icon img {
+    transition: transform 300ms ease-in-out;
+}
+
 .rotate {
     transform: rotate(180deg);
 }
+
+/* .hidable_list ul li {
+    visibility: hidden;
+} */

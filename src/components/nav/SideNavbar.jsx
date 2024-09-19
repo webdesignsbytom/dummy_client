@@ -1,7 +1,17 @@
 import React, { useRef } from 'react';
+import { NavLink } from 'react-router-dom';
+// Constants
 import { CompanyName } from '../../utils/Constants';
+// Icons
+import CalendarIcon from '../../assets/images/icons/calendar_month_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import ChecklistIcon from '../../assets/images/icons/checklist_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import HomeIcon from '../../assets/images/icons/home_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import DropdownIcon from '../../assets/images/icons/keyboard_arrow_down_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import DashboardIcon from '../../assets/images/icons/dashboard_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import ProfileIcon from '../../assets/images/icons/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import CreateFolderIcon from '../../assets/images/icons/create_new_folder_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
 
-function SideNavbar() {
+function SideNavbar({ darkTheme }) {
   const toggleRef = useRef();
   const navRef = useRef();
 
@@ -10,37 +20,146 @@ function SideNavbar() {
     navRef.current.classList.toggle('close');
   };
 
+  const toggleDropdownMenu = (menuId) => {
+    const menuSelected = document.getElementById(menuId);
+    console.log('menuSelected', menuSelected);
+
+    const icon = menuSelected.querySelector('.down_icon img');
+    if (icon) {
+      icon.classList.toggle('rotate');
+    }
+  }
+
+  const navOptions = [
+    { label: 'Home', link: '/', icon: HomeIcon },
+    { label: 'Dashboard', link: 'dashboard.html', icon: DashboardIcon },
+    {
+      label: 'Create',
+      subItems: [
+        { label: 'Folder', link: '#' },
+        { label: 'Document', link: '#' },
+        { label: 'Project', link: '#' },
+      ],
+      icon: CreateFolderIcon,
+    },
+    {
+      label: 'Todo-Lists',
+      subItems: [
+        { label: 'Work', link: '#' },
+        { label: 'Private', link: '#' },
+        { label: 'Coding', link: '#' },
+        { label: 'Gardening', link: '#' },
+        { label: 'School', link: '#' },
+      ],
+      icon: ChecklistIcon,
+    },
+    { label: 'Calendar', link: 'calendar.html', icon: CalendarIcon },
+    { label: 'Profile', link: 'profile.html', icon: ProfileIcon },
+  ];
+
   return (
     <nav
       id='sidenav_container'
       ref={navRef}
-      className={`grid border-r-2 border-solid border-border-main-dark`}
+      className={`grid grid-rows-reg border-r-2 border-solid border-border-main-dark`}
     >
-      <ul>
-        <li>
-          <div className='grid grid-cols-rev p-1 items-center'>
-            <span className='logo pl-2'>{CompanyName}</span>
-            <button
-              onClick={toggleSidebar}
-              id='toggle-btn'
-              ref={toggleRef}
-              className='bg-none rounded-full hover:bg-hover-colour-dark mx-auto p-1'
+      <section className='grid h-fit'>
+        <div className='grid grid-cols-rev p-1 items-center'>
+          <span className='logo pl-2'>{CompanyName}</span>
+          <button
+            onClick={toggleSidebar}
+            id='toggle-btn'
+            ref={toggleRef}
+            className='bg-none rounded-full hover:bg-hover-colour-dark mx-auto p-1'
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              height='24px'
+              viewBox='0 -960 960 960'
+              width='24px'
+              fill='#e8eaed'
             >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                height='24px'
-                viewBox='0 -960 960 960'
-                width='24px'
-                fill='#e8eaed'
-              >
-                <path d='m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z' />
-              </svg>
-            </button>
-          </div>
-        </li>
-      </ul>
+              <path d='m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z' />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      {/* Links container */}
+      <section className='grid w-full h-full overflow-hidden'>
+        <ul className='grid gap-2 w-full h-fit overflow-hidden'>
+          {navOptions.map((item, index) => (
+            <li key={index}>
+              {/* Dropdown menu buttons */}
+              {item.subItems ? (
+                <>
+                  <button
+                    id={`dropdown_button_${index}`}
+                    className='grid gap-2 grid-cols-a1a w-full p-2'
+                    onClick={() => toggleDropdownMenu(`dropdown_button_${index}`)}
+                  >
+                    <div>
+                      <img
+                        src={item.icon}
+                        alt={`${item.label} dropdown menu icon button`}
+                      />
+                    </div>
+                    <div className='text-start'>
+                      <span>{item.label}</span>
+                    </div>
+                    <div className='down_icon'>
+                      <img
+                        src={DropdownIcon}
+                        alt='Dropdown menu down arrow icon'
+                      />
+                    </div>
+                  </button>
+                  {/* Drop down menu items */}
+                  <ul className='sub-menu p-2'>
+                    {item.subItems.map((subItem, subIndex) => (
+                      <li key={subIndex} className='pl-4'>
+                        <a href={subItem.link}>{subItem.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                // Navigation links
+                <NavItem item={item} />
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
     </nav>
   );
 }
+
+const NavItem = ({ item }) => {
+  return (
+    <li className=''>
+      <NavLink
+        to={item.link}
+        aria-label={`${item.label} page navigation tab`}
+        aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
+        style={({ isActive }) => {
+          return isActive ? { color: '#f8fafc' } : {};
+        }}
+      >
+        <div className='grid grid-cols-reg gap-2 w-full p-2'>
+          <div>
+            <img
+              src={item.icon}
+              alt={`${item.label} dropdown menu icon button`}
+            />
+          </div>
+          <div className=''>
+            <span>{item.label}</span>
+          </div>
+        </div>
+      </NavLink>
+    </li>
+  );
+};
 
 export default SideNavbar;

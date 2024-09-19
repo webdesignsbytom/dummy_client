@@ -21,7 +21,7 @@ function HomePageSideNav() {
       >
         <div className='grid grid-cols-reg'>
           {/* Navigation */}
-          <SideNavbar />
+          <SideNavbar darkTheme={darkTheme} />
 
           {/* Main page content */}
           <main role='main' className='grid w-full h-full'>
