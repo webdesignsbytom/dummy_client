@@ -1,0 +1,21 @@
+#sidenav_container {
+  width: 250px;
+  height: 100vh;
+
+  transition: transform 300ms ease-in-out, width 300ms ease-in-out;
+}
+
+.close {
+  width: 60px !important;
+}
+
+#sidenav_container.close .logo {
+    display: none; /* This hides the logo */
+}
+
+#toggle-btn {
+    transition: transform 300ms ease-in-out;
+}
+.rotate {
+    transform: rotate(180deg);
+}
