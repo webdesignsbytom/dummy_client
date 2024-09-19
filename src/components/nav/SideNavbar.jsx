@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // Constants
 import { CompanyName } from '../../utils/Constants';
@@ -14,21 +14,26 @@ import CreateFolderIcon from '../../assets/images/icons/create_new_folder_24dp_E
 function SideNavbar({ darkTheme }) {
   const toggleRef = useRef();
   const navRef = useRef();
+  const [isClosed, setIsClosed] = useState(false);
 
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
+    setIsClosed(!isClosed);
   };
 
   const toggleDropdownMenu = (menuId) => {
     const menuSelected = document.getElementById(menuId);
-    console.log('menuSelected', menuSelected);
-
     const icon = menuSelected.querySelector('.down_icon img');
     if (icon) {
       icon.classList.toggle('rotate');
     }
-  }
+
+    const menu = menuSelected.querySelector('ul');
+    if (menu) {
+      menu.classList.toggle('show');
+    }
+  };
 
   const navOptions = [
     { label: 'Home', link: '/', icon: HomeIcon },
@@ -85,18 +90,21 @@ function SideNavbar({ darkTheme }) {
         </div>
       </section>
 
-      {/* Links container */}
       <section className='grid w-full h-full overflow-hidden'>
         <ul className='grid gap-2 w-full h-fit overflow-hidden'>
           {navOptions.map((item, index) => (
             <li key={index}>
-              {/* Dropdown menu buttons */}
-              {item.subItems ? (
-                <>
+              {isClosed ? (
+                <div className='grid items-center justify-center mx-auto p-2'>
+                  <img src={item.icon} alt={`${item.label} icon`} />
+                </div>
+              ) : item.subItems ? (
+                <div id={`dropdown_button_${index}`}>
                   <button
-                    id={`dropdown_button_${index}`}
                     className='grid gap-2 grid-cols-a1a w-full p-2'
-                    onClick={() => toggleDropdownMenu(`dropdown_button_${index}`)}
+                    onClick={() =>
+                      toggleDropdownMenu(`dropdown_button_${index}`)
+                    }
                   >
                     <div>
                       <img
@@ -114,17 +122,15 @@ function SideNavbar({ darkTheme }) {
                       />
                     </div>
                   </button>
-                  {/* Drop down menu items */}
-                  <ul className='sub-menu p-2'>
+                  <ul className='sub_menu'>
                     {item.subItems.map((subItem, subIndex) => (
                       <li key={subIndex} className='pl-4'>
                         <a href={subItem.link}>{subItem.label}</a>
                       </li>
                     ))}
                   </ul>
-                </>
+                </div>
               ) : (
-                // Navigation links
                 <NavItem item={item} />
               )}
             </li>
@@ -137,7 +143,7 @@ function SideNavbar({ darkTheme }) {
 
 const NavItem = ({ item }) => {
   return (
-    <li className=''>
+    <li>
       <NavLink
         to={item.link}
         aria-label={`${item.label} page navigation tab`}
@@ -153,7 +159,7 @@ const NavItem = ({ item }) => {
               alt={`${item.label} dropdown menu icon button`}
             />
           </div>
-          <div className=''>
+          <div>
             <span>{item.label}</span>
           </div>
         </div>
