@@ -16,12 +16,12 @@ import {
   X_URL,
 } from '../../utils/Constants'; 
 // Images
-import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon.png';
-import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon.png';
-import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_icon.png';
-import AppleLogo from '../../assets/images/media_icons/apple_computers_black_logo_icon.png';
-import GithubLogo from '../../assets/images/media_icons/github_code_octopus_logo_icon.png';
-import XLogo from '../../assets/images/media_icons/x_twitter_social_media_black_logo_icon.png';
+import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon_64px.png';
+import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon_64px.png';
+import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_icon_64px.png';
+import AppleLogo from '../../assets/images/media_icons/apple_computers_black_logo_icon_64px.png';
+import GithubLogo from '../../assets/images/media_icons/github_code_octopus_logo_icon_64px.png';
+import XLogo from '../../assets/images/media_icons/x_twitter_social_media_black_logo_icon_64px.png';
 
 function SocialMediaCTA() {
   const navigateToSocialMedia = (service) => {

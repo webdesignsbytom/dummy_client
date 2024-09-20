@@ -1,11 +1,11 @@
 import React from 'react';
 // Images
-import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon.png';
-import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon.png';
-import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_icon.png';
-import AppleLogo from '../../assets/images/media_icons/apple_computers_white_logo_icon.png';
-import GithubLogo from '../../assets/images/media_icons/github_code_octopus_logo_icon.png';
-import XLogo from '../../assets/images/media_icons/x_twitter_social_media_white_logo_icon.png';
+import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon_64x.png';
+import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon_64x.png';
+import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_icon_64x.png';
+import AppleLogo from '../../assets/images/media_icons/apple_computers_white_logo_icon_64x.png';
+import GithubLogo from '../../assets/images/media_icons/github_code_octopus_logo_icon_64x.png';
+import XLogo from '../../assets/images/media_icons/x_twitter_social_media_white_logo_icon_64x.png';
 
 function SocialMediaAuth({ func, text }) {
   return (
