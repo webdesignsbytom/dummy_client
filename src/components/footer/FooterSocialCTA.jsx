@@ -36,8 +36,8 @@ function FooterSocialCTA() {
   ];
 
   return (
-    <section className="footer-social-cta">
-      <div className="social-icons-container flex gap-4">
+    <section className=''>
+      <div className='grid grid-flow-col w-fit gap-1'>
         {socialMediaLinks.map((social) => (
           <SocialMediaPin
             key={social.serviceName}
