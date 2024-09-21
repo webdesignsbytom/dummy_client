@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // Constants
 import { CompanyName } from '../../utils/Constants';
@@ -16,18 +16,9 @@ function SideNavbar({ darkTheme }) {
   const navRef = useRef();
   const [isClosed, setIsClosed] = useState(false);
 
-  useEffect(() => {
-    console.log('aaa');
-  }, [isClosed]);
-
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
-
-    if (isClosed) {
-      const icons = document.querySelector('.down_icon');
-      console.log('icons', icons);
-    }
 
     setIsClosed(!isClosed);
   };
@@ -46,9 +37,9 @@ function SideNavbar({ darkTheme }) {
   };
 
   const toggleNavDropdown = (menuId) => {
-    console.log('menuid', menuId);
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
+
     setIsClosed(false);
 
     // const menuSelected = document.getElementById(menuId);
