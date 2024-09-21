@@ -6,6 +6,8 @@ import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
+import FooterComponent from '../../components/footer/FooterComponent';
+import SocialMediaCTA from '../../components/socialMedia/SocialMediaCTA';
 
 // Lazy-loaded ChatBotComponent
 const ChatBotComponent = lazy(() =>
@@ -33,7 +35,13 @@ const HomePage = React.memo(() => {
 
           {/* Main page content */}
           <main role='main'>
-            <div>home</div>
+            <div>
+              <div>home</div>
+              <div>
+                <SocialMediaCTA />
+              </div>
+            </div>
+            <FooterComponent />
           </main>
         </div>
       </div>
