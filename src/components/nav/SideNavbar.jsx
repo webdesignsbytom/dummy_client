@@ -19,6 +19,12 @@ function SideNavbar({ darkTheme }) {
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
+
+    if (isClosed) {
+      const icons = document.querySelector('.down_icon');
+      console.log('icons', icons);
+    }
+
     setIsClosed(!isClosed);
   };
 
@@ -36,7 +42,7 @@ function SideNavbar({ darkTheme }) {
   };
 
   const navOptions = [
-    { label: 'Home', link: '/', icon: HomeIcon },
+    { label: 'Home434wrer', link: '/', icon: HomeIcon },
     { label: 'Dashboard', link: 'dashboard.html', icon: DashboardIcon },
     {
       label: 'Create',
@@ -93,15 +99,15 @@ function SideNavbar({ darkTheme }) {
       <section className='grid w-full h-full overflow-hidden'>
         <ul className='grid gap-2 w-full h-fit overflow-hidden'>
           {navOptions.map((item, index) => (
-            <li key={index}>
+            <li key={index} className='text-nowrap'>
               {isClosed ? (
-                <div className='grid items-center justify-center mx-auto p-2'>
-                  <img src={item.icon} alt={`${item.label} icon`} />
+                <div className='grid items-center justify-start py-2 px-4'>
+                  <img src={item.icon} alt={`${item.label} icon`} className='w-6 h-6 min-w-6 min-h-6'/>
                 </div>
               ) : item.subItems ? (
                 <div id={`dropdown_button_${index}`}>
                   <button
-                    className='grid gap-2 grid-cols-a1a w-full p-2'
+                    className='grid gap-2 grid-cols-a1a w-full py-2 pl-4 pr-2'
                     onClick={() =>
                       toggleDropdownMenu(`dropdown_button_${index}`)
                     }
@@ -110,6 +116,7 @@ function SideNavbar({ darkTheme }) {
                       <img
                         src={item.icon}
                         alt={`${item.label} dropdown menu icon button`}
+                        className='w-6 h-6 min-w-6 min-h-6'
                       />
                     </div>
                     <div className='text-start'>
@@ -119,6 +126,7 @@ function SideNavbar({ darkTheme }) {
                       <img
                         src={DropdownIcon}
                         alt='Dropdown menu down arrow icon'
+                        className='w-6 h-6 min-w-6 min-h-6'
                       />
                     </div>
                   </button>
@@ -143,7 +151,7 @@ function SideNavbar({ darkTheme }) {
 
 const NavItem = ({ item }) => {
   return (
-    <li>
+    <section>
       <NavLink
         to={item.link}
         aria-label={`${item.label} page navigation tab`}
@@ -152,11 +160,12 @@ const NavItem = ({ item }) => {
           return isActive ? { color: '#f8fafc' } : {};
         }}
       >
-        <div className='grid grid-cols-reg gap-2 w-full p-2'>
-          <div>
+        <div className='grid grid-cols-reg gap-2 w-full py-2 px-4'>
+          <div className=''>
             <img
               src={item.icon}
               alt={`${item.label} dropdown menu icon button`}
+              className='w-6 h-6 min-w-6 min-h-6'
             />
           </div>
           <div>
@@ -164,7 +173,7 @@ const NavItem = ({ item }) => {
           </div>
         </div>
       </NavLink>
-    </li>
+    </section>
   );
 };
 
