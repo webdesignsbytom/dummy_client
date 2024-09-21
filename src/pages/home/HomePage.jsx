@@ -1,11 +1,11 @@
 import React, { lazy, Suspense } from 'react';
 // Analytics
 import { usePageTracking } from '../../hooks/useAnalytics';
+// Constants
+import { CompanyName } from '../../utils/Constants';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
-// Constants
-import { CompanyName } from '../../utils/Constants';
 import FooterComponent from '../../components/footer/FooterComponent';
 import SocialMediaCTA from '../../components/socialMedia/SocialMediaCTA';
 
@@ -41,6 +41,8 @@ const HomePage = React.memo(() => {
                 <SocialMediaCTA />
               </div>
             </div>
+
+            {/* Footer */}
             <FooterComponent />
           </main>
         </div>

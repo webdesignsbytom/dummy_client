@@ -12,6 +12,8 @@ import {
   RESET_PASS_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from './utils/Constants';
+// Components
+import LoadingScreen from './components/utils/LoadingScreen'
 // Utils
 import { AuthenticateAdmin } from './utils/AuthenticateUser';
 // Context
@@ -64,7 +66,7 @@ function App() {
       )}
 
       {/* Suspense component wraps the lazy-loaded components */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* Main page routes */}
           <Route path={HOME_PAGE_URL} index element={<HomePage />} />
