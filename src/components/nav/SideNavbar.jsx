@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // Constants
 import { CompanyName } from '../../utils/Constants';
@@ -15,6 +15,10 @@ function SideNavbar({ darkTheme }) {
   const toggleRef = useRef();
   const navRef = useRef();
   const [isClosed, setIsClosed] = useState(false);
+
+  useEffect(() => {
+    console.log('aaa');
+  }, [isClosed]);
 
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
@@ -39,6 +43,19 @@ function SideNavbar({ darkTheme }) {
     if (menu) {
       menu.classList.toggle('show');
     }
+  };
+
+  const toggleNavDropdown = (menuId) => {
+    console.log('menuid', menuId);
+    toggleRef.current.classList.toggle('rotate');
+    navRef.current.classList.toggle('close');
+    setIsClosed(false);
+
+    // const menuSelected = document.getElementById(menuId);
+    // const icon = menuSelected.querySelector('.down_icon img');
+    // if (icon) {
+    //   icon.classList.toggle('rotate');
+    // }
   };
 
   const navOptions = [
@@ -99,10 +116,17 @@ function SideNavbar({ darkTheme }) {
       <section className='grid w-full h-full overflow-hidden'>
         <ul className='grid gap-2 w-full h-fit overflow-hidden'>
           {navOptions.map((item, index) => (
-            <li key={index} className='text-nowrap'>
+            <li key={index} className='text-nowrap cursor-pointer'>
               {isClosed ? (
-                <div className='grid items-center justify-start py-2 px-4 hover:brightness-125'>
-                  <img src={item.icon} alt={`${item.label} icon`} className='w-6 h-6 min-w-6 min-h-6'/>
+                <div
+                  onClick={() => toggleNavDropdown(`dropdown_button_${index}`)}
+                  className='grid items-center justify-start py-2 px-4 hover:brightness-125'
+                >
+                  <img
+                    src={item.icon}
+                    alt={`${item.label} icon`}
+                    className='w-6 h-6 min-w-6 min-h-6'
+                  />
                 </div>
               ) : item.subItems ? (
                 <div id={`dropdown_button_${index}`}>
