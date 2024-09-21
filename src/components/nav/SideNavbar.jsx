@@ -101,13 +101,13 @@ function SideNavbar({ darkTheme }) {
           {navOptions.map((item, index) => (
             <li key={index} className='text-nowrap'>
               {isClosed ? (
-                <div className='grid items-center justify-start py-2 px-4'>
+                <div className='grid items-center justify-start py-2 px-4 hover:brightness-125'>
                   <img src={item.icon} alt={`${item.label} icon`} className='w-6 h-6 min-w-6 min-h-6'/>
                 </div>
               ) : item.subItems ? (
                 <div id={`dropdown_button_${index}`}>
                   <button
-                    className='grid gap-2 grid-cols-a1a w-full py-2 pl-4 pr-2'
+                    className='grid gap-2 grid-cols-a1a w-full py-2 pl-4 pr-2 hover:brightness-125'
                     onClick={() =>
                       toggleDropdownMenu(`dropdown_button_${index}`)
                     }
@@ -132,7 +132,7 @@ function SideNavbar({ darkTheme }) {
                   </button>
                   <ul className='sub_menu'>
                     {item.subItems.map((subItem, subIndex) => (
-                      <li key={subIndex} className='pl-4'>
+                      <li key={subIndex} className='pl-4 hover:brightness-125'>
                         <a href={subItem.link}>{subItem.label}</a>
                       </li>
                     ))}
@@ -160,7 +160,7 @@ const NavItem = ({ item }) => {
           return isActive ? { color: '#f8fafc' } : {};
         }}
       >
-        <div className='grid grid-cols-reg gap-2 w-full py-2 px-4'>
+        <div className='grid grid-cols-reg gap-2 w-full py-2 px-4 hover:brightness-125'>
           <div className=''>
             <img
               src={item.icon}
