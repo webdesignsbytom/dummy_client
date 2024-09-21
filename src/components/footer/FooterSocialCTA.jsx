@@ -36,7 +36,7 @@ function FooterSocialCTA() {
   ];
 
   return (
-    <section className=''>
+    <section className='grid justify-center'>
       <div className='grid grid-flow-col w-fit gap-1'>
         {socialMediaLinks.map((social) => (
           <SocialMediaPin

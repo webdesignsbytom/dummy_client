@@ -11,12 +11,12 @@ export const CookiePolicyName = 'CookiePolicy';
 
 // Pages
 export const HOME_PAGE_URL = '/';
-export const LOGIN_PAGE_URL = '/login';
-export const SIGN_UP_PAGE_URL = '/sign-up';
 export const CONTACT_PAGE_URL = '/contact';
 export const RESET_PASS_PAGE_URL = '/reset-password';
 export const POLICIES_PAGE_URL = '/user-agreements';
 export const ADMIN_PAGE_URL = '/admin';
+export const LOGIN_PAGE_URL = '/login';
+export const SIGN_UP_PAGE_URL = '/sign-up';
 export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
 export const ERROR_404_PAGE_URL = '*';
 
