@@ -7,7 +7,6 @@ import { CompanyName } from '../../utils/Constants';
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import FooterComponent from '../../components/footer/FooterComponent';
-import SocialMediaCTA from '../../components/socialMedia/SocialMediaCTA';
 import SearchBarComponent from '../../components/search/SearchBarComponent';
 
 // Lazy-loaded ChatBotComponent
