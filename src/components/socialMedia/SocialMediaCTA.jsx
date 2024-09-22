@@ -78,7 +78,7 @@ function SocialMediaCTA() {
   ];
 
   return (
-    <section className='grid w-fit'>
+    <section className='grid w-fit mx-auto'>
       <div className='grid grid-flow-col gap-2'>
         {socialMediaPins.map((pin) => (
           <SocialMediaPin

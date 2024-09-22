@@ -8,6 +8,7 @@ import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import FooterComponent from '../../components/footer/FooterComponent';
 import SearchBarComponent from '../../components/search/SearchBarComponent';
+import SocialMediaCTA from '../../components/socialMedia/SocialMediaCTA';
 
 // Lazy-loaded ChatBotComponent
 const ChatBotComponent = lazy(() =>
@@ -39,6 +40,7 @@ const HomePage = React.memo(() => {
               <div>home</div>
               <div>
                 <SearchBarComponent />
+                <SocialMediaCTA />
               </div>
             </div>
 
