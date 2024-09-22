@@ -11,6 +11,7 @@ import UserProvider from './context/UserContext';
 import './styles/index.css';
 import './styles/components.css';
 import './styles/animations.css';
+import './styles/navbar.css';
 
 // Initialize Google Analytics with your tracking ID
 ReactGA.initialize(process.env.REACT_APP_ANALYTICS_ID);

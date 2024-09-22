@@ -1,0 +1,78 @@
+#sidenav_container {
+  width: 250px;
+  height: 100vh;
+
+  transition: width 300ms ease-in-out;
+}
+
+.close {
+  width: 55px !important;
+}
+
+#sidenav_container.close .logo {
+  display: none; /* This hides the logo */
+}
+
+#toggle-btn {
+  transition: transform 300ms ease-in-out;
+}
+
+.down_icon img {
+  transition: transform 300ms ease-in-out;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+/* ul .sub_menu {
+  max-height: 0;
+  overflow: hidden;
+  display: none;
+  padding: 1rem;
+  transition: max-height 300ms ease-in-out;
+}
+
+ul .sub_menu.show {
+  max-height: 500px;
+  display: inline;
+} */
+
+@keyframes expand {
+    from {
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+    }
+    to {
+        max-height: 500px; /* Adjust as needed */
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes shrink {
+    from {
+        max-height: 300px; /* Match this to the expanded height */
+        opacity: 1;
+    }
+    to {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+ul .sub_menu {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+
+ul .sub_menu.hide {
+    animation: expand 500ms forwards; /* Apply the animation */
+}
+
+ul .sub_menu.show {
+    animation: expand 500ms forwards; /* Apply the animation */
+}

@@ -20,6 +20,7 @@ import { AuthenticateAdmin } from './utils/AuthenticateUser';
 import { useUser } from './context/UserContext';
 // Normal import for HomePage (no lazy loading)
 import HomePage from './pages/home/HomePage';
+import HomePageSideNav from './pages/home/HomePageSideNav';
 // Lazy-loaded Pages
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const MaintenancePage = lazy(() => import('./pages/maintenance/MaintenancePage'));
@@ -69,7 +70,7 @@ function App() {
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* Main page routes */}
-          <Route path={HOME_PAGE_URL} index element={<HomePage />} />
+          <Route path={HOME_PAGE_URL} index element={<HomePageSideNav />} />
 
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
