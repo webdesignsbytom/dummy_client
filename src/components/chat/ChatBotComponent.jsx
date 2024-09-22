@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import ChatBot from './ChatBot'; // Assuming you put the ChatBot component in this file
+import ChatBotButton from './ChatBotButton'; // Assuming you put the ChatBot component in this file
 
 function ChatBotComponent() {
+  const [isChatOpen, setIsChatOpen] = useState(false); // Track if the chat window is open
   const [userform, setUserform] = useState({
     requestTypes: null,
     name: '',
     age: null,
   });
 
-  console.log('CHATBOT');
+  const steps = ['start', 'ask_age', 'end'];
 
   const requestTypes = ['project', 'contact', 'gallery', 'help'];
 
@@ -35,7 +37,15 @@ function ChatBotComponent() {
     },
   };
 
-  return <ChatBot flow={flow} />;
+  return (
+    <>
+      {isChatOpen ? (
+        <ChatBot flow={flow} steps={steps} setIsChatOpen={setIsChatOpen} />
+      ) : (
+        <ChatBotButton setIsChatOpen={setIsChatOpen} />
+      )}
+    </>
+  );
 }
 
 export default ChatBotComponent;

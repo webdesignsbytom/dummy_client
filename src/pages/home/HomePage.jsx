@@ -23,6 +23,8 @@ const HomePage = React.memo(() => {
       {/* Tab Data */}
       <HelmetItem PageName={'Home'} desc={`Home page of ${CompanyName}.`} />
 
+      {/* Chatbot */}
+      <ChatBotComponent />
       {/* Page */}
       <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
         <div className='grid grid-rows-reg'>
@@ -40,7 +42,7 @@ const HomePage = React.memo(() => {
             </div>
 
             {/* Footer */}
-            <FooterComponent />
+            {/* <FooterComponent /> */}
           </main>
         </div>
       </div>

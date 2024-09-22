@@ -10,8 +10,6 @@ ReactGA.initialize(process.env.REACT_APP_ANALYTICS_ID); // Replace with your GA 
 export const usePageTracking = () => {
   const location = useLocation();
 
-  console.log('ANALYTICS');
-  
   useEffect(() => {
     ReactGA.send({
       hitType: 'pageview',
