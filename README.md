@@ -12,6 +12,7 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
   - [Chatbot](#chatbot)
   - [Versions](#versions)
   - [Analytics](#analytics)
+  - [Light and Dark Mode](#light-and-dark-mode)
   - [Launch](#launch)
     - [Checklist](#checklist)
     - [Build](#build)
@@ -88,6 +89,10 @@ Using the GA4 library `npm install react-ga4`
 We create the useAnalytics hook to import a tracking helper into any page or component.
 
 Login to google tags and create one for each site and get the DNS code.
+
+## Light and Dark Mode
+
+In 'tailwind.config.js' change 'darkmode:' to 'media' for auto detect and 'class' for a toggle switch
 
 ## Launch
 

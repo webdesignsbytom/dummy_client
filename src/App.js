@@ -70,7 +70,7 @@ function App() {
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* Main page routes */}
-          <Route path={HOME_PAGE_URL} index element={<HomePageSideNav />} />
+          <Route path={HOME_PAGE_URL} index element={<HomePage />} />
 
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
