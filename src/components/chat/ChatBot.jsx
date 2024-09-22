@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoSendOutline } from 'react-icons/io5';
 // Style
 import { ChatWindow, InputStyle } from '../../utils/Styles';
@@ -17,6 +17,8 @@ export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
   const currentFlowStep = flow?.[currentStep];
   console.log('currentFlowStep', currentFlowStep);
 
+  // Handle starup 
+  useEffect(() => {}, [])
   // User input
   const handleSendInput = () => {};
 
@@ -56,7 +58,7 @@ export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
         {/* Conversation container */}
         <section className='grid h-full max-h-full overflow-hidden bg-red-300'>
           <section className='grid max-h-full overflow-y-auto bg-blue-400'>
-            
+
             <div className='grid h-fit max-h-full'>
               {/* Render the conversation */}
               {conversation.map((chat, index) => (
