@@ -37,6 +37,7 @@ function SideNavbar({ darkTheme }) {
   };
 
   const toggleNavDropdown = (menuId) => {
+    console.log('menuId', menuId);
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
 
