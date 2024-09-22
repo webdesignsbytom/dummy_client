@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { HelmetItem } from '../../components/utils/HelmetItem';
+// Constants
 import { CompanyName } from '../../utils/Constants';
+// Components
+import { HelmetItem } from '../../components/utils/HelmetItem';
 import SideNavbar from '../../components/nav/SideNavbar';
 
 function HomePageSideNav() {
