@@ -24,7 +24,7 @@ function Error404() {
           >
             <section className='grid absolute w-full text-center h-full items-center justify-center z-10'>
               <section className='grid gap-2'>
-                <article className='outline outline-2 font-semibold outline-black -mt-10 rounded'>
+                <article className='outline outline-2 font-semibold outline-black -mt-10 rounded bg-white'>
                   <div className='p-4'>
                     <h1 className='text-4xl text-left'>
                       ERROR <span className='text-red-500'>404</span>
