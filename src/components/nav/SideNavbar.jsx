@@ -17,14 +17,32 @@ function SideNavbar({ darkTheme }) {
   const toggleRef = useRef();
   const navRef = useRef();
   const [isClosed, setIsClosed] = useState(false);
+  const [openedIndex, setOpenedIndex] = useState(null);
   const navigateToPage = useNavigateToPage();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!isClosed && openedIndex !== null) {
+      const menuId = `dropdown_button_${openedIndex}`;
+      const menuSelected = document.getElementById(menuId);
+      console.log('menuSelected', menuSelected);
+      
+      if (menuSelected) {
+        const icon = menuSelected.querySelector('.down_icon img');
+        if (icon) {
+          icon.classList.toggle('rotate');
+        }
+
+        const menu = menuSelected.querySelector('ul');
+        if (menu) {
+          menu.classList.toggle('show');
+        }
+      }
+    }
+  }, [isClosed, openedIndex]);
 
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
-
     setIsClosed(!isClosed);
   };
 
@@ -41,18 +59,13 @@ function SideNavbar({ darkTheme }) {
     }
   };
 
-  const toggleNavDropdown = (menuId) => {
-    console.log('menuId', menuId);
+  const toggleOpenFromMenu = (menuId, index) => {
     toggleRef.current.classList.toggle('rotate');
     navRef.current.classList.toggle('close');
+    setOpenedIndex(index); // Set the opened index
 
-    setIsClosed(false);
-
-    // const menuSelected = document.getElementById(menuId);
-    // const icon = menuSelected.querySelector('.down_icon img');
-    // if (icon) {
-    //   icon.classList.toggle('rotate');
-    // }
+    const menuSelected = document.getElementById(menuId);
+    console.log('menuSelected', menuSelected);
   };
 
   const navOptions = [
@@ -118,7 +131,10 @@ function SideNavbar({ darkTheme }) {
                 <div
                   onClick={
                     item.subItems
-                      ? () => toggleNavDropdown(`dropdown_button_${index}`)
+                      ? () => {
+                          setIsClosed(false);
+                          toggleOpenFromMenu(`dropdown_button_${index}`, index);
+                        }
                       : () => navigateToPage(item.link)
                   }
                   className='grid items-center justify-start py-2 px-4 hover:brightness-125'
@@ -174,7 +190,6 @@ function SideNavbar({ darkTheme }) {
     </nav>
   );
 }
-
 const NavItem = ({ item }) => {
   return (
     <section>
