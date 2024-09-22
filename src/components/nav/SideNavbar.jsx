@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // Constants
 import { CompanyName } from '../../utils/Constants';
@@ -15,6 +15,10 @@ function SideNavbar({ darkTheme }) {
   const toggleRef = useRef();
   const navRef = useRef();
   const [isClosed, setIsClosed] = useState(false);
+
+  useEffect(() => {
+
+  }, [])
 
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
@@ -51,7 +55,7 @@ function SideNavbar({ darkTheme }) {
   };
 
   const navOptions = [
-    { label: 'Home434wrer', link: '/', icon: HomeIcon },
+    { label: 'Home', link: '/', icon: HomeIcon },
     { label: 'Dashboard', link: 'dashboard.html', icon: DashboardIcon },
     {
       label: 'Create',
