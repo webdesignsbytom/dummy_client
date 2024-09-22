@@ -10,15 +10,16 @@ import DropdownIcon from '../../assets/images/icons/keyboard_arrow_down_24dp_E8E
 import DashboardIcon from '../../assets/images/icons/dashboard_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
 import ProfileIcon from '../../assets/images/icons/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
 import CreateFolderIcon from '../../assets/images/icons/create_new_folder_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+// Hooks
+import useNavigateToPage from '../../hooks/useNavigateToPage';
 
 function SideNavbar({ darkTheme }) {
   const toggleRef = useRef();
   const navRef = useRef();
   const [isClosed, setIsClosed] = useState(false);
+  const navigateToPage = useNavigateToPage();
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, []);
 
   const toggleSidebar = () => {
     toggleRef.current.classList.toggle('rotate');
@@ -115,10 +116,15 @@ function SideNavbar({ darkTheme }) {
             <li key={index} className='text-nowrap cursor-pointer'>
               {isClosed ? (
                 <div
-                  onClick={() => toggleNavDropdown(`dropdown_button_${index}`)}
+                  onClick={
+                    item.subItems
+                      ? () => toggleNavDropdown(`dropdown_button_${index}`)
+                      : () => navigateToPage(item.link)
+                  }
                   className='grid items-center justify-start py-2 px-4 hover:brightness-125'
                 >
                   <img
+                    title={item.label}
                     src={item.icon}
                     alt={`${item.label} icon`}
                     className='w-6 h-6 min-w-6 min-h-6'
