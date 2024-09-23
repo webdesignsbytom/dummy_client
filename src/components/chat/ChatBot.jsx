@@ -20,7 +20,10 @@ export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
   // Handle starup 
   useEffect(() => {}, [])
   // User input
-  const handleSendInput = () => {};
+  const handleSendInput = () => {
+    console.log('currentFlowStep.path', currentFlowStep.path);
+    setCurrentStep(currentFlowStep.path)
+  };
 
   // useEffect(() => {
   //   // Load initial messages and handle function-based messages
@@ -61,6 +64,9 @@ export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
 
             <div className='grid h-fit max-h-full'>
               {/* Render the conversation */}
+              <div>
+                <p>{typeof currentFlowStep.message === 'function' ? console.log('AAAAA') : currentFlowStep.message}</p>
+              </div>
               {conversation.map((chat, index) => (
                 <div key={index} className='grid h-fit px-1 py-1'>
                   <p>
