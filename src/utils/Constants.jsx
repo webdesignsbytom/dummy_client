@@ -21,7 +21,7 @@ export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
 export const ERROR_404_PAGE_URL = '*';
 
 // API
-export const LOGIN_API = '/login';
+export const LOGIN_API = '/auth/login';
 export const GET_LOGGED_IN_USER_API = '/users/user/get-logged-in-user'; // userId
 export const REGISTER_API = '/users/register';
 export const RESET_PASSWORD_API = '/users/user/reset-password'; // userId

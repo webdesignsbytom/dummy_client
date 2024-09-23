@@ -57,13 +57,13 @@ function LoginForm() {
   };
 
   const handleLoginWithGoogle = () => {
-    const popup = window.open('http://localhost:4000/google', 'Google Login', 'width=600,height=600');
+    const popup = window.open('http://localhost:4000/auth/google', 'Google Login', 'width=600,height=600');
     
-    const checkPopupClosed = setInterval(() => {
+    const interval = setInterval(() => {
       if (popup.closed) {
-        clearInterval(checkPopupClosed);
-        // You may want to check for a token or session here
-        // For example, call your API to check if the user is logged in
+        clearInterval(interval);
+        // Optionally, refresh the user state or redirect
+        window.location.reload(); // or navigate to a specific route
       }
     }, 1000);
   };
