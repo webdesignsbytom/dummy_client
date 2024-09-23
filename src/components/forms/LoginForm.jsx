@@ -14,7 +14,7 @@ import { ButtonStyle, InputStyle } from '../../utils/Styles';
 
 function LoginForm() {
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const [loginError, setLoginError] = useState(null); // Set null initially for error message
+  const [loginError, setLoginError] = useState(null);
   const [loginFormData, setLoginFormData] = useState({
     email: '',
     password: '',
@@ -24,26 +24,25 @@ function LoginForm() {
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoginInProgress(true);
-    setLoginError(null); // Reset error state
+    setLoginError(null);
 
     try {
       const data = await client.post(LOGIN_API, loginFormData, false);
       localStorage.setItem(
         process.env.REACT_APP_USER_TOKEN,
-        data.data.token // Adjust based on your API response
+        data.data.token
       );
       setLoginInProgress(false);
       // Optionally, update user context or redirect the user
     } catch (error) {
-      setLoginError(error.message); // Set detailed error message from the API
+      setLoginError(error.message);
       setLoginInProgress(false);
     }
   };
 
   const handleChange = (event) => {
-    setLoginError(null); // Reset error state when user types
+    setLoginError(null);
     const { name, value } = event.target;
-
     setLoginFormData({
       ...loginFormData,
       [name]: value,
@@ -57,44 +56,22 @@ function LoginForm() {
     });
   };
 
-  const handleLoginWith = (service) => {
-    switch (service) {
-      case 'facebook':
-        // Call Facebook login API
-        console.log('Logging in with Facebook');
-        break;
-      case 'instagram':
-        // Call Instagram login API
-        console.log('Logging in with Instagram');
-        break;
-      case 'google':
-        // Call Google login API
-        console.log('Logging in with Google');
-        break;
-      case 'github':
-        // Call GitHub login API
-        console.log('Logging in with GitHub');
-        break;
-      case 'apple':
-        // Call Apple login API
-        console.log('Logging in with Apple');
-        break;
-      case 'x':
-        // Call X login API
-        console.log('Logging in with X');
-        break;
-      default:
-        console.log('Unsupported service');
-    }
+  const handleLoginWithGoogle = () => {
+    const popup = window.open('http://localhost:4000/google', 'Google Login', 'width=600,height=600');
+    
+    const checkPopupClosed = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkPopupClosed);
+        // You may want to check for a token or session here
+        // For example, call your API to check if the user is logged in
+      }
+    }, 1000);
   };
-
+  
   return (
     <form className='space-y-4 md:space-y-6' onSubmit={handleLogin}>
       <div>
-        <label
-          htmlFor='email'
-          className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-        >
+        <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
           Your email:
         </label>
         <input
@@ -110,10 +87,7 @@ function LoginForm() {
         />
       </div>
       <div>
-        <label
-          htmlFor='password'
-          className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-        >
+        <label htmlFor='password' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
           Password:
         </label>
         <input
@@ -139,10 +113,7 @@ function LoginForm() {
             onChange={handleCheckedKeepMeLoggedIn}
             aria-label='Keep me logged in'
           />
-          <label
-            className='form-check-label inline-block text-gray-800'
-            htmlFor='keepMeLoggedIn'
-          >
+          <label className='form-check-label inline-block text-gray-800' htmlFor='keepMeLoggedIn'>
             Keep me logged in
           </label>
         </div>
@@ -169,6 +140,19 @@ function LoginForm() {
           ) : (
             <span>Sign in</span>
           )}
+        </button>
+      </div>
+
+      <div className='text-center'>
+        <p className='font-light text-gray-500 dark:text-gray-400'>
+          Or sign in with
+        </p>
+        <button
+          type='button'
+          className={`${ButtonStyle} mt-2`}
+          onClick={handleLoginWithGoogle}
+        >
+          Google
         </button>
       </div>
 
