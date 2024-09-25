@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ChatBot from './ChatBot'; // Assuming you put the ChatBot component in this file
-import ChatBotButton from './ChatBotButton'; // Assuming you put the ChatBot component in this file
+import ChatBot from './ChatBot';
+import ChatBotButton from './ChatBotButton';
 
 function ChatBotComponent() {
   const [isChatOpen, setIsChatOpen] = useState(false); // Track if the chat window is open
@@ -10,25 +10,25 @@ function ChatBotComponent() {
     age: null,
   });
 
-  const steps = ['start', 'ask_age', 'end'];
+  console.log('userform', userform);
 
-  const requestTypes = ['project', 'contact', 'gallery', 'help'];
+  const steps = ['start', 'ask_age', 'end'];
 
   const flow = {
     start: {
       message: 'Hello there! What is your name?',
       function: (params) => {
         console.log('START FUNCTION >>>', params);
-        setUserform({ ...userform, name: params.userInput });
+        setUserform((prevForm) => ({ ...prevForm, name: params.userInput }));  // Store the name in userform
       },
       path: 'ask_age',
     },
     ask_age: {
-      message: (params) =>
-        `Nice to meet you ${params.userInput}, what is your age?`,
+      // Using params to access the user input
+      message: (params) => `Nice to meet you, ${params.userInput}! What is your age?`,
       function: (params) => {
-        console.log('AGE FUNCTION >>>');
-        setUserform({ ...userform, age: params.userInput });
+        console.log('AGE FUNCTION >>>', params);
+        setUserform((prevForm) => ({ ...prevForm, age: params.userInput }));  // Store the age in userform
       },
       path: 'end',
     },

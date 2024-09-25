@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IoSendOutline } from 'react-icons/io5';
 // Style
 import { ChatWindow, InputStyle } from '../../utils/Styles';
@@ -6,10 +6,8 @@ import ChatBotHeader from './ChatBotHeader';
 
 export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
   const [currentStep, setCurrentStep] = useState(steps[0]); // Track the current step in the flow
-
-  const [userInput, setUserInput] = useState(''); // Track user input fron text input
-
-  const [conversation, setConversation] = useState([]); // Store conversation history
+  const [userInput, setUserInput] = useState(''); // Track user input from text input
+  const [messages, setMessages] = useState([]); // Store chat messages
 
   console.log('currentStep', currentStep);
 
@@ -17,40 +15,33 @@ export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
   const currentFlowStep = flow?.[currentStep];
   console.log('currentFlowStep', currentFlowStep);
 
-  // Handle starup 
-  useEffect(() => {}, [])
   // User input
   const handleSendInput = () => {
-    console.log('currentFlowStep.path', currentFlowStep.path);
-    setCurrentStep(currentFlowStep.path)
+    const params = { userInput };
+
+    // Call the function for the current step, passing the params
+    if (currentFlowStep.function) {
+      currentFlowStep.function(params);  // Call the function associated with the current step
+    }
+
+    // Prepare the next step
+    const nextFlowStep = flow?.[currentFlowStep.path];
+    console.log('nextFlowStep', nextFlowStep);
+
+    if (nextFlowStep) {
+      // Add the current step's message to the chat
+      const nextMessage =
+        typeof currentFlowStep.message === 'function'
+          ? currentFlowStep.message(params)  // Call the message function with params
+          : currentFlowStep.message;
+      setMessages([...messages, nextMessage]);
+
+      // Transition to the next step
+      setCurrentStep(currentFlowStep.path);
+    }
+
+    setUserInput('');  // Clear the user input after submission
   };
-
-  // useEffect(() => {
-  //   // Load initial messages and handle function-based messages
-  //   const botMessage =
-  //     typeof currentFlowStep.message === 'function'
-  //       ? currentFlowStep.message({ userInput }) // Call function if message is a function
-  //       : currentFlowStep.message;
-  //   setConversation([...conversation, { owner: BotName, message: botMessage }]);
-  // }, [currentStep]); // Make sure it updates whenever the current step changes
-
-  // // Handle sending user input
-  // const handleSendInput = () => {
-  //   console.log('-- IN --');
-  //   console.log('userInput', userInput);
-  //   // Add current bot message and user input to the conversation
-  //   setConversation([...conversation, { owner: 'you', message: userInput }]);
-  //   // Call the function associated with the current step if it exists
-  //   if (currentFlowStep?.function) {
-  //     currentFlowStep.function({ userInput });
-  //   }
-  //   // Move to the next step in the flow if a path is provided
-  //   if (currentFlowStep?.path) {
-  //     setCurrentStep(currentFlowStep.path);
-  //   }
-  //   // Clear the input field after the message is sent
-  //   setUserInput('');
-  // };
 
   return (
     <section className={ChatWindow}>
@@ -61,17 +52,11 @@ export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
         {/* Conversation container */}
         <section className='grid h-full max-h-full overflow-hidden bg-red-300'>
           <section className='grid max-h-full overflow-y-auto bg-blue-400'>
-
             <div className='grid h-fit max-h-full'>
               {/* Render the conversation */}
-              <div>
-                <p>{typeof currentFlowStep.message === 'function' ? console.log('AAAAA') : currentFlowStep.message}</p>
-              </div>
-              {conversation.map((chat, index) => (
-                <div key={index} className='grid h-fit px-1 py-1'>
-                  <p>
-                    <strong className='capitalize'>{chat.owner}:</strong>{' '}
-                  </p>
+              {messages.map((msg, index) => (
+                <div key={index}>
+                  <p>{msg}</p>
                 </div>
               ))}
             </div>
