@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+// Icons
 import { IoSendOutline } from 'react-icons/io5';
 // Style
 import { ChatWindow, InputStyle } from '../../utils/Styles';
+// Components
 import ChatBotHeader from './ChatBotHeader';
 
 export const ChatBot = ({ flow, steps, setIsChatOpen }) => {
