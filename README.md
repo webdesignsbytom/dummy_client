@@ -8,6 +8,7 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
   - [Table of Contents](#table-of-contents)
   - [General Info](#general-info)
   - [Technologies](#technologies)
+  - [Standards](#standards)
   - [Formating](#formating)
   - [Completing project](#completing-project)
   - [Chatbot](#chatbot)
@@ -26,6 +27,12 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
 2. Tailwind - Style sheets
 3. Axios - API management
 4. Google OAuth - creating a login and sign up through google account.
+
+## Standards
+
+1. Image urls for servers and display are `imageSource`
+2. Titles/labels for array objects are called `title`
+3. 
 
 ## Formating
 
