@@ -8,6 +8,16 @@
   user-select: none;
 }
 
+/* Invisible scroll */
+.scrollbar_hidden {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge (legacy) */
+}
+
+.scrollbar_hidden::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
 /* @font-face {
   font-family: '';
   src: url('../assets/fonts/.ttf') format('truetype');
