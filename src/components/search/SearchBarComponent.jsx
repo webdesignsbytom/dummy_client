@@ -42,7 +42,7 @@ function SearchBarComponent() {
             placeholder='Search...'
             className='active:outline-none focus:outline-none min-w-10'
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyPress} // Listening for Enter key
+            onKeyDown={handleKeyPress}
             value={searchQuery}
           />
         </div>
