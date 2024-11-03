@@ -138,6 +138,7 @@ function LoginForm() {
             checked={loginFormData.keepMeLoggedIn}
             onChange={handleCheckedKeepMeLoggedIn}
             aria-label='Keep me logged in'
+            style={{ accentColor: '#ff0000' }} // Using `accent-color` here
           />
           <label
             className='form-check-label inline-block text-gray-800'

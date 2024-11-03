@@ -7,7 +7,8 @@ module.exports = {
         'bg': "url('../assets')",
       },
       boxShadow: {
-        input: 'inset 1px 1px 6px 1px #00000014'
+        input: 'inset 1px 1px 6px 1px #00000014',
+        cardShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
       },
       colors: {
         'main-background': '#f8fafc',

@@ -12,9 +12,10 @@ function RegisterPage() {
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName={'Login'}
-        desc={`Log in to your ${CompanyName} account to access exclusive features.`}
+        PageName={'Register'}
+        desc={`Register with ${CompanyName} to access exclusive features.`}
       />
+
 
       {/* Page */}
       <div className='grid h-screen min-h-screen max-h-screen overflow-hidden w-full bg-main-background font-poppins'>

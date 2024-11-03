@@ -7,7 +7,7 @@ import { useUser } from '../../context/UserContext';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
 // Utils
-import CountrySelect from '../utils/CountrySelect'
+import CountrySelect from '../utils/CountrySelect';
 // Constants
 import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 // Styles
@@ -24,7 +24,7 @@ function RegisterForm() {
     country: '',
     agreedToTerms: true,
   });
-  
+
   const [registerError, setRegisterError] = useState(null); // Store error message or null
   const [registrationInProgress, setRegistrationInProgress] = useState(false);
 
@@ -90,7 +90,6 @@ function RegisterForm() {
         console.log('Unsupported service');
     }
   };
-  
 
   return (
     <form
@@ -169,26 +168,25 @@ function RegisterForm() {
         </label>
         <CountrySelect />
       </div>
-      <div className='form-check flex justify-center items-center gap-4'>
+      <div className='form-check flex justify-center mb-6'>
         <input
-          className='form-check-input h-4 w-4 border border-gray-300 rounded-sm transition duration-200 align-top float-left cursor-pointer'
+          className='form-check-input h-4 w-4 border border-gray-300 rounded-sm transition duration-200 mt-1 align-top float-left mr-2 cursor-pointer checked:bg-colour2'
           type='checkbox'
-          id='agreedToTerms'
-          name='agreedToTerms'
+          value=''
+          id='termsChecked'
+          name='termsChecked'
+          aria-label='Agree to terms and conditions'
+          style={{ accentColor: '#ff0000' }} // Using `accent-color` here
           checked={registerFormData.agreedToTerms}
           onChange={handleCheckboxChange}
-          required
-          aria-required='true'
-          aria-label='I agree to all terms and conditions'
         />
         <label
-          className='form-check-label inline-block cursor-pointer text-gray-800 no__highlights'
-          htmlFor='agreedToTerms'
+          className='form-check-label inline-block text-gray-800'
+          htmlFor='termsChecked'
         >
           I agree to all terms and conditions.
         </label>
       </div>
-
       {/* Submit button */}
       <div>
         <button
