@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import client from '../../api/client';
 // Constants
 import {
+  HOME_PAGE_URL,
   LOGIN_API,
   RESET_PASS_PAGE_URL,
   SIGN_UP_PAGE_URL,
@@ -11,8 +12,15 @@ import {
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Styles
 import { ButtonStyle, InputStyle } from '../../utils/Styles';
+// Context
+import { useUser } from '../../context/UserContext';
+// Hooks
+import useNavigateToPage from '../../hooks/useNavigateToPage';
 
 function LoginForm() {
+  const { setUser } = useUser();
+  const { navigateToPage } = useNavigateToPage();
+
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [loginError, setLoginError] = useState(null); // Set null initially for error message
   const [loginFormData, setLoginFormData] = useState({
@@ -26,18 +34,19 @@ function LoginForm() {
     setLoginInProgress(true);
     setLoginError(null); // Reset error state
 
-    try {
-      const data = await client.post(LOGIN_API, loginFormData, false);
-      localStorage.setItem(
-        process.env.REACT_APP_USER_TOKEN,
-        data.data.token // Adjust based on your API response
-      );
-      setLoginInProgress(false);
-      // Optionally, update user context or redirect the user
-    } catch (error) {
-      setLoginError(error.message); // Set detailed error message from the API
-      setLoginInProgress(false);
-    }
+    client
+      .post(LOGIN_API, loginFormData, false)
+      .then((res) => {
+        setUser(res.data.existingUser);
+        console.log('USER', res.data.existingUser);
+        localStorage.setItem(process.env.REACT_APP_USER_TOKEN, res.data.token);
+        setLoginInProgress(false);
+      })
+      .then(() => navigateToPage(HOME_PAGE_URL))
+      .catch((err) => {
+        setLoginError(err.message);
+        setLoginInProgress(false);
+      });
   };
 
   const handleChange = (event) => {
