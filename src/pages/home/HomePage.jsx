@@ -30,7 +30,7 @@ const HomePage = React.memo(() => {
           <Navbar />
 
           {/* Main page content */}
-          <main role='main'>
+          <main role='main' className='grid w-full h-full'>
             <div>
               <div>home</div>
               <div>

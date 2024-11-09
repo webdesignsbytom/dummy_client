@@ -4,6 +4,9 @@ export const CompanyPhoneNumber = '07000000000';
 export const ContactEmailAddress = 'hello@company.com';
 export const DirectorName = 'Me Myself';
 
+// Site text
+export const CompantTagLine = 'Our company is great'
+
 // Cookie data
 export const NumberOfCookies = 0;
 export const COOKIE_TIMER = 5000;
