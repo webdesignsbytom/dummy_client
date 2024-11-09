@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { IoMdMenu } from 'react-icons/io';
 import LogoWhite from '../../assets/images/logos/tech-design-tavistock-logo-white.svg';
@@ -10,14 +10,38 @@ import {
   LOGIN_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from '../../utils/Constants';
+// Hooks
+import useNavigateToPage from '../../hooks/useNavigateToPage';
 
 function Navbar() {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const { navigateToPage } = useNavigateToPage();
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
 
   const togglePhoneNav = () => {
     setIsPhoneNavOpen((prev) => !prev);
   };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    setUser({});
+    localStorage.removeItem(process.env.REACT_APP_USER_TOKEN);
+    navigateToPage(HOME_PAGE_URL, { replace: true });
+  };
+
+  const navItems = [
+    { path: HOME_PAGE_URL, label: 'Home' },
+    ...(user?.email
+      ? [
+          ...(user.role === 'ADMIN' || user.role === 'DEVELOPER'
+            ? [{ path: '/admin', label: 'Admin' }]
+            : []),
+        ]
+      : [
+          { path: LOGIN_PAGE_URL, label: 'Login' },
+          { path: SIGN_UP_PAGE_URL, label: 'Sign Up' },
+        ]),
+  ];
 
   return (
     <nav
@@ -48,12 +72,18 @@ function Navbar() {
 
           {/* Large screen */}
           <ul className='hidden md:grid grid-flow-col gap-6 items-center text-orange-600'>
-            <NavItem url={HOME_PAGE_URL} title={'Home'} />
-            <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
-            <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
-
-            {user?.role === ('ADMIN' || 'DEVELOPER') && (
-              <NavItem url={ADMIN_PAGE_URL} title={'Admin'} />
+            {navItems.map(({ path, label }) => (
+              <NavItem key={label} url={path} title={label} />
+            ))}
+            {user?.email && (
+              <li>
+                <button
+                  className='hover:text-colour5 active:scale-95'
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
             )}
           </ul>
         </section>
@@ -68,12 +98,18 @@ function Navbar() {
         }`}
       >
         <ul className='grid gap-8 items-center justify-center text-center text-orange-600 py-10'>
-          <NavItem url={HOME_PAGE_URL} title={'Home'} />
-          <NavItem url={LOGIN_PAGE_URL} title={'Login'} />
-          <NavItem url={SIGN_UP_PAGE_URL} title={'SignUp'} />
-
-          {user?.role === ('ADMIN' || 'DEVELOPER') && (
-            <NavItem url={ADMIN_PAGE_URL} title={'Admin'} />
+          {navItems.map(({ path, label }) => (
+            <NavItem key={label} url={path} title={label} />
+          ))}
+          {user?.email && (
+            <li>
+              <button
+                className='w-full no__highlights nav__bg hover:bg-blue-500 active:scale-95 grid py-2 outline-2 outline outline-black bg-yellow-500 text-gray-800 font-semibold'
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </li>
           )}
         </ul>
       </div>
