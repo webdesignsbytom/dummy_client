@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+// Icons
 import { IoMdMenu } from 'react-icons/io';
+// Images
 import LogoWhite from '../../assets/images/logos/tech-design-tavistock-logo-white.svg';
+// Context
 import { useUser } from '../../context/UserContext';
+// Constants
 import {
   ADMIN_PAGE_URL,
   CompanyName,
@@ -16,6 +20,7 @@ import useNavigateToPage from '../../hooks/useNavigateToPage';
 function Navbar() {
   const { user, setUser } = useUser();
   const { navigateToPage } = useNavigateToPage();
+
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
 
   const togglePhoneNav = () => {
@@ -34,7 +39,7 @@ function Navbar() {
     ...(user?.email
       ? [
           ...(user.role === 'ADMIN' || user.role === 'DEVELOPER'
-            ? [{ path: '/admin', label: 'Admin' }]
+            ? [{ path: ADMIN_PAGE_URL, label: 'Admin' }]
             : []),
         ]
       : [
