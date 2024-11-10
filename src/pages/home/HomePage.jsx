@@ -7,8 +7,7 @@ import { CompanyName } from '../../utils/Constants';
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import FooterComponent from '../../components/footer/FooterComponent';
-import SearchBarComponent from '../../components/search/SearchBarComponent';
-import SocialMediaCTA from '../../components/socialMedia/SocialMediaCTA';
+import HomePageMainContainer from '../../components/home/HomePageMainContainer';
 
 // Lazy-loaded ChatBotComponent
 const ChatBotComponent = lazy(() =>
@@ -30,18 +29,9 @@ const HomePage = React.memo(() => {
           <Navbar />
 
           {/* Main page content */}
-          <main role='main' className='grid w-full h-full'>
-            <div>
-              <div>home</div>
-              <div>
-                <SearchBarComponent />
-                <SocialMediaCTA />
-              </div>
-            </div>
-
-            {/* Footer */}
-            <FooterComponent />
-          </main>
+          <HomePageMainContainer />
+          {/* Footer */}
+          <FooterComponent />
         </div>
       </div>
     </>

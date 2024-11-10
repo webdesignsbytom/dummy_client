@@ -15,6 +15,7 @@ Live Link [MyPlanet](https://myplanetview.netlify.app/)
   - [Launch](#launch)
     - [Checklist](#checklist)
     - [Build](#build)
+  - [Installs](#installs)
 
 ## General Info
 
@@ -110,3 +111,8 @@ Login to google tags and create one for each site and get the DNS code.
 ### Build
 
 1. `npm run build` to create build directory
+
+## Installs
+
+`npm i react-helmet`
+`npm i react-ga4`
