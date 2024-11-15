@@ -29,6 +29,11 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
 
+# Prevent access to restricted file
+<FilesMatch "\.(htaccess|htpasswd|env|ini|log|sh|php)$">
+  Require all denied
+</FilesMatch>
+
 # Caching
 <IfModule mod_expires.c>
   ExpiresActive On
