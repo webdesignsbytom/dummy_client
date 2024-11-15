@@ -22,7 +22,13 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   RewriteRule . /index.html [L]
 </IfModule>
 
-# Security headers
+## Limit HTTP methods to prevent certain types of attacks.
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_METHOD} !^(GET|POST|HEAD|OPTIONS)$
+  RewriteRule .* - [F]
+</IfModule>
+
+## Security headers
 <IfModule mod_headers.c>
   Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://tdt-server.vercel.app"
   Header set X-Content-Type-Options nosniff
@@ -69,6 +75,13 @@ AddDefaultCharset UTF-8
 # Compressing text-based resources
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+## Ban bots and crawlers
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_USER_AGENT} ^.*(badbot|crawler|spambot).*$ [NC]
+  RewriteRule .* - [F,L]
 </IfModule>
 
 # php -- BEGIN cPanel-generated handler, do not edit
