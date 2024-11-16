@@ -19,7 +19,7 @@ import useNavigateToPage from '../../hooks/useNavigateToPage';
 
 function Navbar() {
   const { user, setUser } = useUser();
-  const { navigateToPage } = useNavigateToPage();
+  const navigateToPage = useNavigateToPage();
 
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
 
