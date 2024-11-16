@@ -9,39 +9,54 @@ function Error404() {
   return (
     <>
       {/* Tab Data */}
-      <HelmetItem PageName={'Error'} desc={`Error page Not Found.`} />
+      <HelmetItem
+        PageName="404 Not Found"
+        desc="Oops! The page you're looking for doesn't exist. But hey, enjoy this cute cat image while you're here!"
+        keywords="404, error, page not found, lost cat, cute cat"
+        additionalMeta={[
+          { property: 'og:title', content: '404 - Page Not Found' },
+          { property: 'og:description', content: 'The page you requested could not be found. But here’s a cute cat to cheer you up!' },
+          { property: 'og:image', content: 'https://localhost:9000/404-page-not-found-cat.png' }, // Ensure this URL points to the actual image
+          { property: 'og:url', content: 'https://yourwebsite.com/404' },
+          { name: 'twitter:card', content: 'summary_large_image' },
+          { name: 'twitter:title', content: '404 - Page Not Found' },
+          { name: 'twitter:description', content: 'Oops! This page doesn’t exist, but enjoy this cute cat image.' },
+          { name: 'twitter:image', content: 'https://localhost:9000/404-page-not-found-cat.png' },
+          { name: 'robots', content: 'noindex, follow' }, // Prevents indexing but allows crawling links on the page
+        ]}
+      />
 
       {/* Page */}
-      <div className='grid min-h-screen h-screen max-h-screen overflow-hidden w-full bg-main-background font-poppins'>
-        <div className='grid grid-rows-reg h-full w-full overflow-hidden'>
+      <div className="grid min-h-screen h-screen max-h-screen overflow-hidden w-full bg-main-background font-poppins">
+        <div className="grid grid-rows-reg h-full w-full overflow-hidden">
           {/* Navigation */}
           <Navbar />
 
           {/* Main page content */}
           <main
-            role='main'
-            className='relative grid w-full h-full overflow-hidden'
+            role="main"
+            className="relative grid w-full h-full overflow-hidden"
           >
-            <section className='grid absolute w-full text-center h-full items-center justify-center z-10'>
-              <section className='grid gap-2'>
-                <article className='outline outline-2 font-semibold outline-black -mt-10 rounded bg-white'>
-                  <div className='p-4'>
-                    <h1 className='text-4xl text-left'>
-                      ERROR <span className='text-red-500'>404</span>
+            <section className="grid absolute w-full text-center h-full items-center justify-center z-10">
+              <section className="grid gap-2 px-2">
+                <article className="outline outline-2 font-semibold outline-black -mt-10 rounded bg-white">
+                  <div className="p-4">
+                    <h1 className="text-2xl lg:text-4xl text-left">
+                      ERROR <span className="text-red-500">404</span>
                     </h1>
-                    <h2 className='text-4xl'>PAGE NOT FOUND</h2>
+                    <h2 className="text-2xl lg:text-4xl">PAGE NOT FOUND</h2>
                   </div>
-                  <article className='text-red-500 text-left pl-4 border-t-2 border-solid border-black p-2'>
-                    <h3 className='uppercase'>But you found a friend 💖</h3>
+                  <article className="text-red-500 text-left pl-4 border-t-2 border-solid border-black p-2">
+                    <h3 className="uppercase">But you found a friend 💖</h3>
                   </article>
                 </article>
               </section>
             </section>
 
-            <section className='flex justify-end lg:mr-20'>
+            <section className="flex justify-end lg:mr-20">
               <img
                 src={CatNotFound}
-                alt='Lost cat for error page that is funny and cute.'
+                alt="A funny and cute lost cat for the error page."
               />
             </section>
           </main>
