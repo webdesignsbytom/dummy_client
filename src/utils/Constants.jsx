@@ -60,6 +60,6 @@ export const FACEBOOK_NAME = 'bytetoast-studio';
 export const INSTAGRAM_NAME = 'bytetoast-studio';
 export const LINKEDIN_NAME = 'bytetoast-studio';
 
-export const FACEBOOK_BUSINESS_URL = `https://www.facebook.com/company/`;
-export const INSTAGRAM_BUSINESS_URL = `https://instagram.com/bytetoaststudio`;
-export const LINKEDIN_BUSINESS_URL = `https://www.linkedin.com/bytetoaststudio`;
+export const FACEBOOK_BUSINESS_URL = `https://www.facebook.com/company/bytetoast-studio`;
+export const INSTAGRAM_BUSINESS_URL = `https://instagram.com/bytetoast-studio`;
+export const LINKEDIN_BUSINESS_URL = `https://www.linkedin.com/bytetoast-studio`;
