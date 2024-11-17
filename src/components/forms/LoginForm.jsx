@@ -19,7 +19,7 @@ import useNavigateToPage from '../../hooks/useNavigateToPage';
 
 function LoginForm() {
   const { setUser } = useUser();
-  const { navigateToPage } = useNavigateToPage();
+  const navigateToPage = useNavigateToPage();
 
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [loginError, setLoginError] = useState(null); // Set null initially for error message

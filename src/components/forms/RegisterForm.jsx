@@ -12,9 +12,13 @@ import CountrySelect from '../utils/CountrySelect';
 import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
 // Styles
 import { ButtonStyle, InputStyle, LinkStyle } from '../../utils/Styles';
+// Hooks
+import useNavigateToPage from '../../hooks/useNavigateToPage';
 
 function RegisterForm() {
   const { setUser } = useUser();
+
+  const navigateToPage = useNavigateToPage();
 
   const [registerFormData, setRegisterFormData] = useState({
     email: '',
@@ -30,17 +34,21 @@ function RegisterForm() {
 
   const handleSubmitRegisterForm = async (event) => {
     event.preventDefault();
-    setRegistrationInProgress(true);
-    setRegisterError(null); // Reset error before new attempt
 
-    try {
-      const res = await client.post(REGISTER_API, registerFormData, false);
-      setUser(res.data.data.user); // Set the user in context
+    setRegistrationInProgress(true);
+    setRegisterError(null); 
+
+    client
+    .post(REGISTER_API, registerFormData, false)
+    .then((res) => {
+      setUser(res.data.existingUser);
       setRegistrationInProgress(false);
-    } catch (error) {
-      setRegisterError(error.message); // Display detailed error from the API
+    })
+    .then(() => navigateToPage(LOGIN_PAGE_URL))
+    .catch((err) => {
+      setRegisterError(err.message);
       setRegistrationInProgress(false);
-    }
+    });
   };
 
   const handleChange = (event) => {
