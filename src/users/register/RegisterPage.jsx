@@ -6,26 +6,18 @@ import RegisterCard from '../../components/user/RegisterCard';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
+// Data
+import { registerPageAdditionalMeta, registerPageStructuredData } from '../../utils/data/PageData';
 
 function RegisterPage() {
   return (
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName="Register"
-        desc={`Create a ${CompanyName} account to access personalized simulations, tools, and exclusive features.`}
-        keywords="register, sign up, create account, simulations, tools, exclusive features"
-        additionalMeta={[
-          { property: 'og:title', content: `Register - ${CompanyName}` },
-          { property: 'og:description', content: `Sign up for a ${CompanyName} account and unlock exclusive access to simulations and tools.` },
-          { property: 'og:image', content: 'https://localhost:9000/user/register-preview.jpg' }, // Relevant registration page image
-          { property: 'og:url', content: 'https://yourwebsite.com/register' },
-          { name: 'twitter:card', content: 'summary_large_image' },
-          { name: 'twitter:title', content: `Register - ${CompanyName}` },
-          { name: 'twitter:description', content: `Join ${CompanyName} and gain access to personalized simulations and tools.` },
-          { name: 'twitter:image', content: 'https://localhost:9000/user/register-preview.jpg' },
-          { name: 'robots', content: 'noindex, nofollow' }, // Prevents indexing for privacy
-        ]}
+        PageName='Register'
+        desc={`Register with ${CompanyName} to access exclusive features.`}
+        additionalMeta={registerPageAdditionalMeta}
+        structuredData={registerPageStructuredData}
       />
 
       {/* Page */}

@@ -1,11 +1,13 @@
 // Company data
-export const CompanyName = 'Client';
-export const CompanyPhoneNumber = '07000000000';
-export const ContactEmailAddress = 'hello@company.com';
-export const DirectorName = 'Me Myself';
+export const CompanyName = 'ByteToast Studio';
+export const CompanyPhoneNumber = '07846286385';
+export const ContactEmailAddress = 'hello@bytetoast-studio.com';
+export const DirectorName = 'Tom Brockington';
 
-// Site text
-export const CompantTagLine = 'Our company is great'
+export const CompantTagLine = 'If it does not exist we can invent it for you!';
+export const SubtitleMain = 'Bringing crazy projects to life!';
+export const SubtitleSecondary = `How can ${CompanyName} help you? `;
+
 
 // Cookie data
 export const NumberOfCookies = 0;
@@ -22,6 +24,11 @@ export const LOGIN_PAGE_URL = '/login';
 export const SIGN_UP_PAGE_URL = '/sign-up';
 export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
 export const ERROR_404_PAGE_URL = '*';
+
+// URL
+export const FULL_BUSINESS_URL = 'https://www.bytetoast-studio.co.uk';
+export const SHORT_BUSINESS_URL = 'bytetoast-studio.co.uk';
+export const DISPLAY_BUSINESS_URL = 'www.bytetoast-studio.co.uk';
 
 // API
 export const LOGIN_API = '/login';
@@ -40,6 +47,7 @@ export const GOOGLE_SERVICE = 'google';
 export const GITHUB_SERVICE = 'github';
 export const APPLE_SERVICE = 'apple';
 export const X_SERVICE = 'x';
+
 // Social Media URLs
 export const FACEBOOK_URL = 'https://facebook.com/';
 export const INSTAGRAM_URL = 'https://instagram.com/';
@@ -47,3 +55,11 @@ export const GOOGLE_URL = 'https://google.com/';
 export const GITHUB_URL = 'https://github.com/';
 export const APPLE_URL = 'https://apple.com/';
 export const X_URL = 'https://x.com/';
+
+export const FACEBOOK_NAME = 'bytetoast-studio';
+export const INSTAGRAM_NAME = 'bytetoast-studio';
+export const LINKEDIN_NAME = 'bytetoast-studio';
+
+export const FACEBOOK_BUSINESS_URL = `https://www.facebook.com/company/`;
+export const INSTAGRAM_BUSINESS_URL = `https://instagram.com/bytetoaststudio`;
+export const LINKEDIN_BUSINESS_URL = `https://www.linkedin.com/bytetoaststudio`;

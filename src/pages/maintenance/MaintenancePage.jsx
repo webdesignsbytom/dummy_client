@@ -4,6 +4,8 @@ import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
+// Data
+import { maintenancePageAdditionalMeta, maintenancePageStructuredData } from '../../utils/data/PageData';
 
 function MaintenancePage() {
   return (
@@ -11,19 +13,10 @@ function MaintenancePage() {
       {/* Tab Data */}
       <HelmetItem
         PageName="Maintenance"
-        desc={`The ${CompanyName} website is currently undergoing maintenance. We will be back shortly.`}
-        keywords="maintenance, downtime, website updates"
-        additionalMeta={[
-          { property: 'og:title', content: `Maintenance - ${CompanyName}` },
-          { property: 'og:description', content: `Our website is temporarily down for maintenance. Please check back soon.` },
-          { property: 'og:image', content: 'https://localhost:9000/maintenance/maintenance-preview.jpg' }, // Use a generic maintenance image
-          { property: 'og:url', content: 'https://yourwebsite.com/maintenance' },
-          { name: 'twitter:card', content: 'summary_large_image' },
-          { name: 'twitter:title', content: `Maintenance - ${CompanyName}` },
-          { name: 'twitter:description', content: `We’re currently performing scheduled maintenance. Thank you for your patience.` },
-          { name: 'twitter:image', content: 'https://localhost:9000/maintenance/maintenance-preview.jpg' },
-          { name: 'robots', content: 'noindex, nofollow' }, // Prevents indexing as this is temporary
-        ]}
+        desc={`The ${CompanyName} website is currently undergoing maintenance. We’ll be back shortly with exciting updates.`}
+        keywords={`maintenance, ${CompanyName}, website down, updates`}
+        additionalMeta={maintenancePageAdditionalMeta}
+        structuredData={maintenancePageStructuredData}
       />
 
       {/* Page */}

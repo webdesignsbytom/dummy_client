@@ -6,6 +6,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 import { CompanyName } from '../../utils/Constants';
 // Data
 import { TermsAndPoliciesDataArray } from '../../utils/data/TermsData';
+import { termsAndPoliciesAdditionalMeta, termsAndPoliciesStructuredData } from '../../utils/data/PageData';
 
 function TermAndPoliciesPage() {
   const headers = [
@@ -20,18 +21,10 @@ function TermAndPoliciesPage() {
       {/* Tab Data */}
       <HelmetItem
         PageName="Terms and Policies"
-        desc={`Review the terms, privacy policies, and compliance guidelines of ${CompanyName}.`}
-        keywords={`terms, policies, privacy, compliance, agreements, ${CompanyName}`}
-        additionalMeta={[
-          { property: 'og:title', content: `Terms and Policies - ${CompanyName}` },
-          { property: 'og:description', content: `Understand the terms, policies, and compliance commitments of ${CompanyName}.` },
-          { property: 'og:image', content: 'https://localhost:9000/terms/terms-preview.jpg' }, // Relevant image for terms and policies
-          { property: 'og:url', content: 'https://yourwebsite.com/terms' },
-          { name: 'twitter:card', content: 'summary_large_image' },
-          { name: 'twitter:title', content: `Terms and Policies - ${CompanyName}` },
-          { name: 'twitter:description', content: `Learn about the legal terms and privacy policies of ${CompanyName}.` },
-          { name: 'twitter:image', content: 'https://localhost:9000/terms/terms-preview.jpg' },
-        ]}
+        desc={`Explore the terms of service and privacy policies of ${CompanyName}.`}
+        keywords={`terms, policies, privacy, compliance, ${CompanyName}`}
+        additionalMeta={termsAndPoliciesAdditionalMeta}
+        structuredData={termsAndPoliciesStructuredData}
       />
 
       {/* Page */}

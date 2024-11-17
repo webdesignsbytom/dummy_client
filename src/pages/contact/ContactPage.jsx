@@ -2,28 +2,22 @@ import React from 'react';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
+import ContactForm from '../../components/forms/ContactForm';
 // Constants
 import { CompanyName } from '../../utils/Constants';
-import ContactForm from '../../components/forms/ContactForm';
+// Data
+import { contactPageAdditionalMeta, contactPageStructuredData } from '../../utils/data/PageData';
 
 function ContactPage() {
   return (
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName="Contact"
-        desc={`Get in touch with ${CompanyName} to discuss your needs, ask questions, or provide feedback.`}
-        keywords="contact, support, help, feedback, inquiries, customer service"
-        additionalMeta={[
-          { property: 'og:title', content: `Contact - ${CompanyName}` },
-          { property: 'og:description', content: `Reach out to ${CompanyName} for any questions, support, or inquiries.` },
-          { property: 'og:image', content: 'https://localhost:9000/contact/contact-preview.jpg' }, // Relevant contact page image
-          { property: 'og:url', content: 'https://yourwebsite.com/contact' },
-          { name: 'twitter:card', content: 'summary_large_image' },
-          { name: 'twitter:title', content: `Contact - ${CompanyName}` },
-          { name: 'twitter:description', content: `Contact ${CompanyName} for support, questions, or feedback.` },
-          { name: 'twitter:image', content: 'https://localhost:9000/contact/contact-preview.jpg' },
-        ]}
+        PageName='Contact'
+        desc={`Get in touch with ${CompanyName} for expert web and circuit design services. We're here to help with your inquiries, quotes, or support needs.`}
+        keywords={`contact, web design, circuit design, ${CompanyName}, customer support, inquiries, quotes, UK`}
+        additionalMeta={contactPageAdditionalMeta}
+        structuredData={contactPageStructuredData}
       />
 
       {/* Page */}

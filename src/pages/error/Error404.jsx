@@ -4,26 +4,18 @@ import CatNotFound from '../../assets/images/pages/404-page-not-found-cat.png';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
+// Data
+import { errorPageAdditionalMeta, errorPageStructuredData } from '../../utils/data/PageData';
 
 function Error404() {
   return (
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName="404 Not Found"
-        desc="Oops! The page you're looking for doesn't exist. But hey, enjoy this cute cat image while you're here!"
-        keywords="404, error, page not found, lost cat, cute cat"
-        additionalMeta={[
-          { property: 'og:title', content: '404 - Page Not Found' },
-          { property: 'og:description', content: 'The page you requested could not be found. But here’s a cute cat to cheer you up!' },
-          { property: 'og:image', content: 'https://localhost:9000/404-page-not-found-cat.png' }, // Ensure this URL points to the actual image
-          { property: 'og:url', content: 'https://yourwebsite.com/404' },
-          { name: 'twitter:card', content: 'summary_large_image' },
-          { name: 'twitter:title', content: '404 - Page Not Found' },
-          { name: 'twitter:description', content: 'Oops! This page doesn’t exist, but enjoy this cute cat image.' },
-          { name: 'twitter:image', content: 'https://localhost:9000/404-page-not-found-cat.png' },
-          { name: 'robots', content: 'noindex, follow' }, // Prevents indexing but allows crawling links on the page
-        ]}
+        PageName="Error"
+        desc="The requested page could not be found. Visit our homepage to find what you’re looking for."
+        additionalMeta={errorPageAdditionalMeta}
+        structuredData={errorPageStructuredData}
       />
 
       {/* Page */}
