@@ -12,7 +12,7 @@ import HomePageMainContainer from '../../components/home/HomePageMainContainer';
 import {
   homePageAdditionalMeta,
   homePageStructuredData,
-} from '../../utils/data/PageData';
+} from '../../utils/data/MetaData';
 
 // Lazy-loaded ChatBotComponent
 const ChatBotComponent = lazy(() =>
