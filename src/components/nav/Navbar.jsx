@@ -54,7 +54,7 @@ function Navbar() {
       aria-label='Main Navigation'
       className='relative bg-nav-background shadow-md'
     >
-      <div className='grid grid-cols-reg px-4 py-4'>
+      <section className='grid grid-cols-reg px-4 py-4'>
         <section>
           <NavLink to={HOME_PAGE_URL}>
             <img
@@ -92,10 +92,10 @@ function Navbar() {
             )}
           </ul>
         </section>
-      </div>
+      </section>
 
       {/* Phone navbar */}
-      <div
+      <section
         className={`phone-nav absolute top-full left-0 w-full bg-nav-background transition-transform duration-300 ${
           isPhoneNavOpen
             ? 'translate-y-0 opacity-100'
@@ -117,7 +117,7 @@ function Navbar() {
             </li>
           )}
         </ul>
-      </div>
+      </section>
     </nav>
   );
 }
