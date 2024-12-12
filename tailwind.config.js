@@ -27,6 +27,7 @@ module.exports = {
         'error-red': '#dc2626',
         'success-green': '#16a34a',
         'hyperlink-blue': '#2563EB',
+        'colour1': '#2563EB',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
@@ -45,6 +46,7 @@ module.exports = {
         xs: '422px',
       },
       zIndex: {
+        '100': '100',
         max: '999'
       }
     },

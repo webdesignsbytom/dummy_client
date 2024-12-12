@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // Context
 import { useUser } from '../../context/UserContext';
 // Constants
@@ -8,12 +8,14 @@ import {
   NumberOfCookies,
   POLICIES_PAGE_URL,
 } from '../../utils/Constants';
-// Styles
-import { ButtonStyle, CancelButtonStyle, LinkStyle } from '../../utils/Styles';
+// Images
+import CookieSVG from '../../assets/images/icons/cookie-icon.svg';
 
 function CookieConsentModal() {
   const { setHasAgreedToCookies } = useUser();
 
+  const location = useLocation();
+  console.log('location: ' + location);
   console.log('cookie');
 
   const handleAgree = () => {
@@ -26,66 +28,102 @@ function CookieConsentModal() {
   };
 
   return (
-    <section
-      aria-label='Cookie policy consent form'
-      role='dialog'
-      aria-modal='true'
-      className='grid fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max w-full justify-center px-2 md:px-0'
-    >
-      <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-full w-full bg-main-background max-w-md'>
-        <article className='grid gap-4 h-full w-full grid-rows-rev'>
-          <div className='grid gap-4 w-full h-full'>
-            <div className='text-center'>
-              <h2 className='text-lg font-medium'>Cookie Consent</h2>
-            </div>
-            <div className='grid gap-2 h-full w-full px-2'>
-              <p>
-                We use cookies to improve your experience on our site. Please
-                accept cookies before continuing.
-              </p>
-              <p>
-                We currently use{' '}
-                <span className='text-green-600 font-bold'>
-                  {Number(NumberOfCookies)}
-                </span>{' '}
-                cookies.
-              </p>
-              <p>
-                You can read further and find out more about our policies and
-                how we use your data by{' '}
-                <Link
-                  to={POLICIES_PAGE_URL}
-                  className={LinkStyle}
-                  aria-label='Read our policies page'
-                >
-                  clicking here.
-                </Link>
-              </p>
-            </div>
-          </div>
-          <div className='grid grid-cols-2 gap-2 w-full h-fit'>
+    <>
+      {location.pathname === POLICIES_PAGE_URL ? (
+        <section className='fixed lg:max-w-fit lg:right-4 lg:bottom-4 bottom-0 w-full bg-colour1 border-t-2 border-solid border-colour3 lg:border-2 lg:rounded py-2 px-2'>
+          <section className='grid grid-cols-2 gap-2 w-full h-fit'>
             <div>
               <button
-                className={CancelButtonStyle}
+                className={`px-2 py-2.5 lg:px-8 w-full bg-error-red text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
                 onClick={handleDisagree}
                 aria-label='Disagree to cookie usage'
               >
-                Disagree
+                DISAGREE
               </button>
             </div>
             <div>
               <button
-                className={ButtonStyle}
+                className={`px-2 py-2.5 lg:px-8 w-full bg-colour5 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
                 onClick={handleAgree}
                 aria-label='Agree to cookie usage'
               >
-                I Agree
+                I AGREE
               </button>
             </div>
+          </section>
+        </section>
+      ) : (
+        <section
+          aria-label='Cookie policy consent form'
+          role='dialog'
+          aria-modal='true'
+          className='grid fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max w-full justify-center px-6 md:px-0'
+        >
+          <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-fit w-full bg-main-background border-solid border-2 border-colour5 max-w-md'>
+            <article className='grid gap-8 h-full w-full grid-rows-rev'>
+              <div className='grid gap-4 w-full h-full'>
+                <section className='mx-auto py-2'>
+                  <img
+                    src={CookieSVG}
+                    alt='Cookie icon'
+                    className='w-full h-fit max-w-24'
+                  />
+                </section>
+                <section className='text-center'>
+                  <h2 className='text-lg font-semibold text-colour5'>
+                    Cookie Consent
+                  </h2>
+                </section>
+                <section className='grid gap-2 h-full w-full px-2'>
+                  <p>
+                    We use cookies to improve your experience on our site.
+                    Please accept cookies before continuing.
+                  </p>
+                  <p>
+                    We currently use{' '}
+                    <span className='text-colour5 font-bold'>
+                      {Number(NumberOfCookies)}
+                    </span>{' '}
+                    cookies.
+                  </p>
+                  <p>
+                    You can read further and find out more about our policies
+                    and how we use your data by{' '}
+                    <Link
+                      to={POLICIES_PAGE_URL}
+                      className={'text-colour5 italic'}
+                      aria-label='Read our policies page'
+                    >
+                      clicking here.
+                    </Link>
+                  </p>
+                </section>
+              </div>
+              <section className='grid grid-cols-2 gap-2 w-full h-fit'>
+                <div>
+                  <button
+                    className={`px-2 py-2.5 w-full bg-error-red text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
+                    onClick={handleDisagree}
+                    aria-label='Disagree to cookie usage'
+                  >
+                    Disagree
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className={`px-2 py-2.5 w-full bg-colour5 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
+                    onClick={handleAgree}
+                    aria-label='Agree to cookie usage'
+                  >
+                    I Agree
+                  </button>
+                </div>
+              </section>
+            </article>
           </div>
-        </article>
-      </div>
-    </section>
+        </section>
+      )}
+    </>
   );
 }
 

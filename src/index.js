@@ -13,6 +13,7 @@ import './styles/components.css';
 import './styles/animations.css';
 import './styles/navbar.css';
 import './styles/backgrounds.css';
+import './styles/fonts.css';
 
 // Initialize Google Analytics with your tracking ID
 ReactGA.initialize(process.env.REACT_APP_ANALYTICS_ID);

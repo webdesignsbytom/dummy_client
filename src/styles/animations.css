@@ -1,13 +1,12 @@
-/* Navbar container */
+/* Navbar open and close on tablets and phones */
 nav {
   position: relative;
   z-index: 50;
 }
 
-/* Phone navbar - hidden by default */
 .phone-nav {
   position: absolute;
-  top: 100%; /* Positioned directly below navbar */
+  top: 100%; 
   left: 0;
   width: 100%;
   transform: translateY(-100%);
@@ -16,9 +15,25 @@ nav {
   transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
 }
 
-/* When the menu is toggled open */
 .phone-nav.translate-y-0 {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Fade up */
+@keyframes fadeUpAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* Start slightly below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* End at the original position */
+  }
+}
+
+.fade-up-animation {
+  opacity: 0; /* Start invisible */
+  animation: fadeUpAnimation 0.8s ease-in-out forwards; /* Customize duration and easing as needed */
 }
