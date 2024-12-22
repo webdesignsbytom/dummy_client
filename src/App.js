@@ -5,6 +5,7 @@ import {
   ADMIN_PAGE_URL,
   CONTACT_PAGE_URL,
   COOKIE_TIMER,
+  CookiePolicyName,
   HOME_PAGE_URL,
   LOGIN_PAGE_URL,
   MAINTENANCE_PAGE_URL,
@@ -13,17 +14,17 @@ import {
   SIGN_UP_PAGE_URL,
 } from './utils/Constants';
 // Components
-import LoadingScreen from './components/utils/LoadingScreen'
+import LoadingScreen from './components/utils/LoadingScreen';
 // Utils
 import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
-// Context
-import { useUser } from './context/UserContext';
 // Normal import for HomePage (no lazy loading)
 import HomePage from './pages/home/HomePage';
 import HomePageSideNav from './pages/home/HomePageSideNav';
 // Lazy-loaded Pages
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
-const MaintenancePage = lazy(() => import('./pages/maintenance/MaintenancePage'));
+const MaintenancePage = lazy(() =>
+  import('./pages/maintenance/MaintenancePage')
+);
 const ContactPage = lazy(() => import('./pages/contact/ContactPage'));
 const Error404 = lazy(() => import('./pages/error/Error404'));
 const ForgettenPasswordPage = lazy(() =>
@@ -42,27 +43,37 @@ const CookieConsentModal = lazy(() =>
 
 function App() {
   const [isVisible, setIsVisible] = useState(false);
-  const { hasAgreedToCookies } = useUser();
+  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(true);
+
+  useEffect(() => {
+    const cookie = localStorage.getItem(CookiePolicyName);
+
+    if (cookie) {
+      setHasAgreedToCookies(true);
+    } else {
+      setHasAgreedToCookies(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (hasAgreedToCookies) {
-      setIsVisible(false); // Trigger a re-render by updating state
+      setIsVisible(false);
     }
 
     const timer = setTimeout(() => {
       if (!hasAgreedToCookies) {
-        setIsVisible(true); // Trigger a re-render by updating state
+        setIsVisible(true);
       }
     }, COOKIE_TIMER);
 
-    return () => clearTimeout(timer); // Clean up the timer when component unmounts
-  }, [hasAgreedToCookies]); // Run only when `hasAgreedToCookies` changes
+    return () => clearTimeout(timer);
+  }, [hasAgreedToCookies]);
 
   return (
     <>
       {isVisible && (
         <Suspense>
-          <CookieConsentModal />
+          <CookieConsentModal setHasAgreedToCookies={setHasAgreedToCookies} />
         </Suspense>
       )}
 

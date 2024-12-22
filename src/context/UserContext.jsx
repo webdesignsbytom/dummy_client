@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import client from '../api/client';
 // Constants
 import {
-  CookiePolicyName,
   GET_LOGGED_IN_USER_API,
   HOME_PAGE_URL,
 } from '../utils/Constants';
@@ -21,8 +20,6 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     id: null,
   });
-
-  const [hasAgreedToCookies, setHasAgreedToCookies] = useState(true);
 
   const [token, setToken] = useState(
     localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || ''
@@ -44,14 +41,6 @@ const UserProvider = ({ children }) => {
           console.error('Unable to retrieve user data', err);
         });
     }
-
-    const cookie = localStorage.getItem(CookiePolicyName);
-
-    if (cookie) {
-      setHasAgreedToCookies(true);
-    } else {
-      setHasAgreedToCookies(false);
-    }
   }, []);
 
   return (
@@ -61,8 +50,6 @@ const UserProvider = ({ children }) => {
         setUser,
         token,
         setToken,
-        hasAgreedToCookies,
-        setHasAgreedToCookies,
       }}
     >
       {children}

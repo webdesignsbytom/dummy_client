@@ -83,7 +83,7 @@ function Navbar() {
             {user?.email && (
               <li>
                 <button
-                  className='hover:text-colour5 active:scale-95'
+                  className='hover:text-colour2 active:scale-95'
                   onClick={handleLogout}
                 >
                   Logout

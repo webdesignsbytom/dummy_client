@@ -39,7 +39,7 @@ function FooterComponent() {
           <div className='grid grid-rows-reg w-full lg:justify-center text-center'>
             <div className='text-left w-full'>
               <h6>Quick Links</h6>
-              <div className='border-b-2 border-solid border-colour5 pt-2 mb-2'></div>
+              <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
             </div>
             <ul className='text-left w-full'>
               {FooterLinksArray.map((link, index) => {
@@ -67,7 +67,7 @@ function FooterComponent() {
           <div className='grid grid-rows-reg justify-center text-center'>
             <div className='text-left'>
               <h6>Services</h6>
-              <div className='border-b-2 border-solid border-colour5 pt-2 mb-2'></div>
+              <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
             </div>
             <ul className='text-left'>
               {MainServicesArray.map((service) => {
@@ -85,7 +85,7 @@ function FooterComponent() {
         <section className='grid grid-rows-reg gap-2 w-fit px-2'>
           <div className='text-left'>
             <h6>Contact</h6>
-            <div className='border-b-2 border-solid border-colour5 pt-2 mb-2'></div>
+            <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
           </div>
 
           <div className='grid gap-1 h-fit'>

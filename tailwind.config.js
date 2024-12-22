@@ -28,6 +28,7 @@ module.exports = {
         'success-green': '#16a34a',
         'hyperlink-blue': '#2563EB',
         'colour1': '#2563EB',
+        'colour2': '#FB8500',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

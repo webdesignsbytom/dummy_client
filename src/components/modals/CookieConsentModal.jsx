@@ -40,7 +40,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
             </div>
             <div>
               <button
-                className={`px-2 py-2.5 lg:px-8 w-full active:bg-red-500 bg-colour5 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
+                className={`px-2 py-2.5 lg:px-8 w-full active:bg-red-500 bg-colour2 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
                 onClick={handleAgree}
                 aria-label='Agree to cookie usage'
               >
@@ -56,7 +56,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
           aria-modal='true'
           className='grid fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max w-full justify-center px-6 md:px-0'
         >
-          <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-fit w-full bg-main-background border-solid border-2 border-colour5 max-w-md'>
+          <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-fit w-full bg-main-background border-solid border-2 border-colour2 max-w-md'>
             <article className='grid gap-8 h-full w-full grid-rows-rev'>
               <div className='grid gap-4 w-full h-full'>
                 <section className='mx-auto py-2'>
@@ -67,7 +67,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
                   />
                 </section>
                 <section className='text-center'>
-                  <h2 className='text-lg font-semibold text-colour5'>
+                  <h2 className='text-lg font-semibold text-colour2'>
                     Cookie Consent
                   </h2>
                 </section>
@@ -78,7 +78,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
                   </p>
                   <p>
                     We currently use{' '}
-                    <span className='text-colour5 font-bold'>
+                    <span className='text-colour2 font-bold'>
                       {Number(NumberOfCookies)}
                     </span>{' '}
                     cookies.
@@ -88,7 +88,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
                     and how we use your data by{' '}
                     <Link
                       to={POLICIES_PAGE_URL}
-                      className={'text-colour5 italic'}
+                      className={'text-colour2 italic'}
                       aria-label='Read our policies page'
                     >
                       clicking here.
@@ -108,7 +108,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
                 </div>
                 <div>
                   <button
-                    className={`px-2 py-2.5 w-full bg-colour5 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
+                    className={`px-2 py-2.5 w-full bg-colour2 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
                     onClick={handleAgree}
                     aria-label='Agree to cookie usage'
                   >
