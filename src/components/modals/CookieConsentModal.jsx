@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-// Context
-import { useUser } from '../../context/UserContext';
 // Constants
 import {
   CookiePolicyName,
@@ -11,8 +9,7 @@ import {
 // Images
 import CookieSVG from '../../assets/images/icons/cookie-icon.svg';
 
-function CookieConsentModal() {
-  const { setHasAgreedToCookies } = useUser();
+function CookieConsentModal({ setHasAgreedToCookies }) {
 
   const location = useLocation();
   console.log('location: ' + location);
@@ -43,7 +40,7 @@ function CookieConsentModal() {
             </div>
             <div>
               <button
-                className={`px-2 py-2.5 lg:px-8 w-full bg-colour5 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
+                className={`px-2 py-2.5 lg:px-8 w-full active:bg-red-500 bg-colour5 text-white font-medium text-lg leading-tight uppercase rounded shadow-md active:shadow-lg transition duration-150 ease-in-out`}
                 onClick={handleAgree}
                 aria-label='Agree to cookie usage'
               >
