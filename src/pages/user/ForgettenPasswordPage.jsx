@@ -6,7 +6,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Data
-import { forgottenPasswordPageAdditionalMeta, forgottenPasswordPageStructuredData } from '../../utils/data/PageData';
+import { forgottenPasswordPageAdditionalMeta, forgottenPasswordPageStructuredData } from '../../utils/data/MetaData';
 
 function ForgettenPasswordPage() {
   return (

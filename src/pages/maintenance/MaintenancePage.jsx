@@ -5,7 +5,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Data
-import { maintenancePageAdditionalMeta, maintenancePageStructuredData } from '../../utils/data/PageData';
+import { maintenancePageAdditionalMeta, maintenancePageStructuredData } from '../../utils/data/MetaData';
 
 function MaintenancePage() {
   return (

@@ -5,7 +5,7 @@ import CatNotFound from '../../assets/images/pages/404-page-not-found-cat.png';
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 // Data
-import { errorPageAdditionalMeta, errorPageStructuredData } from '../../utils/data/PageData';
+import { errorPageAdditionalMeta, errorPageStructuredData } from '../../utils/data/MetaData';
 
 function Error404() {
   return (

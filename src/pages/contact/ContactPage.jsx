@@ -6,7 +6,7 @@ import ContactForm from '../../components/forms/ContactForm';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Data
-import { contactPageAdditionalMeta, contactPageStructuredData } from '../../utils/data/PageData';
+import { contactPageAdditionalMeta, contactPageStructuredData } from '../../utils/data/MetaData';
 
 function ContactPage() {
   return (

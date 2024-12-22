@@ -6,7 +6,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 import { CompanyName } from '../../utils/Constants';
 // Data
 import { TermsAndPoliciesDataArray } from '../../utils/data/TermsData';
-import { termsAndPoliciesAdditionalMeta, termsAndPoliciesStructuredData } from '../../utils/data/PageData';
+import { termsAndPoliciesAdditionalMeta, termsAndPoliciesStructuredData } from '../../utils/data/MetaData';
 
 function TermAndPoliciesPage() {
   const headers = [
