@@ -7,7 +7,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Data
-import { registerPageAdditionalMeta, registerPageStructuredData } from '../../utils/data/PageData';
+import { registerPageAdditionalMeta, registerPageStructuredData } from '../../utils/data/MetaData';
 
 function RegisterPage() {
   return (

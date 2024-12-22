@@ -6,7 +6,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Data
-import { loginPageAdditionalMeta, loginPageStructuredData } from '../../utils/data/PageData';
+import { loginPageAdditionalMeta, loginPageStructuredData } from '../../utils/data/MetaData';
 
 function LoginPage() {
   return (

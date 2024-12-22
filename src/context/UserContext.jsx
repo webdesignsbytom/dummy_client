@@ -10,7 +10,7 @@ import {
 // Hooks
 import useNavigateToPage from '../hooks/useNavigateToPage';
 // Utils
-import LoggedInUser from '../utils/LoggedInUser';
+import LoggedInUser from '../utils/user/LoggedInUser';
 
 // Create the context
 export const UserContext = createContext();

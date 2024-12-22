@@ -15,7 +15,7 @@ import {
 // Components
 import LoadingScreen from './components/utils/LoadingScreen'
 // Utils
-import { AuthenticateAdmin } from './utils/AuthenticateUser';
+import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
 // Context
 import { useUser } from './context/UserContext';
 // Normal import for HomePage (no lazy loading)
