@@ -8,18 +8,18 @@ import BtsLogo from '../../assets/images/logos/byte-toast-studio-logo-web-develo
 import { useUser } from '../../context/UserContext';
 // Constants
 import {
-  ADMIN_PAGE_URL,
   CompanyName,
   HOME_PAGE_URL,
-  LOGIN_PAGE_URL,
-  SIGN_UP_PAGE_URL,
 } from '../../utils/Constants';
 // Hooks
 import useNavigateToPage from '../../hooks/useNavigateToPage';
+// Nav data
+import { getNavLinkItemsArray } from '../../utils/data/NavData';
 
 function Navbar() {
   const { user, setUser } = useUser();
   const navigateToPage = useNavigateToPage();
+  const navLinkItemsArray = getNavLinkItemsArray(user);
 
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
 
@@ -33,20 +33,6 @@ function Navbar() {
     localStorage.removeItem(process.env.REACT_APP_USER_TOKEN);
     navigateToPage(HOME_PAGE_URL, { replace: true });
   };
-
-  const navItems = [
-    { path: HOME_PAGE_URL, label: 'Home' },
-    ...(user?.email
-      ? [
-          ...(user.role === 'ADMIN' || user.role === 'DEVELOPER'
-            ? [{ path: ADMIN_PAGE_URL, label: 'Admin' }]
-            : []),
-        ]
-      : [
-          { path: LOGIN_PAGE_URL, label: 'Login' },
-          { path: SIGN_UP_PAGE_URL, label: 'Sign Up' },
-        ]),
-  ];
 
   return (
     <nav
@@ -77,7 +63,7 @@ function Navbar() {
 
           {/* Large screen */}
           <ul className='hidden md:grid grid-flow-col gap-6 items-center text-orange-600'>
-            {navItems.map(({ path, label }) => (
+            {navLinkItemsArray.map(({ path, label }) => (
               <NavItem key={label} url={path} title={label} />
             ))}
             {user?.email && (
@@ -103,7 +89,7 @@ function Navbar() {
         }`}
       >
         <ul className='grid gap-8 items-center justify-center text-center text-orange-600 py-10'>
-          {navItems.map(({ path, label }) => (
+          {navLinkItemsArray.map(({ path, label }) => (
             <NavItem key={label} url={path} title={label} />
           ))}
           {user?.email && (
