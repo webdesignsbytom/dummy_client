@@ -3,11 +3,15 @@ export const CompanyName = 'ByteToast Studio';
 export const CompanyPhoneNumber = '07846286385';
 export const ContactEmailAddress = 'hello@bytetoast-studio.com';
 export const DirectorName = 'Tom Brockington';
+export const LocationCity = 'Boston';
 
-export const CompantTagLine = 'If it does not exist we can invent it for you!';
-export const SubtitleMain = 'Bringing crazy projects to life!';
+export const CompantTagLine = 'Available in Location';
+export const MainTitle = 'Professional TS Dominatrix';
+export const SubtitleMain = 'Bringing pleasure to submissives!';
 export const SubtitleSecondary = `How can ${CompanyName} help you? `;
 
+export const KeyowrdsPages =
+  'Mistress Sammi Smith, Dominatrix, BDSM, Femdom, professional dominatrix, dungeon, fetish, submission, Mistress sessions, findom, wrexham dominatrix, latex dominatrix, pegging';
 
 // Cookie data
 export const NumberOfCookies = 0;
