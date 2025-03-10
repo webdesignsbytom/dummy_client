@@ -15,7 +15,7 @@ export const KeyowrdsPages =
 
 // Cookie data
 export const NumberOfCookies = 0;
-export const COOKIE_TIMER = 5000;
+export const COOKIE_TIMER = 10000;
 export const CookiePolicyName = 'CookiePolicy';
 
 // Pages
