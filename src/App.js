@@ -7,11 +7,8 @@ import {
   COOKIE_TIMER,
   CookiePolicyName,
   HOME_PAGE_URL,
-  LOGIN_PAGE_URL,
   MAINTENANCE_PAGE_URL,
   POLICIES_PAGE_URL,
-  RESET_PASS_PAGE_URL,
-  SIGN_UP_PAGE_URL,
 } from './utils/Constants';
 // Components
 import LoadingScreen from './components/utils/LoadingScreen';
@@ -19,7 +16,6 @@ import LoadingScreen from './components/utils/LoadingScreen';
 import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
 // Normal import for HomePage (no lazy loading)
 import HomePage from './pages/home/HomePage';
-import HomePageSideNav from './pages/home/HomePageSideNav';
 // Lazy-loaded Pages
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const MaintenancePage = lazy(() =>
@@ -27,11 +23,6 @@ const MaintenancePage = lazy(() =>
 );
 const ContactPage = lazy(() => import('./pages/contact/ContactPage'));
 const Error404 = lazy(() => import('./pages/error/Error404'));
-const ForgettenPasswordPage = lazy(() =>
-  import('./pages/user/ForgettenPasswordPage')
-);
-const LoginPage = lazy(() => import('./users/login/LoginPage'));
-const RegisterPage = lazy(() => import('./users/register/RegisterPage'));
 const TermAndPoliciesPage = lazy(() =>
   import('./pages/policies/TermAndPoliciesPage')
 );
@@ -86,14 +77,6 @@ function App() {
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
           <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
-
-          {/* User routes */}
-          <Route path={LOGIN_PAGE_URL} element={<LoginPage />} />
-          <Route path={SIGN_UP_PAGE_URL} element={<RegisterPage />} />
-          <Route
-            path={RESET_PASS_PAGE_URL}
-            element={<ForgettenPasswordPage />}
-          />
 
           {/* Other */}
           <Route path={MAINTENANCE_PAGE_URL} element={<MaintenancePage />} />

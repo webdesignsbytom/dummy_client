@@ -3,14 +3,11 @@ import { NavLink } from 'react-router-dom';
 // Icons
 import { IoMdMenu } from 'react-icons/io';
 // Images
-import BtsLogo from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
+import CompanyMainLogo from '../../assets/images/logos/diamond-gem-icon.svg';
 // Context
 import { useUser } from '../../context/UserContext';
 // Constants
-import {
-  CompanyName,
-  HOME_PAGE_URL,
-} from '../../utils/Constants';
+import { CompanyName, HOME_PAGE_URL } from '../../utils/Constants';
 // Hooks
 import useNavigateToPage from '../../hooks/useNavigateToPage';
 // Nav data
@@ -42,12 +39,17 @@ function Navbar() {
     >
       <section className='grid grid-cols-reg px-4 py-4'>
         <section>
-          <NavLink to={HOME_PAGE_URL}>
+          <NavLink to={HOME_PAGE_URL} className='flex items-center'>
             <img
-              src={BtsLogo}
-              alt={`${CompanyName} business logo - White Logo`}
-              className='min-w-10 w-10 h-10 cursor-pointer active:scale-95'
+              src={CompanyMainLogo}
+              alt={`${CompanyName} main logo`}
+              className='min-w-10 max-h-[48px] cursor-pointer active:scale-95 -rotate-12'
             />
+            <div>
+              <span className='font-andreabellarosa neon_text'>
+                {CompanyName}
+              </span>
+            </div>
           </NavLink>
         </section>
 
