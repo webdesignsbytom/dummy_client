@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // Constants
 import {
-  CompanyTagLine,
+  CompantTagLine,
   CompanyName,
   CompanyPhoneNumber,
   ContactEmailAddress,
@@ -10,7 +10,7 @@ import {
 // Components
 import FooterSocialCTA from './FooterSocialCTA';
 // Images
-import CompanyMainLogo from '../../assets/images/logos/diamond-gem-icon.svg';
+import BtsLogo from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
 // Data
 import { FooterLinksArray } from '../../utils/data/FooterData';
 import { MainServicesArray } from '../../utils/data/CompanyData';
@@ -23,13 +23,13 @@ function FooterComponent() {
         <section className='grid h-fit my-auto gap-4 py-2 w-full'>
           <div className='grid items-center justify-center'>
             <img
-              src={CompanyMainLogo}
+              src={BtsLogo}
               alt={`${CompanyName} footer logo`}
               className='min-w-6 w-full'
             />
           </div>
           <div className='text-center'>
-            <p className='text-sm'>{CompanyTagLine}</p>
+            <p className='text-sm'>{CompantTagLine}</p>
           </div>
           <FooterSocialCTA />
         </section>

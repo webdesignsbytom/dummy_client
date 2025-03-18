@@ -1,12 +1,11 @@
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
 [build]
   publish = "build"              # Directory to deploy (e.g., for React it's usually 'build')
   command = "npm run build"      # Build command (depends on your framework)
   environment = { NODE_VERSION = "18.20.4" } # Optional: Node version
+
+[build.environment]
+  NODE_ENV = "production"        # Environment variable for production build
+  REACT_APP_API_URL = "https://api.example.com" # Example custom environment variable
 
 [functions]
   directory = "netlify/functions" # Directory for serverless functions (if used)
