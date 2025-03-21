@@ -4,12 +4,14 @@ export const CompanyPhoneNumber = '07846286385';
 export const ContactEmailAddress = 'hello@bytetoast-studio.com';
 export const DirectorName = 'Tom Brockington';
 export const LocationCity = 'Boston';
+export const LocationCountry = 'United Kingdom';
 
 // Address Constants
 export const AddressLine1 = 'Luxury Nails Boutique';
 export const AddressLine2 = '123 High Street';
 export const AddressLine3 = 'Mayfair, London';
 export const AddressLine4 = 'W1K 3QT, United Kingdom';
+export const PostalCode = 'W1K 3QT';
 
 export const CompantTagLine = 'Available in Location';
 export const MainTitle = 'Professional TS Dominatrix';
