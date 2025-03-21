@@ -48,7 +48,7 @@ function FooterComponent() {
                     <Link
                       to={link.route}
                       aria-label={`${link.name} page navigation tab`}
-                      className={`font-semibold`}
+                      className={``}
                       onClick={() => {
                         window.scroll(0, 0);
                       }}
@@ -72,7 +72,7 @@ function FooterComponent() {
             <ul className='text-left'>
               {MainServicesArray.map((service) => {
                 return (
-                  <li key={service.label} className={`font-semibold`}>
+                  <li key={service.label} className={``}>
                     {service.label}
                   </li>
                 );
