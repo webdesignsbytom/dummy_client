@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // Constants
 import {
-  CompantTagLine,
+  CompanyTagLine,
   CompanyName,
   CompanyPhoneNumber,
   ContactEmailAddress,
@@ -29,7 +29,7 @@ function FooterComponent() {
             />
           </div>
           <div className='text-center'>
-            <p className='text-sm'>{CompantTagLine}</p>
+            <p className='text-sm'>{CompanyTagLine}</p>
           </div>
           <FooterSocialCTA />
         </section>

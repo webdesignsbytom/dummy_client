@@ -13,7 +13,7 @@ export const AddressLine3 = 'Mayfair, London';
 export const AddressLine4 = 'W1K 3QT, United Kingdom';
 export const PostalCode = 'W1K 3QT';
 
-export const CompantTagLine = 'Available in Location';
+export const CompanyTagLine = 'Available in Location';
 export const MainTitle = 'Professional TS Dominatrix';
 export const SubtitleMain = 'Bringing pleasure to submissives!';
 export const SubtitleSecondary = `How can ${CompanyName} help you? `;
