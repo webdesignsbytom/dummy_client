@@ -10,7 +10,7 @@ import {
 // Components
 import FooterSocialCTA from './FooterSocialCTA';
 // Images
-import BtsLogo from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
+import CompanyMainLogo from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
 // Data
 import { FooterLinksArray } from '../../utils/data/FooterData';
 import { MainServicesArray } from '../../utils/data/CompanyData';
@@ -23,7 +23,7 @@ function FooterComponent() {
         <section className='grid h-fit my-auto gap-4 py-2 w-full'>
           <div className='grid items-center justify-center'>
             <img
-              src={BtsLogo}
+              src={CompanyMainLogo}
               alt={`${CompanyName} footer logo`}
               className='min-w-6 w-full'
             />
