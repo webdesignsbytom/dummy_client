@@ -9,6 +9,7 @@ module.exports = {
       boxShadow: {
         input: 'inset 1px 1px 6px 1px #00000014',
         cardShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+        cardShadowBold: 'rgba(0, 0, 0, 0.34) 5px 4px 16px',
       },
       colors: {
         'main-background': '#f8fafc',
@@ -27,8 +28,13 @@ module.exports = {
         'error-red': '#dc2626',
         'success-green': '#16a34a',
         'hyperlink-blue': '#2563EB',
-        'colour1': '#2563EB',
-        'colour2': '#FB8500',
+        'colour1': '#ffffff',
+        'colour2': '#000000',
+        'colour3': '#fdf7f6',
+        'colour4': '#faebe7',
+        'colour5': '#f9d6cd',
+        'colour6': '#f2ab9b',
+        'colour7': '#374151',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
