@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 // Icons
 import { IoMdMenu } from 'react-icons/io';
 // Images
-import BtsLogo from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
+import MainLogoImage from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
 // Context
 import { useUser } from '../../context/UserContext';
 // Constants
@@ -44,7 +44,7 @@ function Navbar() {
         <section>
           <NavLink to={HOME_PAGE_URL}>
             <img
-              src={BtsLogo}
+              src={MainLogoImage}
               alt={`${CompanyName} business logo - White Logo`}
               className='min-w-10 w-10 h-10 cursor-pointer active:scale-95'
             />
