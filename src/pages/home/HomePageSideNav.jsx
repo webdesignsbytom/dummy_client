@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-// Constants
-import { CompanyName } from '../../utils/Constants';
 // Components
-import { HelmetItem } from '../../components/utils/HelmetItem';
 import SideNavbar from '../../components/nav/SideNavbar';
 
 function HomePageSideNav() {
@@ -10,9 +7,6 @@ function HomePageSideNav() {
 
   return (
     <>
-      {/* Tab Data */}
-      <HelmetItem PageName={'Home'} desc={`Home page of ${CompanyName}.`} />
-
       {/* Page */}
       <div
         className={`grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden ${

@@ -11,7 +11,11 @@ import {
   MAINTENANCE_PAGE_URL,
   POLICIES_PAGE_URL,
   RESET_PASS_PAGE_URL,
+  BLOG_PAGE_URL,
   SIGN_UP_PAGE_URL,
+  BLOG_POST_PAGE_URL,
+  CREATE_BLOG_POST_PAGE_URL,
+  EDIT_BLOG_POST_PAGE_URL,
 } from './utils/Constants';
 // Components
 import LoadingScreen from './components/utils/LoadingScreen';
@@ -20,6 +24,10 @@ import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
 // Normal import for HomePage (no lazy loading)
 import HomePage from './pages/home/HomePage';
 import HomePageSideNav from './pages/home/HomePageSideNav';
+import BlogPage from './pages/blog/BlogPage';
+import BlogPostPage from './pages/blog/BlogPostPage';
+import BlogPostCreationPage from './pages/blog/BlogPostCreationPage';
+import BlogPostEditPage from './pages/blog/BlogPostEditPage';
 // Lazy-loaded Pages
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const MaintenancePage = lazy(() =>
@@ -82,6 +90,20 @@ function App() {
         <Routes>
           {/* Main page routes */}
           <Route path={HOME_PAGE_URL} index element={<HomePage />} />
+
+          {/* Blog routes */}
+          <Route path={BLOG_PAGE_URL} index element={<BlogPage />} />
+          <Route path={BLOG_POST_PAGE_URL} index element={<BlogPostPage />} />
+          <Route
+            path={CREATE_BLOG_POST_PAGE_URL}
+            index
+            element={<BlogPostCreationPage />}
+          />
+          <Route
+            path={EDIT_BLOG_POST_PAGE_URL}
+            index
+            element={<BlogPostEditPage />}
+          />
 
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />

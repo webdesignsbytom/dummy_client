@@ -37,6 +37,12 @@ export const SIGN_UP_PAGE_URL = '/sign-up';
 export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
 export const ERROR_404_PAGE_URL = '*';
 
+// Blog routes
+export const BLOG_PAGE_URL = '/blog';
+export const BLOG_POST_PAGE_URL = '/blog/postId';
+export const CREATE_BLOG_POST_PAGE_URL = '/blog/create-new-post';
+export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
+
 // URL
 export const FULL_BUSINESS_URL = 'https://www.bytetoast-studio.co.uk';
 export const SHORT_BUSINESS_URL = 'bytetoast-studio.co.uk';
