@@ -15,6 +15,7 @@ import { HelmetItem } from '../../components/utils/HelmetItem';
 import Navbar from '../../components/nav/Navbar';
 import BlogPageMainContainer from '../../components/blog/blogPage/BlogPageMainContainer';
 import BlogPageHeader from '../../components/blog/blogPage/BlogPageHeader';
+import FooterComponent from '../../components/footer/FooterComponent';
 
 function BlogPage() {
   return (
@@ -35,12 +36,15 @@ function BlogPage() {
           <Navbar />
           {/* Header */}
           <div className='grid grid-rows-reg'>
-          <BlogPageHeader />
+            <BlogPageHeader />
 
-          {/* Main page content */}
-          <BlogPageMainContainer />
+            {/* Main page content */}
+            <BlogPageMainContainer />
           </div>
         </div>
+
+        {/* Footer */}
+        <FooterComponent />
       </div>
     </>
   );
