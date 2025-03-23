@@ -27,7 +27,7 @@ module.exports = {
         'active-colour-dark': '#5e63ff',
         'error-red': '#dc2626',
         'success-green': '#16a34a',
-        'hyperlink-blue': '#2563EB',
+        'hyperlink-colour': '#2563EB',
         'colour1': '#ffffff',
         'colour2': '#000000',
         'colour3': '#fdf7f6',

@@ -48,7 +48,7 @@ function TermAndPoliciesPage() {
                         <li key={section.id}>
                           <a
                             href={`#${section.id}`}
-                            className="text-hyperlink-blue hover:underline block"
+                            className="text-hyperlink-colour hover:underline block"
                           >
                             {section.title}
                           </a>
