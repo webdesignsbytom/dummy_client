@@ -4,6 +4,7 @@ import { CompanyName } from '../../utils/Constants';
 // Components
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import Navbar from '../../components/nav/Navbar';
+import BlogPostCreationPageMainContainer from '../../components/blog/createBlogPage/BlogPostCreationPageMainContainer';
 
 function BlogPostCreationPage() {
   return (
@@ -24,6 +25,7 @@ function BlogPostCreationPage() {
           <Navbar />
 
           {/* Main page content */}
+          <BlogPostCreationPageMainContainer />
         </div>
       </div>
     </>

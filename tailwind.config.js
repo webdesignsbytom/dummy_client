@@ -34,7 +34,8 @@ module.exports = {
         'colour4': '#faebe7',
         'colour5': '#f9d6cd',
         'colour6': '#f2ab9b',
-        'colour7': '#374151',
+        'colour7': '#374151', // Dark text
+        'colour8': '#4b5563', // Light Text
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

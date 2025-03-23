@@ -1,3 +1,6 @@
+// Images
+import TestImage from '../../assets/images/people/Reme537.jpg'
+
 let blogId = 0;
 
 export const tempBlogPosts = [
@@ -11,26 +14,25 @@ export const tempBlogPosts = [
     content: [
       {
         type: 'paragraph',
-        text: 'We are excited to announce the launch of Byte Toast Studio! Our team specializes in creating modern websites, mobile applications, and custom circuit solutions.',
+        text: 'Byte Toast Studio is officially here! We are passionate about crafting high-performance websites, intuitive mobile apps, and innovative circuit designs to bring your ideas to life.',
       },
       {
         type: 'image',
         imageTitle: 'Byte Toast Studio',
-        description: 'We are excited to announce the launch of Byte Toast Studio! Our team specializes in creating modern websites, mobile applications, and custom circuit solutions.',
-        imageUrl: '',
+        description: 'At Byte Toast Studio, we push the boundaries of digital and hardware solutions to create seamless user experiences.',
+        imageUrl: TestImage,
       },
       {
         type: 'video',
         videoTitle: 'Byte Toast Studio',
-        description: 'We are excited to announce the launch of Byte Toast Studio! Our team specializes in creating modern websites, mobile applications, and custom circuit solutions.',
+        description: 'From sleek web applications to embedded circuit designs, Byte Toast Studio delivers tailored solutions for businesses and tech enthusiasts alike.',
         videoUrl: '',
-      },
+      }, 
     ],
     authorId: 1, 
     authorName: 'Tom Brockington',
-    featuredImage: null, 
-    thumbnailImage: null,
-    images: [], 
+    featuredImage: TestImage, 
+    thumbnailImage: TestImage,
     isPublished: true,
     publishedAt: '2025-01-01T02:02:59.030Z',
     viewCount: 0,
