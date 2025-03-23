@@ -38,7 +38,7 @@ function Navbar() {
     <nav
       role='navigation'
       aria-label='Main Navigation'
-      className='relative bg-nav-background shadow-md'
+      className='relative bg-nav-background shadow-md h-fit'
     >
       <section className='grid grid-cols-reg px-4 py-4'>
         <section>

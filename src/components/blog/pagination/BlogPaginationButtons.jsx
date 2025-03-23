@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BlogPagination = ({ currentPage, totalPages, onPageChange }) => {
+const BlogPaginationButtons = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevious = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -14,7 +14,7 @@ const BlogPagination = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className='flex justify-center items-center mt-8 lg:mt-16'>
+    <div className='grid grid-cols-3 justify-center items-center mt-8 lg:mt-16'>
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
@@ -22,7 +22,9 @@ const BlogPagination = ({ currentPage, totalPages, onPageChange }) => {
       >
         Previous
       </button>
-      <span className='mx-4'>{`Page ${currentPage} of ${totalPages}`}</span>
+      <div className='grid text-center'>
+        <span className='mx-4'>{`Page ${currentPage} of ${totalPages}`}</span>
+      </div>
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
@@ -34,4 +36,4 @@ const BlogPagination = ({ currentPage, totalPages, onPageChange }) => {
   );
 };
 
-export default BlogPagination;
+export default BlogPaginationButtons;
