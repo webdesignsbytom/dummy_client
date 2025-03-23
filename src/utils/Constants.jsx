@@ -39,7 +39,7 @@ export const ERROR_404_PAGE_URL = '*';
 
 // Blog routes
 export const BLOG_PAGE_URL = '/blog';
-export const BLOG_POST_PAGE_URL = '/blog/postId';
+export const BLOG_POST_PAGE_URL = '/blog';
 export const CREATE_BLOG_POST_PAGE_URL = '/blog/create-new-post';
 export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
 

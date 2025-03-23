@@ -94,6 +94,45 @@ export const blogPageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
+// Blog Post Page Structured Data
+export const blogPostStructuredData = (post) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.description || `${CompanyName} offers expert web and circuit design insights.`,
+  datePublished: post.date || new Date().toISOString(),
+  dateModified: post.dateModified || new Date().toISOString(),
+  author: {
+    '@type': 'Person',
+    name: post.author || `${CompanyName}`,
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${FULL_BUSINESS_URL}/blog/${post.slug}`,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: CompanyName,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${FULL_BUSINESS_URL}/brand/logo.png`,
+    },
+  },
+});
+
+// Blog Post Page Meta Tags
+export const blogPostAdditionalMeta = (post) => [
+  { property: 'og:type', content: 'article' },
+  { property: 'og:title', content: post.title },
+  { property: 'og:description', content: post.description || '' },
+  { property: 'og:image', content: post.image || `${FULL_BUSINESS_URL}/brand/logo.png` },
+  { property: 'og:url', content: `${FULL_BUSINESS_URL}/blog/${post.slug}` },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:title', content: post.title },
+  { name: 'twitter:description', content: post.description || '' },
+  { name: 'twitter:image', content: post.image || `${FULL_BUSINESS_URL}/brand/logo.png` },
+];
+
 
 // Forgot password
 export const forgottenPasswordPageStructuredData = {

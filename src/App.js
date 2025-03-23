@@ -90,25 +90,22 @@ function App() {
         <Routes>
           {/* Main page routes */}
           <Route path={HOME_PAGE_URL} index element={<HomePage />} />
-
+          
           {/* Blog routes */}
-          <Route path={BLOG_PAGE_URL} index element={<BlogPage />} />
-          <Route path={BLOG_POST_PAGE_URL} index element={<BlogPostPage />} />
+          <Route path={BLOG_PAGE_URL}  element={<BlogPage />} />
+          <Route path={`${BLOG_POST_PAGE_URL}/:title`} element={<BlogPostPage />} />
           <Route
             path={CREATE_BLOG_POST_PAGE_URL}
-            index
             element={<BlogPostCreationPage />}
           />
           <Route
             path={EDIT_BLOG_POST_PAGE_URL}
-            index
             element={<BlogPostEditPage />}
           />
 
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
           <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
-
           {/* User routes */}
           <Route path={LOGIN_PAGE_URL} element={<LoginPage />} />
           <Route path={SIGN_UP_PAGE_URL} element={<RegisterPage />} />
@@ -116,10 +113,8 @@ function App() {
             path={RESET_PASS_PAGE_URL}
             element={<ForgettenPasswordPage />}
           />
-
           {/* Other */}
           <Route path={MAINTENANCE_PAGE_URL} element={<MaintenancePage />} />
-
           {/* Secured routes */}
           <Route
             path={ADMIN_PAGE_URL}
