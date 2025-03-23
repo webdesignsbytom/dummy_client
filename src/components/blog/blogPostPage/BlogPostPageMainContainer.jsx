@@ -1,10 +1,14 @@
-import React from 'react'
+import React from 'react';
+// Components
+import BlogArticle from '../article/BlogArticle';
 
 function BlogPostPageMainContainer({ post }) {
-    
   return (
-    <div>BlogPostPageMainContainer</div>
-  )
+    <main className='grid w-full' role='main'>
+      {/* Article */}
+      <BlogArticle post={post} />
+    </main>
+  );
 }
 
-export default BlogPostPageMainContainer
+export default BlogPostPageMainContainer;
