@@ -1,9 +1,20 @@
 import React from 'react';
 // Constants
-import { CompanyName } from '../../utils/Constants';
+import {
+  CompanyName,
+  LocationCity,
+  LocationCountry,
+} from '../../utils/Constants';
+// Data
+import {
+  blogPageAdditionalMeta,
+  blogPageStructuredData,
+} from '../../utils/data/MetaData';
 // Components
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import Navbar from '../../components/nav/Navbar';
+import BlogPageMainContainer from '../../components/blog/blogPage/BlogPageMainContainer';
+import BlogPageHeader from '../../components/blog/blogPage/BlogPageHeader';
 
 function BlogPage() {
   return (
@@ -11,10 +22,10 @@ function BlogPage() {
       {/* Tab Data */}
       <HelmetItem
         PageName='Blog'
-        desc={`${CompanyName} offers expert web and circuit design solutions in England. Discover our services and featured projects.`}
-        keywords={`web design, circuit design, ${CompanyName}, England, UK, custom solutions`}
-        // additionalMeta={homePageAdditionalMeta}
-        // structuredData={homePageStructuredData}
+        desc={`Explore the latest articles, insights, and updates from ${CompanyName} covering a variety of topics.`}
+        keywords={`blog, articles, insights, updates, ${CompanyName}, ${LocationCity}, ${LocationCountry}, news, tips`}
+        additionalMeta={blogPageAdditionalMeta}
+        structuredData={blogPageStructuredData}
       />
 
       {/* Page */}
@@ -23,7 +34,11 @@ function BlogPage() {
           {/* Navigation */}
           <Navbar />
 
+          {/* Header */}
+          <BlogPageHeader />
+
           {/* Main page content */}
+          <BlogPageMainContainer />
         </div>
       </div>
     </>

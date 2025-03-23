@@ -51,6 +51,50 @@ export const homePageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
+// Blog Page
+export const blogPageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: `${CompanyName} Blog`,
+  url: `${FULL_BUSINESS_URL}/blog`,
+  description: `Read the latest articles, tips, and insights from ${CompanyName} on web and circuit design.`,
+  publisher: {
+    '@type': 'Organization',
+    name: CompanyName,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${FULL_BUSINESS_URL}/brand/logo.png`,
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${FULL_BUSINESS_URL}/blog`,
+  },
+  sameAs: [
+    `${FACEBOOK_BUSINESS_URL}`,
+    `${INSTAGRAM_BUSINESS_URL}`,
+    `${LINKEDIN_BUSINESS_URL}`,
+  ],
+};
+
+export const blogPageAdditionalMeta = [
+  { property: 'og:title', content: `${CompanyName} Blog` },
+  {
+    property: 'og:description',
+    content: 'Stay updated with our latest articles and insights.',
+  },
+  { property: 'og:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+  { property: 'og:url', content: `${FULL_BUSINESS_URL}/blog` },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:title', content: `${CompanyName} Blog` },
+  {
+    name: 'twitter:description',
+    content: 'Read the latest posts on web and circuit design from our experts.',
+  },
+  { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+];
+
+
 // Forgot password
 export const forgottenPasswordPageStructuredData = {
   '@context': 'https://schema.org',

@@ -3,13 +3,14 @@ import { NavLink } from 'react-router-dom';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Icons
-import CalendarIcon from '../../assets/images/icons/calendar_month_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
-import ChecklistIcon from '../../assets/images/icons/checklist_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
-import HomeIcon from '../../assets/images/icons/home_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
-import DropdownIcon from '../../assets/images/icons/keyboard_arrow_down_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
-import DashboardIcon from '../../assets/images/icons/dashboard_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
-import ProfileIcon from '../../assets/images/icons/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
-import CreateFolderIcon from '../../assets/images/icons/create_new_folder_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg';
+import CalendarIcon from '../../assets/images/icons/calendar-icon.svg';
+import ChecklistIcon from '../../assets/images/icons/checklist-icon.svg';
+import HomeIcon from '../../assets/images/icons/home-icon.svg';
+import DropdownIcon from '../../assets/images/icons/chevron-down-icon.svg';
+import DashboardIcon from '../../assets/images/icons/dashboard-icon.svg';
+import ProfileIcon from '../../assets/images/icons/person-rounded-icon.svg';
+import CreateFolderIcon from '../../assets/images/icons/create-folder-icon.svg';
+
 // Hooks
 import useNavigateToPage from '../../hooks/useNavigateToPage';
 
