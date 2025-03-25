@@ -18,7 +18,7 @@ import { MainServicesArray } from '../../utils/data/CompanyData';
 function FooterComponent() {
   return (
     <footer className='grid bg-alt-background w-full overflow-hidden py-6 md:py-12 px-6 md:px-20 font-poppins'>
-      <div className='grid lg:grid-cols-3 mx-auto gap-6 bg-white px-2 md:px-10 py-8 w-full'>
+      <div className='grid lg:grid-cols-3 mx-auto gap-6 bg-colour1 px-2 md:px-10 py-8 w-full'>
         {/* Logo section */}
         <section className='grid h-fit my-auto gap-4 py-2 w-full'>
           <div className='grid items-center justify-center'>
@@ -36,7 +36,7 @@ function FooterComponent() {
 
         {/* Footer links */}
         <section className='grid grid-cols-2 px-2 gap-2 w-full'>
-          <div className='grid grid-rows-reg w-full lg:justify-center text-center'>
+          <section className='grid grid-rows-reg w-full lg:justify-center text-center'>
             <div className='text-left w-full'>
               <h6>Quick Links</h6>
               <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
@@ -62,9 +62,9 @@ function FooterComponent() {
                 );
               })}
             </ul>
-          </div>
+          </section>
 
-          <div className='grid grid-rows-reg justify-center text-center'>
+          <section className='grid grid-rows-reg justify-center text-center'>
             <div className='text-left'>
               <h6>Services</h6>
               <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
@@ -78,17 +78,18 @@ function FooterComponent() {
                 );
               })}
             </ul>
-          </div>
+          </section>
         </section>
 
         {/* Social media links */}
         <section className='grid grid-rows-reg gap-2 w-fit px-2'>
-          <div className='text-left'>
+          <section className='text-left'>
             <h6>Contact</h6>
             <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
-          </div>
+          </section>
 
-          <div className='grid gap-1 h-fit'>
+          <section className='grid gap-1 h-fit'>
+            {/* Email */}
             <div>
               <a href={`mailto:${ContactEmailAddress}`}>
                 <p>
@@ -97,6 +98,7 @@ function FooterComponent() {
                 </p>
               </a>
             </div>
+            {/* Phone */}
             <div>
               <a href={`tel:${CompanyPhoneNumber}`}>
                 <p>
@@ -105,13 +107,24 @@ function FooterComponent() {
                 </p>
               </a>
             </div>
+            {/* Short address */}
             <div>
               <p>
                 <span className='font-semibold'>Location: </span> Tavistock,
                 Devon, United Kingdom
               </p>
             </div>
-          </div>
+            {/* Long address */}
+            {/* <div>
+              <span className='font-semibold'>Location:</span>
+              <ul className='list-none'>
+                <li>{AddressLine1}</li>
+                <li>{AddressLine2}</li>
+                <li>{LocationCity}</li>
+                <li>{PostalCode}</li>
+              </ul>
+            </div> */}
+          </section>
         </section>
       </div>
     </footer>
