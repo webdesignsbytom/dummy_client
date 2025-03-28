@@ -51,6 +51,7 @@ module.exports = {
         a1a: 'auto 1fr auto',
       },
       screens: {
+        xxs: '390px',
         xs: '422px',
       },
       zIndex: {
