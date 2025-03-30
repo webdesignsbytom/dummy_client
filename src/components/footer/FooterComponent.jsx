@@ -37,7 +37,7 @@ function FooterComponent() {
         {/* Footer links */}
         <section className='grid grid-cols-2 px-2 gap-2 w-full'>
           <section className='grid grid-rows-reg w-full lg:justify-center text-center'>
-            <div className='text-left w-full'>
+            <div className='text-left h-fit w-full'>
               <h6>Quick Links</h6>
               <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
             </div>
@@ -48,7 +48,7 @@ function FooterComponent() {
                     <Link
                       to={link.route}
                       aria-label={`${link.name} page navigation tab`}
-                      className={``}
+                      className={`text-sm`}
                       onClick={() => {
                         window.scroll(0, 0);
                       }}
@@ -65,14 +65,14 @@ function FooterComponent() {
           </section>
 
           <section className='grid grid-rows-reg justify-center text-center'>
-            <div className='text-left'>
+            <div className='text-left h-fit'>
               <h6>Services</h6>
               <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
             </div>
             <ul className='text-left'>
               {MainServicesArray.map((service) => {
                 return (
-                  <li key={service.label} className={``}>
+                  <li key={service.label} className={`text-sm`}>
                     {service.label}
                   </li>
                 );
@@ -88,7 +88,7 @@ function FooterComponent() {
             <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
           </section>
 
-          <section className='grid gap-1 h-fit'>
+          <section className='grid gap-1 h-fit text-sm'>
             {/* Email */}
             <div>
               <a href={`mailto:${ContactEmailAddress}`}>
