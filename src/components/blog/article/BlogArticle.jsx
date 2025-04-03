@@ -6,21 +6,19 @@ function BlogArticle({ post }) {
   return (
     <section className='grid w-full'>
       <div className='grid w-full px-6 sm:px-8 md:px-12 lg:px-20 lg:container lg:mx-auto'>
-        <article className='grid gap-4 w-full max-w-3xl mx-auto py-8 px-4 sm:px-8 bg-colour4 shadow-lg rounded-lg dark:bg-gray-900'>
+        <article className='grid gap-4 w-full max-w-3xl mx-auto py-8 px-4 sm:px-8 bg-colour4 shadow-cardShadow shadow-colour6/80 rounded-lg'>
           {/* Title & Subtitle */}
           <header className='grid h-fit text-center'>
             <div className='grid gap-4'>
-              <h1 className='text-3xl font-bold text-colour7 dark:text-colour1'>
+              <h1 className='text-3xl font-bold text-colour6 dark:text-colour1'>
                 {post.title}
               </h1>
-              <h2 className='text-lg text-colour8 dark:text-gray-300'>
-                {post.subTitle}
-              </h2>
+              <h2 className='text-lg text-colour9'>{post.subTitle}</h2>
             </div>
           </header>
 
           {/* Meta Info */}
-          <section className='grid grid-flow-col py-4 text-colour8 dark:text-gray-400 text-sm justify-between'>
+          <section className='grid grid-flow-col py-4 text-colour6 dark:text-colour6 text-sm justify-between'>
             <span>By {post.authorName}</span>
             <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
           </section>
@@ -35,10 +33,30 @@ function BlogArticle({ post }) {
           )}
 
           {/* Blog Content */}
-          <section className='grid gap-4 text-colour7 dark:text-gray-200 space-y-4'>
+          <section className='grid gap-4 text-colour9 dark:text-gray-200 space-y-4'>
             {post.content.map((block, index) => {
               if (block.type === 'paragraph') {
-                return <p key={index}>{block.text}</p>;
+                return (
+                  <p className='text-center lg:text-left' key={index}>
+                    {block.text}
+                  </p>
+                );
+              }
+              if (block.type === 'heading') {
+                return (
+                  <h2 key={index} className='text-xl font-semibold text-colour6 dark:text-colour1'>
+                    {block.text}
+                  </h2>
+                );
+              }
+              if (block.type === 'list') {
+                return (
+                  <ul key={index} className='list-disc pl-5 grid gap-y-2'>
+                    {block.items.map((item, itemIndex) => (
+                      <li key={itemIndex}>{item}</li>
+                    ))}
+                  </ul>
+                );
               }
               if (block.type === 'image') {
                 return (
@@ -77,12 +95,14 @@ function BlogArticle({ post }) {
 
           {/* Tags */}
           <div className='mt-6'>
-            <h3 className='text-lg font-semibold mb-2'>Tags:</h3>
+            <h3 className='text-lg font-semibold mb-2 text-colour6 dark:text-colour6'>
+              Tags:
+            </h3>
             <div className='flex flex-wrap gap-2'>
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className='bg-colour5 text-colour2 px-3 py-1 text-sm rounded-full'
+                  className='bg-colour5 text-colour1 dark:bg-colour5 dark:text-colour1 px-3 py-1 text-sm rounded-full shadow-cardShadow shadow-colour6/80'
                 >
                   {tag}
                 </span>
