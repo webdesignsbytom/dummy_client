@@ -70,9 +70,9 @@ function FooterComponent() {
               <div className='border-b-2 border-solid border-colour2 pt-2 mb-2'></div>
             </div>
             <ul className='text-left'>
-              {MainServicesArray.map((service) => {
+              {MainServicesArray.map((service, index) => {
                 return (
-                  <li key={service.label} className={`text-sm`}>
+                  <li key={index} className={`text-sm`}>
                     {service.label}
                   </li>
                 );
