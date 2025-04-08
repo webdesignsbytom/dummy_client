@@ -8,7 +8,7 @@ import {
   ContactEmailAddress,
 } from '../../utils/Constants';
 // Components
-import FooterSocialCTA from './SocialMediaCta';
+import FooterSocialCTA from './FooterSocialCTA';
 // Images
 import CompanyMainLogo from '../../assets/images/logos/byte-toast-studio-logo-web-developer-transparent-svg.svg';
 // Data

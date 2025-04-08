@@ -51,6 +51,51 @@ export const homePageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
+export const bookingPageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${CompanyName} Booking`,
+  serviceType: 'Web and Circuit Design Services Booking',
+  provider: {
+    '@type': 'Organization',
+    name: CompanyName,
+    url: FULL_BUSINESS_URL,
+    telephone: CompanyPhoneNumber,
+    sameAs: [
+      `${FACEBOOK_BUSINESS_URL}`,
+      `${INSTAGRAM_BUSINESS_URL}`,
+      `${LINKEDIN_BUSINESS_URL}`,
+    ],
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'United Kingdom',
+  },
+  availableChannel: {
+    '@type': 'ServiceChannel',
+    serviceUrl: `${FULL_BUSINESS_URL}/booking`,
+    availableLanguage: 'English',
+  },
+  description: `Easily schedule a consultation or service with ${CompanyName} for expert web and circuit design solutions.`,
+};
+
+export const bookingPageAdditionalMeta = [
+  { property: 'og:title', content: `Book with ${CompanyName}` },
+  {
+    property: 'og:description',
+    content: 'Schedule your web or circuit design service today with our easy online booking.',
+  },
+  { property: 'og:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+  { property: 'og:url', content: `${FULL_BUSINESS_URL}/booking` },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:title', content: `Book with ${CompanyName}` },
+  {
+    name: 'twitter:description',
+    content: 'Secure your session with our expert team in just a few clicks.',
+  },
+  { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+];
+
 // Blog Page
 export const blogPageStructuredData = {
   '@context': 'https://schema.org',
