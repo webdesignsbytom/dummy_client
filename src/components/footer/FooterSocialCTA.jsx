@@ -1,12 +1,12 @@
 import React from 'react';
-// Images
-import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_black_logo_icon_48px.png';
-import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon_48px.png';
-import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_black_icon_48px.png';
-import GithubLogo from '../../assets/images/media_icons/github_code_octopus_black_logo_icon_48px.png';
+import { FaFacebookF, FaInstagram, FaGoogle, FaGithub } from 'react-icons/fa';
 import SocialMediaPin from '../socialMedia/SocialMediaPin';
-import { FACEBOOK_BUSINESS_URL, GITHUB_BUSINESS_URL, GOOGLE_BUSINESS_URL, INSTAGRAM_BUSINESS_URL } from '../../utils/Constants';
-// Components
+import {
+  FACEBOOK_BUSINESS_URL,
+  GITHUB_BUSINESS_URL,
+  GOOGLE_BUSINESS_URL,
+  INSTAGRAM_BUSINESS_URL,
+} from '../../utils/Constants';
 
 function FooterSocialCTA() {
   const navigateToSocialMedia = (url) => {
@@ -16,22 +16,22 @@ function FooterSocialCTA() {
   const socialMediaLinks = [
     {
       serviceName: 'Facebook',
-      icon: FacebookLogo,
+      icon: <FaFacebookF size={24} />,
       url: FACEBOOK_BUSINESS_URL,
     },
     {
       serviceName: 'Instagram',
-      icon: InstagramLogo,
+      icon: <FaInstagram size={24} />,
       url: INSTAGRAM_BUSINESS_URL,
     },
     {
       serviceName: 'Google',
-      icon: GoogleLogo,
+      icon: <FaGoogle size={24} />,
       url: GOOGLE_BUSINESS_URL,
     },
     {
       serviceName: 'GitHub',
-      icon: GithubLogo,
+      icon: <FaGithub size={24} />,
       url: GITHUB_BUSINESS_URL,
     },
   ];

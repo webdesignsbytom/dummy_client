@@ -13,7 +13,7 @@ import {
   GITHUB_URL,
   APPLE_URL,
   X_URL,
-} from '../../utils/Constants'; 
+} from '../../utils/Constants';
 // Images
 import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon_64px.png';
 import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon_64px.png';
