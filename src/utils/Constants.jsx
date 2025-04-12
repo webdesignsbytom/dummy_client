@@ -51,6 +51,16 @@ export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
 export const BOOKING_PAGE_URL = '/booking';
 export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
 
+// Booking routes
+export const GET_BOOKING_API = '/bookings/get-all-bookings';
+export const GET_BOOKING_ADMIN_API = '/bookings/get-all-bookings-admin';
+export const CONFIRM_BOOKING_API = '/bookings/confirm-booking';
+export const DENY_BOOKING_API = '/bookings/deny-booking';
+export const CANCEL_BOOKING_API = '/bookings/cancel-booking';
+export const EDIT_BOOKING_API = '/bookings/edit-booking';
+export const DELETE_BOOKING_API = '/bookings/delete-booking';
+export const DELETE_ALL_BOOKING_API = '/bookings/delete-all-bookings';
+
 // URL
 export const FULL_BUSINESS_URL = 'https://www.bytetoast-studio.co.uk';
 export const SHORT_BUSINESS_URL = 'bytetoast-studio.co.uk';

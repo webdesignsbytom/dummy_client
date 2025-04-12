@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from 'react';
+// Api
+import client from '../../api/client';
 // Constants
-import { CompanyName } from '../../utils/Constants';
+import {
+  CANCEL_BOOKING_API,
+  CompanyName,
+  CONFIRM_BOOKING_API,
+  DELETE_BOOKING_API,
+  DENY_BOOKING_API,
+  GET_BOOKING_ADMIN_API,
+} from '../../utils/Constants';
 // Components
-import axios from 'axios';
 
 function BookingAdminPage() {
-  // State to manage bookings and filters
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   // Fetch all bookings on component mount
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get('/api/get-all-bookings');
-        setBookings(response.data.bookings);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBookings();
+    client
+      .get(GET_BOOKING_ADMIN_API)
+      .then((res) => {
+        setBookings(res.data.bookings);
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
   }, []);
 
   // Filter bookings based on selected criteria
@@ -38,13 +40,19 @@ function BookingAdminPage() {
     const today = new Date();
 
     // Filter by day
-    if (filter === 'day' && bookingDate.toDateString() === today.toDateString()) return true;
+    if (filter === 'day' && bookingDate.toDateString() === today.toDateString())
+      return true;
 
     // Filter by week
     if (filter === 'week' && isSameWeek(bookingDate, today)) return true;
 
     // Filter by month
-    if (filter === 'month' && bookingDate.getMonth() === today.getMonth() && bookingDate.getFullYear() === today.getFullYear()) return true;
+    if (
+      filter === 'month' &&
+      bookingDate.getMonth() === today.getMonth() &&
+      bookingDate.getFullYear() === today.getFullYear()
+    )
+      return true;
 
     return false;
   });
@@ -66,36 +74,64 @@ function BookingAdminPage() {
 
   // Confirm a booking
   const confirmBooking = async (bookingId) => {
-    try {
-      await axios.patch(`/api/confirm-booking/${bookingId}`);
-      setBookings(bookings.map((booking) =>
-        booking.id === bookingId ? { ...booking, bookingApproved: true } : booking
-      ));
-    } catch (error) {
-      console.error('Error confirming booking:', error);
-    }
+    client
+      .get(`${CONFIRM_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(
+          bookings.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, bookingApproved: true }
+              : booking
+          )
+        );
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
   };
 
   // Deny a booking
   const denyBooking = async (bookingId) => {
-    try {
-      await axios.patch(`/api/deny-booking/${bookingId}`);
-      setBookings(bookings.map((booking) =>
-        booking.id === bookingId ? { ...booking, denied: true } : booking
-      ));
-    } catch (error) {
-      console.error('Error denying booking:', error);
-    }
+    client
+      .get(`${DENY_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(
+          bookings.map((booking) =>
+            booking.id === bookingId ? { ...booking, denied: true } : booking
+          )
+        );
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
+  };
+
+  // Cancel a booking
+  const cancelBooking = async (bookingId) => {
+    client
+      .get(`${CANCEL_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(bookings.filter((booking) => booking.id !== bookingId));
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
   };
 
   // Delete a booking
   const deleteBooking = async (bookingId) => {
-    try {
-      await axios.delete(`/api/delete-booking/${bookingId}`);
-      setBookings(bookings.filter((booking) => booking.id !== bookingId));
-    } catch (error) {
-      console.error('Error deleting booking:', error);
-    }
+    client
+      .get(`${DELETE_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(bookings.filter((booking) => booking.id !== bookingId));
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
   };
 
   // Edit a booking (could open a modal or redirect to an edit page)
@@ -112,16 +148,16 @@ function BookingAdminPage() {
       <div>
         <label>Filter by:</label>
         <select onChange={handleFilterChange} value={filter}>
-          <option value="all">All Bookings</option>
-          <option value="day">Today</option>
-          <option value="week">This Week</option>
-          <option value="month">This Month</option>
-          <option value="cancelled">Cancelled</option>
-          <option value="denied">Denied</option>
-          <option value="unconfirmed">Unconfirmed</option>
+          <option value='all'>All Bookings</option>
+          <option value='day'>Today</option>
+          <option value='week'>This Week</option>
+          <option value='month'>This Month</option>
+          <option value='cancelled'>Cancelled</option>
+          <option value='denied'>Denied</option>
+          <option value='unconfirmed'>Unconfirmed</option>
         </select>
       </div>
-      
+
       <div>
         {filteredBookings.length === 0 ? (
           <p>No bookings found for the selected filter.</p>
@@ -157,13 +193,21 @@ function BookingAdminPage() {
                   </td>
                   <td>
                     {!booking.bookingApproved && (
-                      <button onClick={() => confirmBooking(booking.id)}>Confirm</button>
+                      <button onClick={() => confirmBooking(booking.id)}>
+                        Confirm
+                      </button>
                     )}
                     {!booking.denied && (
-                      <button onClick={() => denyBooking(booking.id)}>Deny</button>
+                      <button onClick={() => denyBooking(booking.id)}>
+                        Deny
+                      </button>
                     )}
-                    <button onClick={() => editBooking(booking.id)}>Edit</button>
-                    <button onClick={() => deleteBooking(booking.id)}>Delete</button>
+                    <button onClick={() => editBooking(booking.id)}>
+                      Edit
+                    </button>
+                    <button onClick={() => deleteBooking(booking.id)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
