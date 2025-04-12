@@ -49,6 +49,7 @@ export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
 
 // Booking routes
 export const BOOKING_PAGE_URL = '/booking';
+export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
 
 // URL
 export const FULL_BUSINESS_URL = 'https://www.bytetoast-studio.co.uk';

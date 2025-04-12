@@ -4,7 +4,7 @@ import { CompanyName } from '../../utils/Constants';
 // Components
 import axios from 'axios';
 
-function BookingPage() {
+function BookingAdminPage() {
   // State to manage bookings and filters
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
@@ -64,6 +64,46 @@ function BookingPage() {
     setFilter(event.target.value);
   };
 
+  // Confirm a booking
+  const confirmBooking = async (bookingId) => {
+    try {
+      await axios.patch(`/api/confirm-booking/${bookingId}`);
+      setBookings(bookings.map((booking) =>
+        booking.id === bookingId ? { ...booking, bookingApproved: true } : booking
+      ));
+    } catch (error) {
+      console.error('Error confirming booking:', error);
+    }
+  };
+
+  // Deny a booking
+  const denyBooking = async (bookingId) => {
+    try {
+      await axios.patch(`/api/deny-booking/${bookingId}`);
+      setBookings(bookings.map((booking) =>
+        booking.id === bookingId ? { ...booking, denied: true } : booking
+      ));
+    } catch (error) {
+      console.error('Error denying booking:', error);
+    }
+  };
+
+  // Delete a booking
+  const deleteBooking = async (bookingId) => {
+    try {
+      await axios.delete(`/api/delete-booking/${bookingId}`);
+      setBookings(bookings.filter((booking) => booking.id !== bookingId));
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+    }
+  };
+
+  // Edit a booking (could open a modal or redirect to an edit page)
+  const editBooking = (bookingId) => {
+    console.log('Edit booking with ID:', bookingId);
+    // You could redirect to an edit page or open a modal here
+  };
+
   if (loading) return <p>Loading bookings...</p>;
 
   return (
@@ -95,6 +135,7 @@ function BookingPage() {
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -114,6 +155,16 @@ function BookingPage() {
                         : 'Confirmed'
                       : 'Unconfirmed'}
                   </td>
+                  <td>
+                    {!booking.bookingApproved && (
+                      <button onClick={() => confirmBooking(booking.id)}>Confirm</button>
+                    )}
+                    {!booking.denied && (
+                      <button onClick={() => denyBooking(booking.id)}>Deny</button>
+                    )}
+                    <button onClick={() => editBooking(booking.id)}>Edit</button>
+                    <button onClick={() => deleteBooking(booking.id)}>Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -124,4 +175,4 @@ function BookingPage() {
   );
 }
 
-export default BookingPage;
+export default BookingAdminPage;

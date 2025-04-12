@@ -16,6 +16,8 @@ import {
   BLOG_POST_PAGE_URL,
   CREATE_BLOG_POST_PAGE_URL,
   EDIT_BLOG_POST_PAGE_URL,
+  BOOKING_PAGE_URL,
+  BOOKING_ADMIN_PAGE_URL,
 } from './utils/Constants';
 // Components
 import LoadingScreen from './components/utils/LoadingScreen';
@@ -24,10 +26,14 @@ import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
 // Normal import for HomePage (no lazy loading)
 import HomePage from './pages/home/HomePage';
 import HomePageSideNav from './pages/home/HomePageSideNav';
+// Blog
 import BlogPage from './pages/blog/BlogPage';
 import BlogPostPage from './pages/blog/BlogPostPage';
 import BlogPostCreationPage from './pages/blog/BlogPostCreationPage';
 import BlogPostEditPage from './pages/blog/BlogPostEditPage';
+// Booking
+import BookingPage from './pages/booking/BookingPage';
+import BookingAdminPage from './pages/booking/BookingAdminPage';
 // Lazy-loaded Pages
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const MaintenancePage = lazy(() =>
@@ -102,6 +108,10 @@ function App() {
             path={EDIT_BLOG_POST_PAGE_URL}
             element={<BlogPostEditPage />}
           />
+
+          {/* Booking routes */}
+          <Route path={BOOKING_PAGE_URL}  element={<BookingPage />} />
+          <Route path={BOOKING_ADMIN_PAGE_URL}  element={<BookingAdminPage />} />
 
           {/* Eager loaded */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
