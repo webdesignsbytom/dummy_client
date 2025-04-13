@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
@@ -11,140 +11,148 @@ import {
 } from '../../../utils/Constants';
 
 function BookingAdminPageMainContainer() {
-    const [bookings, setBookings] = useState([]);
-    const [filter, setFilter] = useState('all');
-    const [loading, setLoading] = useState(true);
-  
-    // Fetch all bookings on component mount
-    useEffect(() => {
-      client
-        .get(GET_BOOKING_ADMIN_API)
-        .then((res) => {
-          setBookings(res.data.bookings);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error('Unable to retrieve booking data', err);
-          setLoading(false);
-        });
-    }, []);
-  
-    // Filter bookings based on selected criteria
-    const filteredBookings = bookings.filter((booking) => {
-      if (filter === 'all') return true;
-      if (filter === 'cancelled' && booking.cancelled) return true;
-      if (filter === 'denied' && booking.denied) return true;
-      if (filter === 'unconfirmed' && !booking.bookingApproved) return true;
-  
-      const bookingDate = new Date(booking.date);
-      const today = new Date();
-  
-      // Filter by day
-      if (filter === 'day' && bookingDate.toDateString() === today.toDateString())
-        return true;
-  
-      // Filter by week
-      if (filter === 'week' && isSameWeek(bookingDate, today)) return true;
-  
-      // Filter by month
-      if (
-        filter === 'month' &&
-        bookingDate.getMonth() === today.getMonth() &&
-        bookingDate.getFullYear() === today.getFullYear()
-      )
-        return true;
-  
-      return false;
-    });
-  
-    // Check if two dates are in the same week
-    const isSameWeek = (date1, date2) => {
-      const startOfWeek = new Date(date2);
-      startOfWeek.setDate(date2.getDate() - date2.getDay());
-      const endOfWeek = new Date(date2);
-      endOfWeek.setDate(date2.getDate() + (6 - date2.getDay()));
-  
-      return date1 >= startOfWeek && date1 <= endOfWeek;
+  const [bookings, setBookings] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [openMenus, setOpenMenus] = useState({});
+  const [openMenuId, setOpenMenuId] = useState(null); // track open menu
+  const menuRef = useRef();
+
+  useEffect(() => {
+    client
+      .get(GET_BOOKING_ADMIN_API)
+      .then((res) => {
+        setBookings(res.data.bookings);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+        setLoading(false);
+      });
+  }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuId(null);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  
-    // Handle filter change
-    const handleFilterChange = (event) => {
-      setFilter(event.target.value);
-    };
-  
+  }, []);
+
+  const isSameWeek = (date1, date2) => {
+    const startOfWeek = new Date(date2);
+    startOfWeek.setDate(date2.getDate() - date2.getDay());
+    const endOfWeek = new Date(date2);
+    endOfWeek.setDate(date2.getDate() + (6 - date2.getDay()));
+    return date1 >= startOfWeek && date1 <= endOfWeek;
+  };
+
+  const filteredBookings = bookings.filter((booking) => {
+    if (filter === 'all') return true;
+    if (filter === 'cancelled' && booking.cancelled) return true;
+    if (filter === 'denied' && booking.denied) return true;
+    if (filter === 'unconfirmed' && !booking.bookingApproved) return true;
+
+    const bookingDate = new Date(booking.date);
+    const today = new Date();
+
+    if (filter === 'day' && bookingDate.toDateString() === today.toDateString())
+      return true;
+    if (filter === 'week' && isSameWeek(bookingDate, today)) return true;
+    if (
+      filter === 'month' &&
+      bookingDate.getMonth() === today.getMonth() &&
+      bookingDate.getFullYear() === today.getFullYear()
+    )
+      return true;
+
+    return false;
+  });
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
     // Confirm a booking
-    const confirmBooking = async (bookingId) => {
-      client
-        .get(`${CONFIRM_BOOKING_API}/${bookingId}`)
-        .then((res) => {
-          console.log(res.data.bookings);
-          setBookings(
-            bookings.map((booking) =>
-              booking.id === bookingId
-                ? { ...booking, bookingApproved: true }
-                : booking
-            )
-          );
-        })
-        .catch((err) => {
-          console.error('Unable to retrieve booking data', err);
-        });
-    };
-  
-    // Deny a booking
-    const denyBooking = async (bookingId) => {
-      client
-        .get(`${DENY_BOOKING_API}/${bookingId}`)
-        .then((res) => {
-          console.log(res.data.bookings);
-          setBookings(
-            bookings.map((booking) =>
-              booking.id === bookingId ? { ...booking, denied: true } : booking
-            )
-          );
-        })
-        .catch((err) => {
-          console.error('Unable to retrieve booking data', err);
-        });
-    };
-  
-    // Cancel a booking
-    const cancelBooking = async (bookingId) => {
-      client
-        .get(`${CANCEL_BOOKING_API}/${bookingId}`)
-        .then((res) => {
-          console.log(res.data.bookings);
-          setBookings(bookings.filter((booking) => booking.id !== bookingId));
-        })
-        .catch((err) => {
-          console.error('Unable to retrieve booking data', err);
-        });
-    };
-  
-    // Delete a booking
-    const deleteBooking = async (bookingId) => {
-      client
-        .get(`${DELETE_BOOKING_API}/${bookingId}`)
-        .then((res) => {
-          console.log(res.data.bookings);
-          setBookings(bookings.filter((booking) => booking.id !== bookingId));
-        })
-        .catch((err) => {
-          console.error('Unable to retrieve booking data', err);
-        });
-    };
-  
-    // Edit a booking (could open a modal or redirect to an edit page)
-    const editBooking = (bookingId) => {
-      console.log('Edit booking with ID:', bookingId);
-      // You could redirect to an edit page or open a modal here
-    };
+  const confirmBooking = async (bookingId) => {
+    client
+      .patch(`${CONFIRM_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(
+          bookings.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, bookingApproved: true }
+              : booking
+          )
+        );
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
+  };
+
+  // Deny a booking
+  const denyBooking = async (bookingId) => {
+    client
+      .patch(`${DENY_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(
+          bookings.map((booking) =>
+            booking.id === bookingId ? { ...booking, denied: true } : booking
+          )
+        );
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
+  };
+
+  // Cancel a booking
+  const cancelBooking = async (bookingId) => {
+    client
+      .patch(`${CANCEL_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(bookings.filter((booking) => booking.id !== bookingId));
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
+  };
+
+  // Delete a booking
+  const deleteBooking = async (bookingId) => {
+    client
+      .delete(`${DELETE_BOOKING_API}/${bookingId}`)
+      .then((res) => {
+        console.log(res.data.bookings);
+        setBookings(bookings.filter((booking) => booking.id !== bookingId));
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve booking data', err);
+      });
+  };
+
+  const editBooking = (bookingId) => {
+    console.log('Edit booking with ID:', bookingId);
+  };
+
+  const toggleMenu = (bookingId) => {
+    setOpenMenuId(openMenuId === bookingId ? null : bookingId);
+  };
 
   return (
     <main role='main' className='grid w-full'>
       <section className='grid w-full'>
-        <div className='grid w-full'>
-          <div>
+        <div className='grid w-full px-8 lg:container lg:mx-auto bg-colour5'>
+          <section className='grid grid-flow-col justify-between items-center py-4'>
             <label>Filter by:</label>
             <select onChange={handleFilterChange} value={filter}>
               <option value='all'>All Bookings</option>
@@ -155,35 +163,44 @@ function BookingAdminPageMainContainer() {
               <option value='denied'>Denied</option>
               <option value='unconfirmed'>Unconfirmed</option>
             </select>
-          </div>
+          </section>
 
-          <div>
+          {/* Bookings */}
+          <section>
             {filteredBookings.length === 0 ? (
               <p>No bookings found for the selected filter.</p>
             ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBookings.map((booking) => (
-                    <tr key={booking.id}>
-                      <td>{new Date(booking.date).toLocaleDateString()}</td>
-                      <td>
+              <div className='space-y-4'>
+                {filteredBookings.map((booking) => (
+                  <div
+                    key={booking.id}
+                    className='grid grid-cols-1 md:grid-cols-7 gap-2 p-4 border rounded bg-white shadow'
+                  >
+                    <div>
+                      <strong>Date:</strong>
+                      <p>{new Date(booking.date).toLocaleDateString()}</p>
+                    </div>
+                    <div>
+                      <strong>Time:</strong>
+                      <p>
                         {new Date(booking.time * 1000).toLocaleTimeString()}
-                      </td>
-                      <td>{booking.fullName}</td>
-                      <td>{booking.email}</td>
-                      <td>{booking.phoneNumber}</td>
-                      <td>
+                      </p>
+                    </div>
+                    <div>
+                      <strong>Name:</strong>
+                      <p>{booking.fullName}</p>
+                    </div>
+                    <div>
+                      <strong>Email:</strong>
+                      <p>{booking.email}</p>
+                    </div>
+                    <div>
+                      <strong>Phone:</strong>
+                      <p>{booking.phoneNumber}</p>
+                    </div>
+                    <div>
+                      <strong>Status:</strong>
+                      <p>
                         {booking.bookingApproved
                           ? booking.cancelled
                             ? 'Cancelled'
@@ -191,31 +208,73 @@ function BookingAdminPageMainContainer() {
                             ? 'Denied'
                             : 'Confirmed'
                           : 'Unconfirmed'}
-                      </td>
-                      <td>
-                        {!booking.bookingApproved && (
-                          <button onClick={() => confirmBooking(booking.id)}>
-                            Confirm
-                          </button>
-                        )}
-                        {!booking.denied && (
-                          <button onClick={() => denyBooking(booking.id)}>
-                            Deny
-                          </button>
-                        )}
-                        <button onClick={() => editBooking(booking.id)}>
-                          Edit
-                        </button>
-                        <button onClick={() => deleteBooking(booking.id)}>
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </p>
+                    </div>
+                    <div className='relative flex justify-end' ref={menuRef}>
+                      <button
+                        onClick={() => toggleMenu(booking.id)}
+                        className='text-gray-600 hover:text-black'
+                      >
+                        &#8942;
+                      </button>
+                      {openMenuId === booking.id && (
+                        <div className='absolute right-0 mt-2 w-40 bg-white border rounded shadow z-10'>
+                          <ul className='flex flex-col text-sm'>
+                            {!booking.bookingApproved && (
+                              <li>
+                                <button
+                                  onClick={() => confirmBooking(booking.id)}
+                                  className='block w-full px-4 py-2 text-left hover:bg-green-100'
+                                >
+                                  Confirm
+                                </button>
+                              </li>
+                            )}
+                            {!booking.denied && !booking.bookingApproved && (
+                              <li>
+                                <button
+                                  onClick={() => denyBooking(booking.id)}
+                                  className='block w-full px-4 py-2 text-left hover:bg-yellow-100'
+                                >
+                                  Deny
+                                </button>
+                              </li>
+                            )}
+                            {!booking.cancelled && (
+                              <li>
+                                <button
+                                  onClick={() => cancelBooking(booking.id)}
+                                  className='block w-full px-4 py-2 text-left hover:bg-yellow-100'
+                                >
+                                  Cancel
+                                </button>
+                              </li>
+                            )}
+                            <li>
+                              <button
+                                onClick={() => editBooking(booking.id)}
+                                className='block w-full px-4 py-2 text-left hover:bg-blue-100'
+                              >
+                                Edit
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => deleteBooking(booking.id)}
+                                className='block w-full px-4 py-2 text-left hover:bg-red-100'
+                              >
+                                Delete
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
-          </div>
+          </section>
         </div>
       </section>
     </main>
