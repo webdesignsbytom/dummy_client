@@ -8,13 +8,25 @@ import {
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronDoubleRight,
 } from 'react-icons/hi';
+import { GrFormClose } from "react-icons/gr";
 
 function BookingPageMainContainer() {
+  const [openingTimes, setOpeningTimes] = useState({
+    Monday: { open: true, start: '09:00', end: '17:00' },
+    Tuesday: { open: true, start: '09:00', end: '17:00' },
+    Wednesday: { open: true, start: '09:00', end: '17:00' },
+    Thursday: { open: true, start: '09:00', end: '17:00' },
+    Friday: { open: true, start: '09:00', end: '17:00' },
+    Saturday: { open: true, start: '10:00', end: '14:00' },
+    Sunday: { open: false, start: null, end: null },
+  });
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showMonthList, setShowMonthList] = useState(false);
+  const [showBookingTimes, setShowBookingTimes] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(null); // Track selected day for time slots
 
   const today = new Date();
 
@@ -74,6 +86,9 @@ function BookingPageMainContainer() {
   const toggleMonthList = () => {
     setShowMonthList(!showMonthList);
   };
+  const toggleTimeSelection = () => {
+    setShowBookingTimes(!showBookingTimes);
+  };
 
   const handleSelectMonth = (selectedMonthIndex) => {
     setCurrentDate(new Date(year, selectedMonthIndex, 1));
@@ -82,6 +97,69 @@ function BookingPageMainContainer() {
 
   const isPrevDisabled =
     year === today.getFullYear() && month === today.getMonth();
+
+  const handleDayClick = (day) => {
+    const date = new Date(year, month, day);
+    const dayName = date.toLocaleString('default', { weekday: 'long' });
+    const dayOpening = openingTimes[dayName];
+
+    if (dayOpening?.open) {
+      setSelectedDay(day);
+      setShowBookingTimes(true);
+    }
+  };
+
+  const closeDaySelection = () => {
+    setShowBookingTimes(false);
+    setSelectedDay(null);
+  };
+
+  const setTimeSelected = () => {
+    console.log('set time');
+  }
+
+  const renderAvailableTimes = () => {
+    if (!selectedDay) return null;
+
+    const selectedDate = new Date(year, month, selectedDay);
+    const dayName = selectedDate.toLocaleString('default', { weekday: 'long' });
+    const { start, end } = openingTimes[dayName];
+
+    if (!start || !end) return <div>No available times for this day.</div>;
+
+    const startHour = parseInt(start.split(':')[0]);
+    const endHour = parseInt(end.split(':')[0]);
+    const availableTimes = [];
+
+    for (let i = startHour; i <= endHour; i++) {
+      const time = `${i < 10 ? '0' + i : i}:00`;
+      availableTimes.push(time);
+    }
+
+    return (
+      <section className='absolute w-full bg-gray-100'>
+        <div>
+          <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
+            <div>
+              <h3>Available Times:</h3>
+            </div>
+            <div>
+              <button className='my-auto flex items-center' onClick={closeDaySelection}>
+               <GrFormClose />
+              </button>
+            </div>
+          </div>
+          <ul>
+            {availableTimes.map((time) => (
+              <li key={time} onClick={setTimeSelected} className='py-1 cursor-pointer hover:bg-gray-200 text-center'>
+                {time}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  };
 
   return (
     <main role='main' className='grid w-full'>
@@ -148,8 +226,13 @@ function BookingPageMainContainer() {
                 </button>
               </div>
             </section>
+
             {/* Calendar Grid */}
-            <section>
+            <section className='relative'>
+              {/* Time selector */}
+              {showBookingTimes && renderAvailableTimes()}
+
+              {/* Days */}
               <div className='grid grid-cols-7 gap-2 border-t border-l w-fit mx-auto'>
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                   <div
@@ -160,14 +243,36 @@ function BookingPageMainContainer() {
                   </div>
                 ))}
 
-                {calendarDays.map((day, index) => (
-                  <button
-                    key={index}
-                    className='h-16 max-h-16 max-w-20 bg-blue-400 hover:bg-blue-500 text-white border-b border-r flex items-center justify-center'
-                  >
-                    {day && <span>{day}</span>}
-                  </button>
-                ))}
+                {calendarDays.map((day, index) => {
+                  if (!day) {
+                    return <div key={index} className='border-b border-r' />;
+                  }
+
+                  // Get the day of the week for this date
+                  const date = new Date(year, month, day);
+                  const dayName = date.toLocaleString('default', {
+                    weekday: 'long',
+                  });
+
+                  // Check if this day is open
+                  const isOpen = openingTimes[dayName]?.open;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleDayClick(day)}
+                      disabled={!isOpen}
+                      className={`h-16 max-h-16 max-w-20 border-b border-r flex items-center justify-center
+                        ${
+                          isOpen
+                            ? 'bg-blue-400 hover:bg-blue-500 text-white'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }`}
+                    >
+                      <span>{day}</span>
+                    </button>
+                  );
+                })}
               </div>
             </section>
           </div>
