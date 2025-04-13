@@ -24,6 +24,10 @@ function BookingPageMainContainer() {
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [viewedDate, setViewedDate] = useState(new Date());
+  const [displayMonth, setDisplayMonth] = useState(
+    viewedDate.toLocaleString('default', { month: 'long' })
+  );
   const [showMonthList, setShowMonthList] = useState(false);
   const [showBookingTimes, setShowBookingTimes] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null); // Track selected day for time slots
@@ -41,6 +45,8 @@ function BookingPageMainContainer() {
 
   // Fetch all bookings
   useEffect(() => {
+    {
+    }
     client
       .get(GET_BOOKING_API)
       .then((res) => {
@@ -54,8 +60,8 @@ function BookingPageMainContainer() {
   }, []);
 
   // Calendar details
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const year = viewedDate.getFullYear();
+  const month = viewedDate.getMonth();
   const firstDayOfMonth = new Date(year, month, 1);
   const lastDayOfMonth = new Date(year, month + 1, 0);
   const daysInMonth = lastDayOfMonth.getDate();
@@ -81,14 +87,19 @@ function BookingPageMainContainer() {
 
   // Handlers
   const handleNextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, 1));
+    let newDate = new Date(year, month + 1, 1);
+    setViewedDate(newDate);
+    setDisplayMonth(newDate.toLocaleString('default', { month: 'long' }));
   };
 
   const handlePrevMonth = () => {
     const isCurrentMonth =
       year === today.getFullYear() && month === today.getMonth();
     if (!isCurrentMonth) {
-      setCurrentDate(new Date(year, month - 1, 1));
+      let newDate = new Date(year, month - 1, 1)
+      setViewedDate(newDate);
+      setDisplayMonth(newDate.toLocaleString('default', { month: 'long' }));
+
     }
   };
 
@@ -97,7 +108,7 @@ function BookingPageMainContainer() {
   };
 
   const handleSelectMonth = (selectedMonthIndex) => {
-    setCurrentDate(new Date(year, selectedMonthIndex, 1));
+    setViewedDate(new Date(year, selectedMonthIndex, 1));
     setShowMonthList(false);
   };
 
@@ -295,8 +306,7 @@ function BookingPageMainContainer() {
                   onClick={toggleMonthList}
                   className='focus:outline-none'
                 >
-                  {currentDate.toLocaleString('default', { month: 'long' })}{' '}
-                  <span className='pl-2'>{year}</span>
+                  {displayMonth} <span className='pl-2'>{year}</span>
                 </button>
 
                 {/* Month list */}
