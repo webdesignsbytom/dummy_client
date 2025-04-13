@@ -119,6 +119,7 @@ function BookingPageMainContainer() {
   const handleDayClick = (day) => {
     console.log('day', day);
     const date = new Date(year, month, day);
+    console.log('date', date);
     const dayName = date.toLocaleString('default', { weekday: 'long' });
     const dayOpening = openingTimes[dayName];
 
