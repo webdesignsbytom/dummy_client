@@ -9,6 +9,7 @@ import {
 // Components
 import BookingPageMainContainer from '../../components/booking/BookingPageMainContainer';
 import { HelmetItem } from '../../components/utils/HelmetItem';
+import Navbar from '../../components/nav/Navbar';
 
 function BookingPage() {
   return (
@@ -21,8 +22,15 @@ function BookingPage() {
         additionalMeta={bookingPageAdditionalMeta}
         structuredData={bookingPageStructuredData}
       />
-      <div>
-        <BookingPageMainContainer />
+
+      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
+        <div className='grid grid-rows-reg'>
+          {/* Navigation */}
+          <Navbar />
+
+          {/* Main */}
+          <BookingPageMainContainer />
+        </div>
       </div>
     </>
   );
