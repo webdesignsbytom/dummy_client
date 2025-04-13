@@ -78,7 +78,7 @@ function BookingAdminPageMainContainer() {
     setFilter(event.target.value);
   };
 
-    // Confirm a booking
+  // Confirm a booking
   const confirmBooking = async (bookingId) => {
     client
       .patch(`${CONFIRM_BOOKING_API}/${bookingId}`)
@@ -174,33 +174,45 @@ function BookingAdminPageMainContainer() {
                 {filteredBookings.map((booking) => (
                   <div
                     key={booking.id}
-                    className='grid grid-cols-1 md:grid-cols-7 gap-2 p-4 border rounded bg-white shadow'
+                    className='grid grid-cols-1 md:grid-flow-col justify-evenly gap-2 p-4 items-center border rounded bg-colour1 shadow'
                   >
-                    <div>
+                    <div className='grid w-fit'>
                       <strong>Date:</strong>
-                      <p>{new Date(booking.date).toLocaleDateString()}</p>
+                      <p className='text-sm w-fit'>
+                        {new Date(booking.date).toLocaleDateString()}
+                      </p>
                     </div>
                     <div>
                       <strong>Time:</strong>
-                      <p>
+                      <p className='text-sm'>
                         {new Date(booking.time * 1000).toLocaleTimeString()}
                       </p>
                     </div>
                     <div>
                       <strong>Name:</strong>
-                      <p>{booking.fullName}</p>
+                      <p className='text-sm'>{booking.fullName}</p>
                     </div>
-                    <div>
+                    <div className='grid w-full'>
                       <strong>Email:</strong>
-                      <p>{booking.email}</p>
+                      <p className='text-sm'>{booking.email}</p>
                     </div>
                     <div>
                       <strong>Phone:</strong>
-                      <p>{booking.phoneNumber}</p>
+                      <p className='text-sm'>{booking.phoneNumber}</p>
                     </div>
                     <div>
                       <strong>Status:</strong>
-                      <p>
+                      <p
+                        className={`text-sm ${
+                          booking.bookingApproved
+                            ? booking.cancelled
+                              ? 'text-red-600 font-semibold'
+                              : booking.denied
+                              ? 'text-yellow-500 font-semibold'
+                              : 'text-green-600 font-semibold'
+                            : 'text-blue-600 font-semibold'
+                        }`}
+                      >
                         {booking.bookingApproved
                           ? booking.cancelled
                             ? 'Cancelled'
@@ -210,15 +222,18 @@ function BookingAdminPageMainContainer() {
                           : 'Unconfirmed'}
                       </p>
                     </div>
-                    <div className='relative flex justify-end' ref={menuRef}>
+                    <div
+                      className='relative grid justify-end items-center w-fit'
+                      ref={menuRef}
+                    >
                       <button
                         onClick={() => toggleMenu(booking.id)}
-                        className='text-gray-600 hover:text-black'
+                        className='text-gray-600 hover:text-black rounded-full shadow-md h-8 w-8'
                       >
                         &#8942;
                       </button>
                       {openMenuId === booking.id && (
-                        <div className='absolute right-0 mt-2 w-40 bg-white border rounded shadow z-10'>
+                        <div className='absolute right-0 items-center mt-2 w-40 bg-white border rounded shadow z-10'>
                           <ul className='flex flex-col text-sm'>
                             {!booking.bookingApproved && (
                               <li>
