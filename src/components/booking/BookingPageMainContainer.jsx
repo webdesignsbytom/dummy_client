@@ -8,7 +8,7 @@ import {
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronDoubleRight,
 } from 'react-icons/hi';
-import { GrFormClose } from "react-icons/gr";
+import { GrFormClose } from 'react-icons/gr';
 
 function BookingPageMainContainer() {
   const [openingTimes, setOpeningTimes] = useState({
@@ -27,7 +27,16 @@ function BookingPageMainContainer() {
   const [showMonthList, setShowMonthList] = useState(false);
   const [showBookingTimes, setShowBookingTimes] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null); // Track selected day for time slots
+  const [showBookingForm, setShowBookingForm] = useState(false); // New state to manage form visibility
+  const [bookingForm, setBookingForm] = useState({
+    time: '',
+    date: '',
+    fullName: '',
+    email: '',
+    phone: '',
+  });
 
+  console.log('bookings', bookings);
   const today = new Date();
 
   // Fetch all bookings
@@ -86,9 +95,6 @@ function BookingPageMainContainer() {
   const toggleMonthList = () => {
     setShowMonthList(!showMonthList);
   };
-  const toggleTimeSelection = () => {
-    setShowBookingTimes(!showBookingTimes);
-  };
 
   const handleSelectMonth = (selectedMonthIndex) => {
     setCurrentDate(new Date(year, selectedMonthIndex, 1));
@@ -112,11 +118,17 @@ function BookingPageMainContainer() {
   const closeDaySelection = () => {
     setShowBookingTimes(false);
     setSelectedDay(null);
+    setShowBookingForm(false); // Hide the booking form when closing day selection
   };
 
-  const setTimeSelected = () => {
+  const setTimeSelected = (time) => {
     console.log('set time');
-  }
+    setShowBookingForm(true);
+    setBookingForm({
+      ...bookingForm,
+      time: time,
+    });
+  };
 
   const renderAvailableTimes = () => {
     if (!selectedDay) return null;
@@ -144,19 +156,110 @@ function BookingPageMainContainer() {
               <h3>Available Times:</h3>
             </div>
             <div>
-              <button className='my-auto flex items-center' onClick={closeDaySelection}>
-               <GrFormClose />
+              <button
+                className='my-auto flex items-center'
+                onClick={closeDaySelection}
+              >
+                <GrFormClose />
               </button>
             </div>
           </div>
           <ul>
             {availableTimes.map((time) => (
-              <li key={time} onClick={setTimeSelected} className='py-1 cursor-pointer hover:bg-gray-200 text-center'>
+              <li
+                key={time}
+                onClick={() => setTimeSelected(time)}
+                className='py-1 cursor-pointer hover:bg-gray-200 text-center'
+              >
                 {time}
               </li>
             ))}
           </ul>
         </div>
+      </section>
+    );
+  };
+  const renderBookingForm = () => {
+    if (!showBookingForm) return null;
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setBookingForm((prevForm) => ({
+        ...prevForm,
+        [name]: value,
+      }));
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // You can add logic to handle form submission, like calling an API
+      console.log('Booking submitted:', bookingForm);
+    };
+
+    return (
+      <section className='bg-white shadow-lg rounded-md mt-4 p-4'>
+        <h3>Booking Form</h3>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='fullName'>Full Name</label>
+          <input
+            id='fullName'
+            name='fullName'
+            type='text'
+            value={bookingForm.fullName}
+            onChange={handleInputChange}
+            placeholder='Enter your full name'
+            className='w-full p-2 mb-2 border border-gray-300 rounded'
+          />
+
+          <label htmlFor='email'>Email</label>
+          <input
+            id='email'
+            name='email'
+            type='email'
+            value={bookingForm.email}
+            onChange={handleInputChange}
+            placeholder='Enter your email'
+            className='w-full p-2 mb-2 border border-gray-300 rounded'
+          />
+
+          <label htmlFor='phone'>Phone</label>
+          <input
+            id='phone'
+            name='phone'
+            type='tel'
+            value={bookingForm.phone}
+            onChange={handleInputChange}
+            placeholder='Enter your phone number'
+            className='w-full p-2 mb-2 border border-gray-300 rounded'
+          />
+
+          <label htmlFor='date'>Select Date</label>
+          <input
+            id='date'
+            name='date'
+            type='date'
+            value={bookingForm.date}
+            onChange={handleInputChange}
+            className='w-full p-2 mb-2 border border-gray-300 rounded'
+          />
+
+          <label htmlFor='time'>Select Time</label>
+          <input
+            id='time'
+            name='time'
+            type='time'
+            value={bookingForm.time}
+            onChange={handleInputChange}
+            className='w-full p-2 mb-2 border border-gray-300 rounded'
+          />
+
+          <button
+            type='submit'
+            className='w-full bg-blue-500 text-white py-2 mt-4 rounded'
+          >
+            Submit
+          </button>
+        </form>
       </section>
     );
   };
@@ -196,8 +299,9 @@ function BookingPageMainContainer() {
                   <span className='pl-2'>{year}</span>
                 </button>
 
+                {/* Month list */}
                 {showMonthList && (
-                  <div className='absolute left-1/2 -translate-x-1/2 mt-2 min-wz bg-white border rounded shadow grid lg:grid-cols-3 gap-2 p-2 z-10'>
+                  <div className='absolute left-1/2 -translate-x-1/2 mt-2 min-w-60 bg-white border rounded shadow grid lg:grid-cols-3 gap-2 p-2 z-10'>
                     {Array.from({ length: 12 }, (_, i) => (
                       <button
                         key={i}
@@ -275,6 +379,8 @@ function BookingPageMainContainer() {
                 })}
               </div>
             </section>
+            {/* Booking Form Below Calendar */}
+            {renderBookingForm()}
           </div>
         </div>
       </section>
