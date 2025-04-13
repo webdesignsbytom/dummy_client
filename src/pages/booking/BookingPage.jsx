@@ -23,7 +23,7 @@ function BookingPage() {
         structuredData={bookingPageStructuredData}
       />
 
-      <div className='grid min-h-screen bg-main-background font-poppins'>
+      <div className='grid min-h-screen bg-colour1 overflow-hidden font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
