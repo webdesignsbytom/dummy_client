@@ -14,9 +14,15 @@ function BookingAdminPageMainContainer() {
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
-  const [openMenus, setOpenMenus] = useState({});
-  const [openMenuId, setOpenMenuId] = useState(null); // track open menu
+  const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef();
+
+  // Confirm states
+  const [isConfirmingBooking, setIsConfirmingBooking] = useState(false);
+  const [isDenyingBooking, setIsDenyingBooking] = useState(false);
+  const [isCancellingBooking, setIsCancellingBooking] = useState(false);
+  const [isEditingBooking, setIsEditingBooking] = useState(false);
+  const [isDeletingBooking, setIsDeletingBooking] = useState(false);
 
   useEffect(() => {
     client
@@ -31,11 +37,17 @@ function BookingAdminPageMainContainer() {
       });
   }, []);
 
+
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setOpenMenuId(null);
+        setIsConfirmingBooking(false);
+        setIsCancellingBooking(false);
+        setIsEditingBooking(false);
+        setIsDeletingBooking(false);
+        setIsDenyingBooking(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -78,8 +90,12 @@ function BookingAdminPageMainContainer() {
     setFilter(event.target.value);
   };
 
+  const toggleConfirmBooking = () => {
+    setIsConfirmingBooking(true);
+  };
+
   // Confirm a booking
-  const confirmBooking = async (bookingId) => {
+  const confirmBookingHandler = async (bookingId) => {
     client
       .patch(`${CONFIRM_BOOKING_API}/${bookingId}`)
       .then((res) => {
@@ -91,14 +107,20 @@ function BookingAdminPageMainContainer() {
               : booking
           )
         );
+        setIsConfirmingBooking(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
+        setIsConfirmingBooking(false);
       });
   };
 
+  const toggleDenyBooking = () => {
+    setIsDenyingBooking(true);
+  };
+
   // Deny a booking
-  const denyBooking = async (bookingId) => {
+  const denyBookingHandler = async (bookingId) => {
     client
       .patch(`${DENY_BOOKING_API}/${bookingId}`)
       .then((res) => {
@@ -108,40 +130,60 @@ function BookingAdminPageMainContainer() {
             booking.id === bookingId ? { ...booking, denied: true } : booking
           )
         );
+        setIsDenyingBooking(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
+        setIsDenyingBooking(false);
       });
   };
 
+  const toggleCancelBooking = () => {
+    setIsCancellingBooking(true);
+  };
+
   // Cancel a booking
-  const cancelBooking = async (bookingId) => {
+  const cancelBookingHandler = async (bookingId) => {
+    console.log('XXXXXXXXXXXX');
     client
       .patch(`${CANCEL_BOOKING_API}/${bookingId}`)
       .then((res) => {
         console.log(res.data.bookings);
         setBookings(bookings.filter((booking) => booking.id !== bookingId));
+        setIsCancellingBooking(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
+        setIsCancellingBooking(false);
       });
   };
 
+  const toggleDeleteBooking = () => {
+    setIsDeletingBooking(true);
+  };
+
   // Delete a booking
-  const deleteBooking = async (bookingId) => {
+  const deleteBookingHandler = async (bookingId) => {
     client
       .delete(`${DELETE_BOOKING_API}/${bookingId}`)
       .then((res) => {
         console.log(res.data.bookings);
         setBookings(bookings.filter((booking) => booking.id !== bookingId));
+        setIsDeletingBooking(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
+        setIsDeletingBooking(false);
       });
   };
 
-  const editBooking = (bookingId) => {
+  const toggleEditBooking = () => {
+    setIsEditingBooking(true);
+  };
+
+  const editBookingHandler = (bookingId) => {
     console.log('Edit booking with ID:', bookingId);
+    setIsEditingBooking(false);
   };
 
   const toggleMenu = (bookingId) => {
@@ -174,56 +216,61 @@ function BookingAdminPageMainContainer() {
                 {filteredBookings.map((booking) => (
                   <div
                     key={booking.id}
-                    className='grid grid-cols-1 md:grid-flow-col justify-evenly gap-2 p-4 items-center border rounded bg-colour1 shadow'
+                    className='grid grid-cols-rev gap-2 p-4 items-center border rounded bg-colour1 shadow'
                   >
-                    <div className='grid w-fit'>
-                      <strong>Date:</strong>
-                      <p className='text-sm w-fit'>
-                        {new Date(booking.date).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div>
-                      <strong>Time:</strong>
-                      <p className='text-sm'>
-                        {new Date(booking.time * 1000).toLocaleTimeString()}
-                      </p>
-                    </div>
-                    <div>
-                      <strong>Name:</strong>
-                      <p className='text-sm'>{booking.fullName}</p>
-                    </div>
-                    <div className='grid w-full'>
-                      <strong>Email:</strong>
-                      <p className='text-sm'>{booking.email}</p>
-                    </div>
-                    <div>
-                      <strong>Phone:</strong>
-                      <p className='text-sm'>{booking.phoneNumber}</p>
-                    </div>
-                    <div>
-                      <strong>Status:</strong>
-                      <p
-                        className={`text-sm ${
-                          booking.bookingApproved
+                    {/* Data */}
+                    <section className='grid lg:grid-flow-col'>
+                      <div className='grid w-fit'>
+                        <strong>Date:</strong>
+                        <p className='text-sm w-fit'>
+                          {new Date(booking.date).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div>
+                        <strong>Time:</strong>
+                        <p className='text-sm'>
+                          {new Date(booking.time * 1000).toLocaleTimeString()}
+                        </p>
+                      </div>
+                      <div>
+                        <strong>Name:</strong>
+                        <p className='text-sm'>{booking.fullName}</p>
+                      </div>
+                      <div className='grid w-full'>
+                        <strong>Email:</strong>
+                        <p className='text-sm'>{booking.email}</p>
+                      </div>
+                      <div>
+                        <strong>Phone:</strong>
+                        <p className='text-sm'>{booking.phoneNumber}</p>
+                      </div>
+                      <div>
+                        <strong>Status:</strong>
+                        <p
+                          className={`text-sm ${
+                            booking.bookingApproved
+                              ? booking.cancelled
+                                ? 'text-red-600 font-semibold'
+                                : booking.denied
+                                ? 'text-yellow-500 font-semibold'
+                                : 'text-green-600 font-semibold'
+                              : 'text-blue-600 font-semibold'
+                          }`}
+                        >
+                          {booking.bookingApproved
                             ? booking.cancelled
-                              ? 'text-red-600 font-semibold'
+                              ? 'Cancelled'
                               : booking.denied
-                              ? 'text-yellow-500 font-semibold'
-                              : 'text-green-600 font-semibold'
-                            : 'text-blue-600 font-semibold'
-                        }`}
-                      >
-                        {booking.bookingApproved
-                          ? booking.cancelled
-                            ? 'Cancelled'
-                            : booking.denied
-                            ? 'Denied'
-                            : 'Confirmed'
-                          : 'Unconfirmed'}
-                      </p>
-                    </div>
-                    <div
-                      className='relative grid justify-end items-center w-fit'
+                              ? 'Denied'
+                              : 'Confirmed'
+                            : 'Unconfirmed'}
+                        </p>
+                      </div>
+                    </section>
+
+                    {/* Settings button */}
+                    <section
+                      className='relative grid items-center w-fit'
                       ref={menuRef}
                     >
                       <button
@@ -238,53 +285,83 @@ function BookingAdminPageMainContainer() {
                             {!booking.bookingApproved && (
                               <li>
                                 <button
-                                  onClick={() => confirmBooking(booking.id)}
-                                  className='block w-full px-4 py-2 text-left hover:bg-green-100'
+                                  onClick={
+                                    isConfirmingBooking
+                                      ? () => confirmBookingHandler(booking.id)
+                                      : toggleConfirmBooking()
+                                  }
+                                  className={`block ${
+                                    isConfirmingBooking ? 'bg-red-500' : ''
+                                  } w-full px-4 py-2 text-left hover:bg-green-100`}
                                 >
-                                  Confirm
+                                  {isConfirmingBooking ? 'Confirm!' : 'Confirm'}
                                 </button>
                               </li>
                             )}
                             {!booking.denied && !booking.bookingApproved && (
                               <li>
                                 <button
-                                  onClick={() => denyBooking(booking.id)}
-                                  className='block w-full px-4 py-2 text-left hover:bg-yellow-100'
+                                  onClick={
+                                    isDenyingBooking
+                                      ? () => denyBookingHandler(booking.id)
+                                      : toggleDenyBooking()
+                                  }
+                                  className={`block ${
+                                    isDenyingBooking ? 'bg-blue-500' : ''
+                                  } w-full px-4 py-2 text-left hover:bg-orange-100`}
                                 >
-                                  Deny
+                                  {isDenyingBooking ? 'Confirm!' : 'Deny'}
                                 </button>
                               </li>
                             )}
                             {!booking.cancelled && (
                               <li>
                                 <button
-                                  onClick={() => cancelBooking(booking.id)}
-                                  className='block w-full px-4 py-2 text-left hover:bg-yellow-100'
+                                  onClick={
+                                    isCancellingBooking
+                                      ? () => cancelBookingHandler(booking.id)
+                                      : toggleCancelBooking()
+                                  }
+                                  className={`block ${
+                                    isCancellingBooking ? 'bg-yellow-500' : ''
+                                  } w-full px-4 py-2 text-left hover:bg-yellow-100`}
                                 >
-                                  Cancel
+                                  {isCancellingBooking ? 'Confirm!' : 'Cancel'}
                                 </button>
                               </li>
                             )}
                             <li>
                               <button
-                                onClick={() => editBooking(booking.id)}
-                                className='block w-full px-4 py-2 text-left hover:bg-blue-100'
+                                onClick={
+                                  isEditingBooking
+                                    ? () => editBookingHandler(booking.id)
+                                    : toggleEditBooking()
+                                }
+                                className={`block ${
+                                  isEditingBooking ? 'bg-pink-500' : ''
+                                } w-full px-4 py-2 text-left hover:bg-blue-100`}
                               >
-                                Edit
+                                {isEditingBooking ? 'Confirm!' : 'Edit'}
                               </button>
                             </li>
                             <li>
                               <button
-                                onClick={() => deleteBooking(booking.id)}
-                                className='block w-full px-4 py-2 text-left hover:bg-red-100'
+                                onClick={
+                                  isDeletingBooking
+                                    ? () => deleteBookingHandler(booking.id)
+                                    : toggleDeleteBooking
+                                }
+                                className={`block ${
+                                  isDeletingBooking ? 'bg-purple-500' : ''
+                                } w-full px-4 py-2 text-left hover:bg-blue-100`}
                               >
-                                Delete
+                                {isDeletingBooking ? 'Confirm!' : 'Delete'}
                               </button>
                             </li>
                           </ul>
                         </div>
                       )}
-                    </div>
+                    </section>
                   </div>
                 ))}
               </div>
