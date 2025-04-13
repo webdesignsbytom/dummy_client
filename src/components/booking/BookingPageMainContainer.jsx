@@ -23,15 +23,19 @@ function BookingPageMainContainer() {
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewedDate, setViewedDate] = useState(new Date());
   const [displayMonth, setDisplayMonth] = useState(
     viewedDate.toLocaleString('default', { month: 'long' })
   );
+
   const [showMonthList, setShowMonthList] = useState(false);
   const [showBookingTimes, setShowBookingTimes] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(null); // Track selected day for time slots
-  const [showBookingForm, setShowBookingForm] = useState(false); // New state to manage form visibility
+  const [showBookingForm, setShowBookingForm] = useState(false); 
+
+  const [selectedDay, setSelectedDay] = useState(null); 
+
   const [bookingForm, setBookingForm] = useState({
     time: '',
     date: '',
@@ -41,12 +45,9 @@ function BookingPageMainContainer() {
   });
 
   console.log('bookings', bookings);
-  const today = new Date();
 
   // Fetch all bookings
   useEffect(() => {
-    {
-    }
     client
       .get(GET_BOOKING_API)
       .then((res) => {
@@ -94,7 +95,7 @@ function BookingPageMainContainer() {
 
   const handlePrevMonth = () => {
     const isCurrentMonth =
-      year === today.getFullYear() && month === today.getMonth();
+      year === currentDate.getFullYear() && month === currentDate.getMonth();
     if (!isCurrentMonth) {
       let newDate = new Date(year, month - 1, 1)
       setViewedDate(newDate);
@@ -113,9 +114,10 @@ function BookingPageMainContainer() {
   };
 
   const isPrevDisabled =
-    year === today.getFullYear() && month === today.getMonth();
+    year === currentDate.getFullYear() && month === currentDate.getMonth();
 
   const handleDayClick = (day) => {
+    console.log('day', day);
     const date = new Date(year, month, day);
     const dayName = date.toLocaleString('default', { weekday: 'long' });
     const dayOpening = openingTimes[dayName];
@@ -190,6 +192,7 @@ function BookingPageMainContainer() {
       </section>
     );
   };
+
   const renderBookingForm = () => {
     if (!showBookingForm) return null;
 
