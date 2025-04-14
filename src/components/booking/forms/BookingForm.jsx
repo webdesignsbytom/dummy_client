@@ -31,11 +31,6 @@ function BookingForm({
     e.preventDefault();
     setIsSubmitting(true);
 
-    // You can add logic to handle form submission, like calling an API
-    console.log('Booking submitted:', bookingForm);
-    // If it's the 'time' input, extract just the hour as a number
-    // bookingForm.time = parseInt(bookingForm.time.split(':')[0], 10);
-
     client
       .post(CREATE_NEW_BOOKING_API, bookingForm, false)
       .then((res) => {
@@ -43,7 +38,6 @@ function BookingForm({
         setShowBookingForm(false);
         setSubmittingSuccesful(true);
       })
-
       .catch((err) => {
         if (err.response?.status === 409) {
           setBookingUnavailable(true);
@@ -58,11 +52,25 @@ function BookingForm({
   };
 
   return (
-    <section className='grid bg-colour1 shadow-lg rounded-md p-4'>
+    <section
+      className='grid bg-colour1 shadow-lg rounded-md p-4'
+      aria-labelledby='booking-form-heading'
+    >
       <div className='grid w-full px-8 lg:container lg:mx-auto'>
-        <h3>Booking Form</h3>
-        <form>
-          <label htmlFor='fullName'>Full Name</label>
+        <h1
+          id='booking-form-heading'
+          className='text-2xl font-semibold text-colour7 mb-4'
+        >
+          Booking Form
+        </h1>
+        <form onSubmit={handleSubmit} aria-describedby='form-instructions'>
+          <p id='form-instructions' className='sr-only'>
+            Complete all fields before submitting your booking.
+          </p>
+
+          <label htmlFor='fullName' className='block font-medium mb-1'>
+            Full Name
+          </label>
           <input
             id='fullName'
             name='fullName'
@@ -70,10 +78,13 @@ function BookingForm({
             value={bookingForm.fullName}
             onChange={handleInputChange}
             placeholder='Enter your full name'
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
+            required
+            className='w-full p-2 mb-4 border border-gray-300 rounded'
           />
 
-          <label htmlFor='email'>Email</label>
+          <label htmlFor='email' className='block font-medium mb-1'>
+            Email Address
+          </label>
           <input
             id='email'
             name='email'
@@ -81,46 +92,58 @@ function BookingForm({
             value={bookingForm.email}
             onChange={handleInputChange}
             placeholder='Enter your email'
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
+            required
+            className='w-full p-2 mb-4 border border-gray-300 rounded'
           />
 
-          <label htmlFor='phoneNumber'>Phone</label>
+          <label htmlFor='phoneNumber' className='block font-medium mb-1'>
+            Phone Number
+          </label>
           <input
             id='phoneNumber'
             name='phoneNumber'
             type='tel'
-            value={bookingForm.phone}
+            value={bookingForm.phoneNumber}
             onChange={handleInputChange}
             placeholder='Enter your phone number'
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
+            required
+            className='w-full p-2 mb-4 border border-gray-300 rounded'
           />
 
-          <div>
-            <label htmlFor='date'>Select Date</label>
-            <p>{formatDateHandler(bookingForm.date)}</p>
+          <div className='mb-4'>
+            <label htmlFor='date' className='block font-medium mb-1'>
+              Selected Date
+            </label>
+            <p id='date' className='text-colour8'>
+              {formatDateHandler(bookingForm.date)}
+            </p>
           </div>
 
-          <label htmlFor='time'>Select Time</label>
+          <label htmlFor='time' className='block font-medium mb-1'>
+            Select Time
+          </label>
           <input
             id='time'
             name='time'
             type='time'
             value={bookingForm.displayTime}
             onChange={handleInputChange}
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
+            required
+            className='w-full p-2 mb-4 border border-gray-300 rounded'
           />
 
           <button
             type='submit'
-            onClick={handleSubmit}
-            className='w-full bg-blue-500 active:bg-green-500 text-white py-2 mt-4 rounded'
+            className='w-full bg-blue-500 hover:bg-blue-600 active:bg-green-500 text-white py-2 mt-4 rounded transition'
+            aria-busy={isSubmitting}
           >
             {isSubmitting ? (
               <div className='grid justify-center mx-auto'>
                 <LoadingSpinner xs={true} />
+                <span className='sr-only'>Submitting booking request…</span>
               </div>
             ) : (
-              'Submit'
+              'Submit Booking'
             )}
           </button>
         </form>

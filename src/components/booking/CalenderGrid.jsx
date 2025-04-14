@@ -20,7 +20,7 @@ function CalenderGrid({
     const dayName = selectedDate.toLocaleString('default', { weekday: 'long' });
     const { start, end } = openingTimes[dayName];
 
-    if (!start || !end) return <div>No available times for this day.</div>;
+    if (!start || !end) return <div role="status">No available times for this day.</div>;
 
     const startHour = parseInt(start.split(':')[0]);
     const endHour = parseInt(end.split(':')[0]);
@@ -32,27 +32,32 @@ function CalenderGrid({
     }
 
     return (
-      <section className='absolute w-full bg-gray-100'>
+      <section className="absolute w-full bg-gray-100" aria-labelledby="available-times-heading">
         <div>
-          <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
-            <div>
-              <h3>Available Times:</h3>
-            </div>
-            <div>
-              <button
-                className='my-auto flex items-center'
-                onClick={closeDaySelection}
-              >
-                <GrFormClose />
-              </button>
-            </div>
+          <div className="grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2">
+            <h3 id="available-times-heading" className="text-white text-lg font-semibold">
+              Available Times
+            </h3>
+            <button
+              className="my-auto flex items-center"
+              onClick={closeDaySelection}
+              aria-label="Close available times selection"
+            >
+              <GrFormClose />
+            </button>
           </div>
-          <ul>
+          <ul role="list" aria-label={`Available booking times for ${selectedDate.toDateString()}`}>
             {availableTimes.map((time) => (
               <li
                 key={time}
                 onClick={() => setTimeSelected(time)}
-                className={`py-1 cursor-pointer hover:bg-gray-200 text-center`}
+                className="py-1 cursor-pointer hover:bg-gray-200 text-center"
+                role="button"
+                tabIndex="0"
+                aria-pressed="false"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') setTimeSelected(time);
+                }}
               >
                 {time}
               </li>
@@ -62,17 +67,23 @@ function CalenderGrid({
       </section>
     );
   };
+
   return (
-    <section className='relative'>
-      {/* Time selector */}
+    <section className="relative" aria-label="Booking calendar">
       {showBookingTimes && renderAvailableTimes()}
 
-      {/* Days */}
-      <div className='grid grid-cols-7 gap-2 border-t border-l w-fit mx-auto'>
+      <div
+        className="grid grid-cols-7 gap-2 border-t border-l w-fit mx-auto"
+        role="grid"
+        aria-labelledby="calendar-grid-heading"
+      >
+        <h2 id="calendar-grid-heading" className="sr-only">Select a booking day</h2>
+
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
           <div
             key={d}
-            className='text-center font-semibold p-2 border-b border-r bg-gray-100'
+            className="text-center font-semibold p-2 border-b border-r bg-gray-100"
+            role="columnheader"
           >
             {d}
           </div>
@@ -80,16 +91,11 @@ function CalenderGrid({
 
         {calendarDays.map((day, index) => {
           if (!day) {
-            return <div key={index} className='border-b border-r' />;
+            return <div key={index} className="border-b border-r" role="gridcell" />;
           }
 
-          // Get the day of the week for this date
           const date = new Date(year, month, day);
-          const dayName = date.toLocaleString('default', {
-            weekday: 'long',
-          });
-
-          // Check if this day is open
+          const dayName = date.toLocaleString('default', { weekday: 'long' });
           const isOpen = openingTimes[dayName]?.open;
 
           return (
@@ -98,13 +104,15 @@ function CalenderGrid({
               onClick={() => handleDayClick(day)}
               disabled={!isOpen}
               className={`h-16 max-h-16 max-w-20 border-b border-r flex items-center justify-center
-              ${
-                isOpen
+                ${isOpen
                   ? selectedDay === day
-                    ? 'bg-red-500 text-white' // selected and open → red
-                    : 'bg-blue-400 hover:bg-blue-500 text-white' // open but not selected
+                    ? 'bg-red-500 text-white'
+                    : 'bg-blue-400 hover:bg-blue-500 text-white'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
+                }`}
+              role="gridcell"
+              aria-selected={selectedDay === day}
+              aria-label={`${dayName}, ${day}, ${isOpen ? 'available' : 'unavailable'}`}
             >
               <span>{day}</span>
             </button>

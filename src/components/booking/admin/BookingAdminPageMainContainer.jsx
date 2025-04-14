@@ -9,6 +9,7 @@ import {
   DENY_BOOKING_API,
   GET_BOOKING_ADMIN_API,
 } from '../../../utils/Constants';
+import { filteredBookings } from '../../../utils/functions/BookingFunctions';
 
 function BookingAdminPageMainContainer() {
   const [bookings, setBookings] = useState([]);
@@ -23,7 +24,9 @@ function BookingAdminPageMainContainer() {
   const [isCancellingBooking, setIsCancellingBooking] = useState(false);
   const [isEditingBooking, setIsEditingBooking] = useState(false);
   const [isDeletingBooking, setIsDeletingBooking] = useState(false);
+
   console.log('isConfirmingBooking', isConfirmingBooking);
+
   useEffect(() => {
     client
       .get(GET_BOOKING_ADMIN_API)
@@ -41,7 +44,6 @@ function BookingAdminPageMainContainer() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        console.log('BBBBBBBBBBBB');
         setOpenMenuId(null);
         setIsConfirmingBooking(false);
         setIsCancellingBooking(false);
@@ -55,36 +57,6 @@ function BookingAdminPageMainContainer() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  const isSameWeek = (date1, date2) => {
-    const startOfWeek = new Date(date2);
-    startOfWeek.setDate(date2.getDate() - date2.getDay());
-    const endOfWeek = new Date(date2);
-    endOfWeek.setDate(date2.getDate() + (6 - date2.getDay()));
-    return date1 >= startOfWeek && date1 <= endOfWeek;
-  };
-
-  const filteredBookings = bookings.filter((booking) => {
-    if (filter === 'all') return true;
-    if (filter === 'cancelled' && booking.cancelled) return true;
-    if (filter === 'denied' && booking.denied) return true;
-    if (filter === 'unconfirmed' && !booking.bookingApproved) return true;
-
-    const bookingDate = new Date(booking.date);
-    const today = new Date();
-
-    if (filter === 'day' && bookingDate.toDateString() === today.toDateString())
-      return true;
-    if (filter === 'week' && isSameWeek(bookingDate, today)) return true;
-    if (
-      filter === 'month' &&
-      bookingDate.getMonth() === today.getMonth() &&
-      bookingDate.getFullYear() === today.getFullYear()
-    )
-      return true;
-
-    return false;
-  });
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -208,11 +180,11 @@ function BookingAdminPageMainContainer() {
 
           {/* Bookings */}
           <section>
-            {filteredBookings.length === 0 ? (
+            {filteredBookings(bookings, filter).length === 0 ? (
               <p>No bookings found for the selected filter.</p>
             ) : (
               <div className='space-y-4'>
-                {filteredBookings.map((booking) => (
+                {filteredBookings(bookings, filter).map((booking) => (
                   <div
                     key={booking.id}
                     className='grid grid-cols-rev gap-2 p-4 items-center border rounded bg-colour1 shadow'
