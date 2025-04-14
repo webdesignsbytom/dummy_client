@@ -20,7 +20,7 @@ function BookingForm({ bookingForm, setBookingForm }) {
     const [year, month, day] = date.split('-');
     return `${day}/${month}/${year.slice(2)}`; // Return dd/mm/yy format
   };
-  
+
   return (
     <section className='grid bg-colour1 shadow-lg rounded-md p-4'>
       <div className='grid w-full px-8 lg:container lg:mx-auto'>
@@ -59,15 +59,10 @@ function BookingForm({ bookingForm, setBookingForm }) {
             className='w-full p-2 mb-2 border border-gray-300 rounded'
           />
 
-          <label htmlFor='date'>Select Date</label>
-          <input
-            id='date'
-            name='date'
-            type='date'
-            value={bookingForm.date}
-            onChange={handleInputChange}
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
-          />
+          <div>
+            <label htmlFor='date'>Select Date</label>
+            <p>{formatDate(bookingForm.date)}</p>
+          </div>
 
           <label htmlFor='time'>Select Time</label>
           <input
