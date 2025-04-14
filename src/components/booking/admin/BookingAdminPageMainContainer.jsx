@@ -48,7 +48,7 @@ function BookingAdminPageMainContainer() {
         setIsEditingBooking(false);
         setIsDeletingBooking(false);
         setIsDenyingBooking(false);
-      } 
+      }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -91,7 +91,6 @@ function BookingAdminPageMainContainer() {
   };
 
   const toggleConfirmBooking = () => {
-    console.log('AAAAAAAAAAAAA');
     setIsConfirmingBooking(true);
   };
 
@@ -140,13 +139,11 @@ function BookingAdminPageMainContainer() {
   };
 
   const toggleCancelBooking = () => {
-    console.log('DDDDDDDDDDD');
     setIsCancellingBooking(true);
   };
 
   // Cancel a booking
   const cancelBookingHandler = async (bookingId) => {
-    console.log('XXXXXXXXXXXX');
     client
       .patch(`${CANCEL_BOOKING_API}/${bookingId}`)
       .then((res) => {
@@ -161,21 +158,20 @@ function BookingAdminPageMainContainer() {
   };
 
   const toggleDeleteBooking = () => {
-    console.log('CCCCCCCCCCCCC');
     setIsDeletingBooking(true);
   };
 
   // Delete a booking
   const deleteBookingHandler = async (bookingId) => {
     client
-      .delete(`${DELETE_BOOKING_API}/${bookingId}`)
+      .delete(`${DELETE_BOOKING_API}/${bookingId}`, false)
       .then((res) => {
-        console.log(res.data.bookings);
+        console.log(res.data.message);
         setBookings(bookings.filter((booking) => booking.id !== bookingId));
         setIsDeletingBooking(false);
       })
       .catch((err) => {
-        console.error('Unable to retrieve booking data', err);
+        console.error('Unable to delete booking data', err);
         setIsDeletingBooking(false);
       });
   };
@@ -231,9 +227,7 @@ function BookingAdminPageMainContainer() {
                       </div>
                       <div>
                         <strong>Time:</strong>
-                        <p className='text-sm'>
-                          {new Date(booking.time * 1000).toLocaleTimeString()}
-                        </p>
+                        <p className='text-sm'>{booking.time}:00</p>
                       </div>
                       <div>
                         <strong>Name:</strong>
@@ -241,11 +235,17 @@ function BookingAdminPageMainContainer() {
                       </div>
                       <div className='grid w-full'>
                         <strong>Email:</strong>
-                        <p className='text-sm'>{booking.email}</p>
+                        <p className='text-sm'>
+                          <a href={`mailto:${booking.email}`}>
+                            {booking.email}
+                          </a>
+                        </p>
                       </div>
                       <div>
                         <strong>Phone:</strong>
-                        <p className='text-sm'>{booking.phoneNumber}</p>
+                        <a href={`tel:${booking.phoneNumber}`}>
+                          {booking.phoneNumber}
+                        </a>
                       </div>
                       <div>
                         <strong>Status:</strong>
@@ -283,7 +283,10 @@ function BookingAdminPageMainContainer() {
                         &#8942;
                       </button>
                       {openMenuId === booking.id && (
-                        <div ref={menuRef} className='absolute right-0 items-center mt-2 w-40 bg-white border rounded shadow z-10'>
+                        <div
+                          ref={menuRef}
+                          className='absolute right-0 items-center mt-2 w-40 bg-white border rounded shadow z-10'
+                        >
                           <ul className='flex flex-col text-sm'>
                             {!booking.bookingApproved && (
                               <li>
@@ -314,7 +317,7 @@ function BookingAdminPageMainContainer() {
                                     }
                                   }}
                                   className={`block ${
-                                    isDenyingBooking ? 'bg-blue-500' : ''
+                                    isDenyingBooking ? 'bg-red-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-orange-100`}
                                 >
                                   {isDenyingBooking ? 'Confirm!' : 'Deny'}
@@ -332,7 +335,7 @@ function BookingAdminPageMainContainer() {
                                     }
                                   }}
                                   className={`block ${
-                                    isCancellingBooking ? 'bg-yellow-500' : ''
+                                    isCancellingBooking ? 'bg-red-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-yellow-100`}
                                 >
                                   {isCancellingBooking ? 'Confirm!' : 'Cancel'}
@@ -349,8 +352,8 @@ function BookingAdminPageMainContainer() {
                                   }
                                 }}
                                 className={`block ${
-                                  isEditingBooking ? 'bg-pink-500' : ''
-                                } w-full px-4 py-2 text-left hover:bg-blue-100`}
+                                  isEditingBooking ? 'bg-red-500' : ''
+                                } w-full px-4 py-2 text-left hover:bg-red-300`}
                               >
                                 {isEditingBooking ? 'Confirm!' : 'Edit'}
                               </button>
@@ -365,8 +368,8 @@ function BookingAdminPageMainContainer() {
                                   }
                                 }}
                                 className={`block ${
-                                  isDeletingBooking ? 'bg-purple-500' : ''
-                                } w-full px-4 py-2 text-left hover:bg-blue-100`}
+                                  isDeletingBooking ? 'bg-red-500' : ''
+                                } w-full px-4 py-2 text-left hover:bg-red-300`}
                               >
                                 {isDeletingBooking ? 'Confirm!' : 'Delete'}
                               </button>
