@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+// Api
+import client from '../../../api/client';
+// Constants
+import { CREATE_NEW_BOOKING_API } from '../../../utils/Constants';
+// Components
+import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function BookingForm({ bookingForm, setBookingForm }) {
+  const [isSubmitting, setIsSubmitting] = useState();
+  const [result, setResult] = useState();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBookingForm((prevForm) => ({
@@ -10,22 +18,34 @@ function BookingForm({ bookingForm, setBookingForm }) {
   };
 
   const handleSubmit = (e) => {
+    console.log('XXXXXXXXXXX');
     e.preventDefault();
+    setIsSubmitting(true);
     // You can add logic to handle form submission, like calling an API
     console.log('Booking submitted:', bookingForm);
+
+    client
+      .post(CREATE_NEW_BOOKING_API)
+      .then((res) => {
+        setResult(res.data);
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        console.error('Unable to create new booking', err);
+        setIsSubmitting(false);
+      });
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    
+
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = String(date.getFullYear()).slice(2); // last two digits
-  
+
     return `${day}/${month}/${year}`;
   };
-  
 
   return (
     <section className='grid bg-colour1 shadow-lg rounded-md p-4'>
@@ -85,7 +105,7 @@ function BookingForm({ bookingForm, setBookingForm }) {
             onClick={handleSubmit}
             className='w-full bg-blue-500 text-white py-2 mt-4 rounded'
           >
-            Submit
+            {isSubmitting ? <LoadingSpinner sm={true} /> : 'Submit'}
           </button>
         </form>
       </div>
