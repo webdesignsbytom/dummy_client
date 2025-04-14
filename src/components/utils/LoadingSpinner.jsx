@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-function LoadingSpinner({ sm, md, lg }) {
+function LoadingSpinner({ xs, sm, md, lg }) {
   const [size, setSize] = useState({
     width: 'w-8',
     height: 'h-8',
   });
 
   useEffect(() => {
-    if (sm) {
+    if (xs) {
+      setSize({
+        width: 'w-6',
+        height: 'h-6',
+      });
+    } else if (sm) {
       setSize({
         width: 'w-8',
         height: 'h-8',

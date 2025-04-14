@@ -52,7 +52,7 @@ function CalenderGrid({
               <li
                 key={time}
                 onClick={() => setTimeSelected(time)}
-                className='py-1 cursor-pointer hover:bg-gray-200 text-center'
+                className={`py-1 cursor-pointer hover:bg-gray-200 text-center`}
               >
                 {time}
               </li>
@@ -98,11 +98,13 @@ function CalenderGrid({
               onClick={() => handleDayClick(day)}
               disabled={!isOpen}
               className={`h-16 max-h-16 max-w-20 border-b border-r flex items-center justify-center
-                        ${
-                          isOpen
-                            ? 'bg-blue-400 hover:bg-blue-500 text-white'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        }`}
+              ${
+                isOpen
+                  ? selectedDay === day
+                    ? 'bg-red-500 text-white' // selected and open → red
+                    : 'bg-blue-400 hover:bg-blue-500 text-white' // open but not selected
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
             >
               <span>{day}</span>
             </button>

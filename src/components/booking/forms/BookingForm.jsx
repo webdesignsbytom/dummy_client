@@ -7,28 +7,33 @@ import { CREATE_NEW_BOOKING_API } from '../../../utils/Constants';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function BookingForm({ bookingForm, setBookingForm }) {
-  const [isSubmitting, setIsSubmitting] = useState();
-  const [result, setResult] = useState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [result, setResult] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // If it's the 'time' input, extract just the hour as a number
+    const newValue =
+      name === 'time' ? parseInt(value.split(':')[0], 10) : value;
+
     setBookingForm((prevForm) => ({
       ...prevForm,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
   const handleSubmit = (e) => {
-    console.log('XXXXXXXXXXX');
     e.preventDefault();
     setIsSubmitting(true);
+
     // You can add logic to handle form submission, like calling an API
     console.log('Booking submitted:', bookingForm);
 
     client
       .post(CREATE_NEW_BOOKING_API, bookingForm, false)
       .then((res) => {
-        setResult(res.data);
+        setResult(res.data.booking);
         setIsSubmitting(false);
       })
       .catch((err) => {
@@ -106,7 +111,13 @@ function BookingForm({ bookingForm, setBookingForm }) {
             onClick={handleSubmit}
             className='w-full bg-blue-500 active:bg-green-500 text-white py-2 mt-4 rounded'
           >
-            {isSubmitting ? <LoadingSpinner sm={true} /> : 'Submit'}
+            {isSubmitting ? (
+              <div className='grid justify-center mx-auto'>
+                <LoadingSpinner xs={true} />
+              </div>
+            ) : (
+              'Submit'
+            )}
           </button>
         </form>
       </div>
