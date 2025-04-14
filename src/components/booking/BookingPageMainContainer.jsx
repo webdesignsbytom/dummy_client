@@ -39,7 +39,7 @@ function BookingPageMainContainer() {
     date: '',
     fullName: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
   });
 
   console.log('bookings', bookings);

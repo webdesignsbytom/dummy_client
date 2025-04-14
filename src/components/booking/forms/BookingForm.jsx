@@ -26,7 +26,7 @@ function BookingForm({ bookingForm, setBookingForm }) {
     console.log('Booking submitted:', bookingForm);
 
     client
-      .post(CREATE_NEW_BOOKING_API, false)
+      .post(CREATE_NEW_BOOKING_API, bookingForm, false)
       .then((res) => {
         setResult(res.data);
         setIsSubmitting(false);
@@ -75,10 +75,10 @@ function BookingForm({ bookingForm, setBookingForm }) {
             className='w-full p-2 mb-2 border border-gray-300 rounded'
           />
 
-          <label htmlFor='phone'>Phone</label>
+          <label htmlFor='phoneNumber'>Phone</label>
           <input
-            id='phone'
-            name='phone'
+            id='phoneNumber'
+            name='phoneNumber'
             type='tel'
             value={bookingForm.phone}
             onChange={handleInputChange}
