@@ -26,7 +26,7 @@ function BookingForm({ bookingForm, setBookingForm }) {
     console.log('Booking submitted:', bookingForm);
 
     client
-      .post(CREATE_NEW_BOOKING_API)
+      .post(CREATE_NEW_BOOKING_API, false)
       .then((res) => {
         setResult(res.data);
         setIsSubmitting(false);
