@@ -157,11 +157,11 @@ function BookingPageMainContainer() {
   };
 
   return (
-    <main role='main' className='grid w-full'>
+    <main role='main' className='grid w-full py-12'>
       {/* Booking grid */}
       <section className='grid w-full'>
         {/* Calendar container */}
-        <div className='grid w-full px-8 lg:container lg:mx-auto'>
+        <div className='grid gap-y-12 w-full px-8 lg:container lg:mx-auto'>
           <div className='grid w-fit mx-auto'>
             {/* Calendar Heading */}
             <MonthSelector
@@ -205,7 +205,7 @@ function BookingPageMainContainer() {
 
           {/* Success message */}
           {submittingSuccesful && <BookingRequestConfirmed />}
-          
+
           {/* Failure message */}
           {submittingFailed && <BookingRequestFailed />}
         </div>
