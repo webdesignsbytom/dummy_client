@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import client from '../../../api/client';
 // Constants
 import { CREATE_NEW_BOOKING_API } from '../../../utils/Constants';
-// Components
+// Data
+import { formatDateHandler } from '../../../utils/functions/BookingFunctions';
+// Utils
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function BookingForm({
@@ -12,9 +14,9 @@ function BookingForm({
   setShowBookingForm,
   setSubmittingSuccesful,
   setSubmittingFailed,
+  setBookingUnavailable,
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [result, setResult] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,27 +39,22 @@ function BookingForm({
     client
       .post(CREATE_NEW_BOOKING_API, bookingForm, false)
       .then((res) => {
-        setResult(res.data.booking);
         setIsSubmitting(false);
         setShowBookingForm(false);
         setSubmittingSuccesful(true);
       })
+
       .catch((err) => {
-        console.error('Unable to create new booking', err);
-        setIsSubmitting(false);
-        setSubmittingFailed(true);
+        if (err.response?.status === 409) {
+          setBookingUnavailable(true);
+          setIsSubmitting(false);
+          setSubmittingFailed(true);
+        } else {
+          console.error('Unable to create new booking', err);
+          setIsSubmitting(false);
+          setSubmittingFailed(true);
+        }
       });
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = String(date.getFullYear()).slice(2); // last two digits
-
-    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -100,7 +97,7 @@ function BookingForm({
 
           <div>
             <label htmlFor='date'>Select Date</label>
-            <p>{formatDate(bookingForm.date)}</p>
+            <p>{formatDateHandler(bookingForm.date)}</p>
           </div>
 
           <label htmlFor='time'>Select Time</label>

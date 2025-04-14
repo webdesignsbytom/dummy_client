@@ -3,28 +3,24 @@ import React, { useState, useEffect } from 'react';
 import client from '../../api/client';
 // Constants
 import { GET_BOOKING_API } from '../../utils/Constants';
+// Utils
+import LoadingSpinner from '../utils/LoadingSpinner';
+// Data
+import { bookingOpeningTimes } from '../../utils/data/BookingData';
 // Components
 import BookingForm from './forms/BookingForm';
 import MonthSelector from './MonthSelector';
 import CalenderGrid from './CalenderGrid';
 import BookingRequestConfirmed from './BookingRequestConfirmed';
 import BookingRequestFailed from './BookingRequestFailed';
+import BookingRequestUnavailable from './BookingRequestUnavailable';
 
 function BookingPageMainContainer() {
-  const [openingTimes, setOpeningTimes] = useState({
-    Monday: { open: true, start: '09:00', end: '17:00' },
-    Tuesday: { open: true, start: '09:00', end: '17:00' },
-    Wednesday: { open: true, start: '09:00', end: '17:00' },
-    Thursday: { open: true, start: '09:00', end: '17:00' },
-    Friday: { open: true, start: '09:00', end: '17:00' },
-    Saturday: { open: true, start: '10:00', end: '14:00' },
-    Sunday: { open: false, start: null, end: null },
-  });
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
   const [viewedDate, setViewedDate] = useState(new Date());
   const [displayMonth, setDisplayMonth] = useState(
     viewedDate.toLocaleString('default', { month: 'long' })
@@ -36,6 +32,7 @@ function BookingPageMainContainer() {
 
   const [submittingSuccesful, setSubmittingSuccesful] = useState(false);
   const [submittingFailed, setSubmittingFailed] = useState(false);
+  const [bookingUnavailable, setBookingUnavailable] = useState(false);
 
   const [selectedDay, setSelectedDay] = useState(null);
 
@@ -123,9 +120,8 @@ function BookingPageMainContainer() {
 
   const handleDayClick = (day) => {
     const date = new Date(year, month, day, 1);
-    console.log('DATE', date);
     const dayName = date.toLocaleString('default', { weekday: 'long' });
-    const dayOpening = openingTimes[dayName];
+    const dayOpening = bookingOpeningTimes[dayName];
 
     if (dayOpening?.open) {
       setSelectedDay(day);
@@ -141,14 +137,15 @@ function BookingPageMainContainer() {
   const closeDaySelection = () => {
     setShowBookingTimes(false);
     setSelectedDay(null);
-    setShowBookingForm(false); // Hide the booking form when closing day selection
+    setShowBookingForm(false);
   };
 
   const setTimeSelected = (time) => {
-    console.log('set time', time);
     setShowBookingForm(true);
     setShowBookingTimes(false);
+    
     let newTime = parseInt(time.split(':')[0], 10);
+
     setBookingForm({
       ...bookingForm,
       time: newTime,
@@ -158,8 +155,9 @@ function BookingPageMainContainer() {
 
   return (
     <main role='main' className='grid w-full py-12'>
-      {/* Booking grid */}
+      {/* Booking section */}
       <section className='grid w-full'>
+
         {/* Calendar container */}
         <div className='grid gap-y-12 w-full px-8 lg:container lg:mx-auto'>
           <div className='grid w-fit mx-auto'>
@@ -179,17 +177,24 @@ function BookingPageMainContainer() {
             />
 
             {/* Calendar Grid */}
-            <CalenderGrid
-              showBookingTimes={showBookingTimes}
-              selectedDay={selectedDay}
-              calendarDays={calendarDays}
-              year={year}
-              month={month}
-              openingTimes={openingTimes}
-              handleDayClick={handleDayClick}
-              closeDaySelection={closeDaySelection}
-              setTimeSelected={setTimeSelected}
-            />
+            <div className='relative'>
+              {loading && (
+                <div className='absolute z-10 h-full w-full grid justify-center items-center'>
+                  <LoadingSpinner lg={true} />
+                </div>
+              )}
+              <CalenderGrid
+                showBookingTimes={showBookingTimes}
+                selectedDay={selectedDay}
+                calendarDays={calendarDays}
+                year={year}
+                month={month}
+                openingTimes={bookingOpeningTimes}
+                handleDayClick={handleDayClick}
+                closeDaySelection={closeDaySelection}
+                setTimeSelected={setTimeSelected}
+              />
+            </div>
           </div>
 
           {/* Booking form */}
@@ -200,6 +205,7 @@ function BookingPageMainContainer() {
               setShowBookingForm={setShowBookingForm}
               setSubmittingSuccesful={setSubmittingSuccesful}
               setSubmittingFailed={setSubmittingFailed}
+              setBookingUnavailable={setBookingUnavailable}
             />
           )}
 
@@ -208,6 +214,14 @@ function BookingPageMainContainer() {
 
           {/* Failure message */}
           {submittingFailed && <BookingRequestFailed />}
+
+          {/* Unavailable message */}
+          {bookingUnavailable && (
+            <BookingRequestUnavailable
+              time={bookingForm.displayTime}
+              date={bookingForm.date}
+            />
+          )}
         </div>
       </section>
     </main>
