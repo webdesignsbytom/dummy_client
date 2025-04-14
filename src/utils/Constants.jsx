@@ -54,7 +54,7 @@ export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
 // Booking routes
 export const GET_BOOKING_API = '/bookings/get-all-bookings';
 export const GET_BOOKING_ADMIN_API = '/bookings/get-all-bookings-admin';
-export const CREATE_NEW_BOOKING_API = 'bookings/create-new-booking';
+export const CREATE_NEW_BOOKING_API = '/bookings/create-new-booking';
 export const CONFIRM_BOOKING_API = '/bookings/confirm-booking';
 export const DENY_BOOKING_API = '/bookings/deny-booking';
 export const CANCEL_BOOKING_API = '/bookings/cancel-booking';

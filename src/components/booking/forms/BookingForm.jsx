@@ -9,6 +9,7 @@ import LoadingSpinner from '../../utils/LoadingSpinner';
 function BookingForm({ bookingForm, setBookingForm }) {
   const [isSubmitting, setIsSubmitting] = useState();
   const [result, setResult] = useState();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBookingForm((prevForm) => ({
@@ -103,7 +104,7 @@ function BookingForm({ bookingForm, setBookingForm }) {
           <button
             type='submit'
             onClick={handleSubmit}
-            className='w-full bg-blue-500 text-white py-2 mt-4 rounded'
+            className='w-full bg-blue-500 active:bg-green-500 text-white py-2 mt-4 rounded'
           >
             {isSubmitting ? <LoadingSpinner sm={true} /> : 'Submit'}
           </button>
