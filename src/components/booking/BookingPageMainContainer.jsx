@@ -3,13 +3,10 @@ import React, { useState, useEffect } from 'react';
 import client from '../../api/client';
 // Constants
 import { GET_BOOKING_API } from '../../utils/Constants';
-// Icons
-import {
-  HiOutlineChevronDoubleLeft,
-  HiOutlineChevronDoubleRight,
-} from 'react-icons/hi';
-import { GrFormClose } from 'react-icons/gr';
+// Components
 import BookingForm from './forms/BookingForm';
+import MonthSelector from './MonthSelector';
+import CalenderGrid from './CalenderGrid';
 
 function BookingPageMainContainer() {
   const [openingTimes, setOpeningTimes] = useState({
@@ -109,94 +106,45 @@ function BookingPageMainContainer() {
   };
 
   const handleSelectMonth = (selectedMonthIndex) => {
-    setViewedDate(new Date(year, selectedMonthIndex, 1));
+    let newDate = new Date(year, selectedMonthIndex, 1);
+    setViewedDate(newDate);
+    setDisplayMonth(newDate.toLocaleString('default', { month: 'long' }));
     setShowMonthList(false);
   };
 
   const isPrevDisabled =
     year === currentDate.getFullYear() && month === currentDate.getMonth();
 
-    const handleDayClick = (day) => {
-      const date = new Date(year, month, day);
-      const dayName = date.toLocaleString('default', { weekday: 'long' });
-      const dayOpening = openingTimes[dayName];
-    
-      if (dayOpening?.open) {
-        setSelectedDay(day);
-        setShowBookingTimes(true);
-    
-        setBookingForm({
-          ...bookingForm,
-          date: date.toISOString()
-        });
-      }
-    };
-    
+  const handleDayClick = (day) => {
+    const date = new Date(year, month, day);
+    const dayName = date.toLocaleString('default', { weekday: 'long' });
+    const dayOpening = openingTimes[dayName];
+
+    if (dayOpening?.open) {
+      setSelectedDay(day);
+      setShowBookingTimes(true);
+
+      setBookingForm({
+        ...bookingForm,
+        date: date.toISOString(),
+      });
+    }
+  };
 
   const closeDaySelection = () => {
     setShowBookingTimes(false);
     setSelectedDay(null);
     setShowBookingForm(false); // Hide the booking form when closing day selection
   };
-console.log('book', bookingForm.date);
+  console.log('book', bookingForm.date);
   const setTimeSelected = (time) => {
     console.log('set time');
     setShowBookingForm(true);
-    setShowBookingTimes(false)
+    setShowBookingTimes(false);
     setBookingForm({
       ...bookingForm,
       time: time,
     });
-  };
-
-  const renderAvailableTimes = () => {
-    if (!selectedDay) return null;
-
-    const selectedDate = new Date(year, month, selectedDay);
-    const dayName = selectedDate.toLocaleString('default', { weekday: 'long' });
-    const { start, end } = openingTimes[dayName];
-
-    if (!start || !end) return <div>No available times for this day.</div>;
-
-    const startHour = parseInt(start.split(':')[0]);
-    const endHour = parseInt(end.split(':')[0]);
-    const availableTimes = [];
-
-    for (let i = startHour; i <= endHour; i++) {
-      const time = `${i < 10 ? '0' + i : i}:00`;
-      availableTimes.push(time);
-    }
-
-    return (
-      <section className='absolute w-full bg-gray-100'>
-        <div>
-          <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
-            <div>
-              <h3>Available Times:</h3>
-            </div>
-            <div>
-              <button
-                className='my-auto flex items-center'
-                onClick={closeDaySelection}
-              >
-                <GrFormClose />
-              </button>
-            </div>
-          </div>
-          <ul>
-            {availableTimes.map((time) => (
-              <li
-                key={time}
-                onClick={() => setTimeSelected(time)}
-                className='py-1 cursor-pointer hover:bg-gray-200 text-center'
-              >
-                {time}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    );
   };
 
   return (
@@ -207,112 +155,32 @@ console.log('book', bookingForm.date);
         <div className='grid w-full px-8 lg:container lg:mx-auto'>
           <div className='grid w-fit mx-auto'>
             {/* Calendar Heading */}
-            <section className='grid grid-cols-a1a gap-x-1 items-center'>
-              {/* Back month */}
-              <div>
-                <button
-                  onClick={handlePrevMonth}
-                  disabled={isPrevDisabled}
-                  className={`flex items-center gap-1 p-2 rounded ${
-                    isPrevDisabled
-                      ? 'opacity-30 cursor-not-allowed'
-                      : 'hover:bg-gray-200'
-                  }`}
-                >
-                  <HiOutlineChevronDoubleLeft />
-                  <span>{previousMonth}</span>
-                </button>
-              </div>
-
-              {/* Current Month */}
-              <div className='relative text-xl font-bold my-4 text-center'>
-                <button
-                  onClick={toggleMonthList}
-                  className='focus:outline-none'
-                >
-                  {displayMonth} <span className='pl-2'>{year}</span>
-                </button>
-
-                {/* Month list */}
-                {showMonthList && (
-                  <div className='absolute left-1/2 -translate-x-1/2 mt-2 min-w-60 bg-white border rounded shadow grid lg:grid-cols-3 gap-2 p-2 z-10'>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSelectMonth(i)}
-                        className={`p-2 rounded hover:bg-gray-200 ${
-                          i === month ? 'bg-blue-500 text-white' : ''
-                        }`}
-                      >
-                        {new Date(year, i, 1).toLocaleString('default', {
-                          month: 'short',
-                        })}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Next month */}
-              <div className='text-right'>
-                <button
-                  onClick={handleNextMonth}
-                  className='flex items-center gap-1 p-2 rounded hover:bg-gray-200'
-                >
-                  <span>{nextMonth}</span>
-                  <HiOutlineChevronDoubleRight />
-                </button>
-              </div>
-            </section>
+            <MonthSelector
+              handlePrevMonth={handlePrevMonth}
+              isPrevDisabled={isPrevDisabled}
+              previousMonth={previousMonth}
+              toggleMonthList={toggleMonthList}
+              displayMonth={displayMonth}
+              year={year}
+              showMonthList={showMonthList}
+              handleSelectMonth={handleSelectMonth}
+              handleNextMonth={handleNextMonth}
+              month={month}
+              nextMonth={nextMonth}
+            />
 
             {/* Calendar Grid */}
-            <section className='relative'>
-              {/* Time selector */}
-              {showBookingTimes && renderAvailableTimes()}
-
-              {/* Days */}
-              <div className='grid grid-cols-7 gap-2 border-t border-l w-fit mx-auto'>
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-                  <div
-                    key={d}
-                    className='text-center font-semibold p-2 border-b border-r bg-gray-100'
-                  >
-                    {d}
-                  </div>
-                ))}
-
-                {calendarDays.map((day, index) => {
-                  if (!day) {
-                    return <div key={index} className='border-b border-r' />;
-                  }
-
-                  // Get the day of the week for this date
-                  const date = new Date(year, month, day);
-                  const dayName = date.toLocaleString('default', {
-                    weekday: 'long',
-                  });
-
-                  // Check if this day is open
-                  const isOpen = openingTimes[dayName]?.open;
-
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => handleDayClick(day)}
-                      disabled={!isOpen}
-                      className={`h-16 max-h-16 max-w-20 border-b border-r flex items-center justify-center
-                        ${
-                          isOpen
-                            ? 'bg-blue-400 hover:bg-blue-500 text-white'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        }`}
-                    >
-                      <span>{day}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
+            <CalenderGrid
+              showBookingTimes={showBookingTimes}
+              selectedDay={selectedDay}
+              calendarDays={calendarDays}
+              year={year}
+              month={month}
+              openingTimes={openingTimes}
+              handleDayClick={handleDayClick}
+              closeDaySelection={closeDaySelection}
+              setTimeSelected={setTimeSelected}
+            />
           </div>
 
           {/* Booking form */}
