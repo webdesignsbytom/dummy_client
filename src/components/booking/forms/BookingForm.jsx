@@ -6,7 +6,13 @@ import { CREATE_NEW_BOOKING_API } from '../../../utils/Constants';
 // Components
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
-function BookingForm({ bookingForm, setBookingForm, setShowBookingForm }) {
+function BookingForm({
+  bookingForm,
+  setBookingForm,
+  setShowBookingForm,
+  setSubmittingSuccesful,
+  setSubmittingFailed,
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState({});
 
@@ -27,17 +33,19 @@ function BookingForm({ bookingForm, setBookingForm, setShowBookingForm }) {
     console.log('Booking submitted:', bookingForm);
     // If it's the 'time' input, extract just the hour as a number
     // bookingForm.time = parseInt(bookingForm.time.split(':')[0], 10);
-    
+
     client
       .post(CREATE_NEW_BOOKING_API, bookingForm, false)
       .then((res) => {
         setResult(res.data.booking);
         setIsSubmitting(false);
         setShowBookingForm(false);
+        setSubmittingSuccesful(true);
       })
       .catch((err) => {
         console.error('Unable to create new booking', err);
         setIsSubmitting(false);
+        setSubmittingFailed(true);
       });
   };
 
@@ -100,7 +108,7 @@ function BookingForm({ bookingForm, setBookingForm, setShowBookingForm }) {
             id='time'
             name='time'
             type='time'
-            value={bookingForm.time}
+            value={bookingForm.displayTime}
             onChange={handleInputChange}
             className='w-full p-2 mb-2 border border-gray-300 rounded'
           />

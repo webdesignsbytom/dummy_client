@@ -7,6 +7,8 @@ import { GET_BOOKING_API } from '../../utils/Constants';
 import BookingForm from './forms/BookingForm';
 import MonthSelector from './MonthSelector';
 import CalenderGrid from './CalenderGrid';
+import BookingRequestConfirmed from './BookingRequestConfirmed';
+import BookingRequestFailed from './BookingRequestFailed';
 
 function BookingPageMainContainer() {
   const [openingTimes, setOpeningTimes] = useState({
@@ -31,6 +33,9 @@ function BookingPageMainContainer() {
   const [showMonthList, setShowMonthList] = useState(false);
   const [showBookingTimes, setShowBookingTimes] = useState(false);
   const [showBookingForm, setShowBookingForm] = useState(false);
+
+  const [submittingSuccesful, setSubmittingSuccesful] = useState(false);
+  const [submittingFailed, setSubmittingFailed] = useState(false);
 
   const [selectedDay, setSelectedDay] = useState(null);
 
@@ -117,7 +122,8 @@ function BookingPageMainContainer() {
     year === currentDate.getFullYear() && month === currentDate.getMonth();
 
   const handleDayClick = (day) => {
-    const date = new Date(year, month, day);
+    const date = new Date(year, month, day, 1);
+    console.log('DATE', date);
     const dayName = date.toLocaleString('default', { weekday: 'long' });
     const dayOpening = openingTimes[dayName];
 
@@ -192,8 +198,16 @@ function BookingPageMainContainer() {
               bookingForm={bookingForm}
               setBookingForm={setBookingForm}
               setShowBookingForm={setShowBookingForm}
+              setSubmittingSuccesful={setSubmittingSuccesful}
+              setSubmittingFailed={setSubmittingFailed}
             />
           )}
+
+          {/* Success message */}
+          {submittingSuccesful && <BookingRequestConfirmed />}
+          
+          {/* Failure message */}
+          {submittingFailed && <BookingRequestFailed />}
         </div>
       </section>
     </main>
