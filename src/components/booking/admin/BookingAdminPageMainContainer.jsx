@@ -23,7 +23,7 @@ function BookingAdminPageMainContainer() {
   const [isCancellingBooking, setIsCancellingBooking] = useState(false);
   const [isEditingBooking, setIsEditingBooking] = useState(false);
   const [isDeletingBooking, setIsDeletingBooking] = useState(false);
-
+  console.log('isConfirmingBooking', isConfirmingBooking);
   useEffect(() => {
     client
       .get(GET_BOOKING_ADMIN_API)
@@ -37,18 +37,18 @@ function BookingAdminPageMainContainer() {
       });
   }, []);
 
-
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
+        console.log('BBBBBBBBBBBB');
         setOpenMenuId(null);
         setIsConfirmingBooking(false);
         setIsCancellingBooking(false);
         setIsEditingBooking(false);
         setIsDeletingBooking(false);
         setIsDenyingBooking(false);
-      }
+      } 
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -91,6 +91,7 @@ function BookingAdminPageMainContainer() {
   };
 
   const toggleConfirmBooking = () => {
+    console.log('AAAAAAAAAAAAA');
     setIsConfirmingBooking(true);
   };
 
@@ -139,6 +140,7 @@ function BookingAdminPageMainContainer() {
   };
 
   const toggleCancelBooking = () => {
+    console.log('DDDDDDDDDDD');
     setIsCancellingBooking(true);
   };
 
@@ -159,6 +161,7 @@ function BookingAdminPageMainContainer() {
   };
 
   const toggleDeleteBooking = () => {
+    console.log('CCCCCCCCCCCCC');
     setIsDeletingBooking(true);
   };
 
@@ -270,8 +273,8 @@ function BookingAdminPageMainContainer() {
 
                     {/* Settings button */}
                     <section
-                      className='relative grid items-center w-fit'
                       ref={menuRef}
+                      className='relative grid items-center w-fit'
                     >
                       <button
                         onClick={() => toggleMenu(booking.id)}
@@ -280,16 +283,18 @@ function BookingAdminPageMainContainer() {
                         &#8942;
                       </button>
                       {openMenuId === booking.id && (
-                        <div className='absolute right-0 items-center mt-2 w-40 bg-white border rounded shadow z-10'>
+                        <div ref={menuRef} className='absolute right-0 items-center mt-2 w-40 bg-white border rounded shadow z-10'>
                           <ul className='flex flex-col text-sm'>
                             {!booking.bookingApproved && (
                               <li>
                                 <button
-                                  onClick={
-                                    isConfirmingBooking
-                                      ? () => confirmBookingHandler(booking.id)
-                                      : toggleConfirmBooking()
-                                  }
+                                  onClick={() => {
+                                    if (isConfirmingBooking) {
+                                      confirmBookingHandler(booking.id);
+                                    } else {
+                                      toggleConfirmBooking();
+                                    }
+                                  }}
                                   className={`block ${
                                     isConfirmingBooking ? 'bg-red-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-green-100`}
@@ -301,11 +306,13 @@ function BookingAdminPageMainContainer() {
                             {!booking.denied && !booking.bookingApproved && (
                               <li>
                                 <button
-                                  onClick={
-                                    isDenyingBooking
-                                      ? () => denyBookingHandler(booking.id)
-                                      : toggleDenyBooking()
-                                  }
+                                  onClick={() => {
+                                    if (isDenyingBooking) {
+                                      denyBookingHandler(booking.id);
+                                    } else {
+                                      toggleDenyBooking();
+                                    }
+                                  }}
                                   className={`block ${
                                     isDenyingBooking ? 'bg-blue-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-orange-100`}
@@ -317,11 +324,13 @@ function BookingAdminPageMainContainer() {
                             {!booking.cancelled && (
                               <li>
                                 <button
-                                  onClick={
-                                    isCancellingBooking
-                                      ? () => cancelBookingHandler(booking.id)
-                                      : toggleCancelBooking()
-                                  }
+                                  onClick={() => {
+                                    if (isCancellingBooking) {
+                                      cancelBookingHandler(booking.id);
+                                    } else {
+                                      toggleCancelBooking();
+                                    }
+                                  }}
                                   className={`block ${
                                     isCancellingBooking ? 'bg-yellow-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-yellow-100`}
@@ -332,11 +341,13 @@ function BookingAdminPageMainContainer() {
                             )}
                             <li>
                               <button
-                                onClick={
-                                  isEditingBooking
-                                    ? () => editBookingHandler(booking.id)
-                                    : toggleEditBooking()
-                                }
+                                onClick={() => {
+                                  if (isEditingBooking) {
+                                    editBookingHandler(booking.id);
+                                  } else {
+                                    toggleEditBooking();
+                                  }
+                                }}
                                 className={`block ${
                                   isEditingBooking ? 'bg-pink-500' : ''
                                 } w-full px-4 py-2 text-left hover:bg-blue-100`}
@@ -346,11 +357,13 @@ function BookingAdminPageMainContainer() {
                             </li>
                             <li>
                               <button
-                                onClick={
-                                  isDeletingBooking
-                                    ? () => deleteBookingHandler(booking.id)
-                                    : toggleDeleteBooking
-                                }
+                                onClick={() => {
+                                  if (isDeletingBooking) {
+                                    deleteBookingHandler(booking.id);
+                                  } else {
+                                    toggleDeleteBooking();
+                                  }
+                                }}
                                 className={`block ${
                                   isDeletingBooking ? 'bg-purple-500' : ''
                                 } w-full px-4 py-2 text-left hover:bg-blue-100`}
