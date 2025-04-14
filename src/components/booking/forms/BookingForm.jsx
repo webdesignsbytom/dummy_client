@@ -92,7 +92,7 @@ function BookingForm({ bookingForm, setBookingForm, setShowBookingForm }) {
 
           <div>
             <label htmlFor='date'>Select Date</label>
-            <p>{formatDate(bookingForm.displayTime)}</p>
+            <p>{formatDate(bookingForm.date)}</p>
           </div>
 
           <label htmlFor='time'>Select Time</label>

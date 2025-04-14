@@ -38,13 +38,12 @@ function BookingPageMainContainer() {
     time: '',
     displayTime: '',
     date: '',
-    displayDate: '',
     fullName: '',
     email: '',
     phoneNumber: '',
   });
 
-  console.log('bookings', bookings);
+  console.log('bookingForm', bookingForm);
 
   // Fetch all bookings
   useEffect(() => {
