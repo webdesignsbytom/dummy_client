@@ -6,20 +6,16 @@ import { CREATE_NEW_BOOKING_API } from '../../../utils/Constants';
 // Components
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
-function BookingForm({ bookingForm, setBookingForm }) {
+function BookingForm({ bookingForm, setBookingForm, setShowBookingForm }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // If it's the 'time' input, extract just the hour as a number
-    const newValue =
-      name === 'time' ? parseInt(value.split(':')[0], 10) : value;
-
     setBookingForm((prevForm) => ({
       ...prevForm,
-      [name]: newValue,
+      [name]: value,
     }));
   };
 
@@ -29,12 +25,15 @@ function BookingForm({ bookingForm, setBookingForm }) {
 
     // You can add logic to handle form submission, like calling an API
     console.log('Booking submitted:', bookingForm);
-
+    // If it's the 'time' input, extract just the hour as a number
+    // bookingForm.time = parseInt(bookingForm.time.split(':')[0], 10);
+    
     client
       .post(CREATE_NEW_BOOKING_API, bookingForm, false)
       .then((res) => {
         setResult(res.data.booking);
         setIsSubmitting(false);
+        setShowBookingForm(false);
       })
       .catch((err) => {
         console.error('Unable to create new booking', err);
@@ -93,7 +92,7 @@ function BookingForm({ bookingForm, setBookingForm }) {
 
           <div>
             <label htmlFor='date'>Select Date</label>
-            <p>{formatDate(bookingForm.date)}</p>
+            <p>{formatDate(bookingForm.displayTime)}</p>
           </div>
 
           <label htmlFor='time'>Select Time</label>

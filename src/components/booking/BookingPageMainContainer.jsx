@@ -36,7 +36,9 @@ function BookingPageMainContainer() {
 
   const [bookingForm, setBookingForm] = useState({
     time: '',
+    displayTime: '',
     date: '',
+    displayDate: '',
     fullName: '',
     email: '',
     phoneNumber: '',
@@ -136,14 +138,16 @@ function BookingPageMainContainer() {
     setSelectedDay(null);
     setShowBookingForm(false); // Hide the booking form when closing day selection
   };
-  console.log('book', bookingForm.date);
+
   const setTimeSelected = (time) => {
-    console.log('set time');
+    console.log('set time', time);
     setShowBookingForm(true);
     setShowBookingTimes(false);
+    let newTime = parseInt(time.split(':')[0], 10);
     setBookingForm({
       ...bookingForm,
-      time: time,
+      time: newTime,
+      displayTime: time,
     });
   };
 
@@ -188,6 +192,7 @@ function BookingPageMainContainer() {
             <BookingForm
               bookingForm={bookingForm}
               setBookingForm={setBookingForm}
+              setShowBookingForm={setShowBookingForm}
             />
           )}
         </div>
