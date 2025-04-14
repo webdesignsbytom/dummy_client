@@ -9,6 +9,7 @@ import {
   HiOutlineChevronDoubleRight,
 } from 'react-icons/hi';
 import { GrFormClose } from 'react-icons/gr';
+import BookingForm from './forms/BookingForm';
 
 function BookingPageMainContainer() {
   const [openingTimes, setOpeningTimes] = useState({
@@ -32,9 +33,9 @@ function BookingPageMainContainer() {
 
   const [showMonthList, setShowMonthList] = useState(false);
   const [showBookingTimes, setShowBookingTimes] = useState(false);
-  const [showBookingForm, setShowBookingForm] = useState(false); 
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
-  const [selectedDay, setSelectedDay] = useState(null); 
+  const [selectedDay, setSelectedDay] = useState(null);
 
   const [bookingForm, setBookingForm] = useState({
     time: '',
@@ -97,10 +98,9 @@ function BookingPageMainContainer() {
     const isCurrentMonth =
       year === currentDate.getFullYear() && month === currentDate.getMonth();
     if (!isCurrentMonth) {
-      let newDate = new Date(year, month - 1, 1)
+      let newDate = new Date(year, month - 1, 1);
       setViewedDate(newDate);
       setDisplayMonth(newDate.toLocaleString('default', { month: 'long' }));
-
     }
   };
 
@@ -116,28 +116,33 @@ function BookingPageMainContainer() {
   const isPrevDisabled =
     year === currentDate.getFullYear() && month === currentDate.getMonth();
 
-  const handleDayClick = (day) => {
-    console.log('day', day);
-    const date = new Date(year, month, day);
-    console.log('date', date);
-    const dayName = date.toLocaleString('default', { weekday: 'long' });
-    const dayOpening = openingTimes[dayName];
-
-    if (dayOpening?.open) {
-      setSelectedDay(day);
-      setShowBookingTimes(true);
-    }
-  };
+    const handleDayClick = (day) => {
+      const date = new Date(year, month, day);
+      const dayName = date.toLocaleString('default', { weekday: 'long' });
+      const dayOpening = openingTimes[dayName];
+    
+      if (dayOpening?.open) {
+        setSelectedDay(day);
+        setShowBookingTimes(true);
+    
+        setBookingForm({
+          ...bookingForm,
+          date: date.toISOString()
+        });
+      }
+    };
+    
 
   const closeDaySelection = () => {
     setShowBookingTimes(false);
     setSelectedDay(null);
     setShowBookingForm(false); // Hide the booking form when closing day selection
   };
-
+console.log('book', bookingForm.date);
   const setTimeSelected = (time) => {
     console.log('set time');
     setShowBookingForm(true);
+    setShowBookingTimes(false)
     setBookingForm({
       ...bookingForm,
       time: time,
@@ -194,97 +199,12 @@ function BookingPageMainContainer() {
     );
   };
 
-  const renderBookingForm = () => {
-    if (!showBookingForm) return null;
-
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setBookingForm((prevForm) => ({
-        ...prevForm,
-        [name]: value,
-      }));
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      // You can add logic to handle form submission, like calling an API
-      console.log('Booking submitted:', bookingForm);
-    };
-
-    return (
-      <section className='bg-white shadow-lg rounded-md mt-4 p-4'>
-        <h3>Booking Form</h3>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='fullName'>Full Name</label>
-          <input
-            id='fullName'
-            name='fullName'
-            type='text'
-            value={bookingForm.fullName}
-            onChange={handleInputChange}
-            placeholder='Enter your full name'
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
-          />
-
-          <label htmlFor='email'>Email</label>
-          <input
-            id='email'
-            name='email'
-            type='email'
-            value={bookingForm.email}
-            onChange={handleInputChange}
-            placeholder='Enter your email'
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
-          />
-
-          <label htmlFor='phone'>Phone</label>
-          <input
-            id='phone'
-            name='phone'
-            type='tel'
-            value={bookingForm.phone}
-            onChange={handleInputChange}
-            placeholder='Enter your phone number'
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
-          />
-
-          <label htmlFor='date'>Select Date</label>
-          <input
-            id='date'
-            name='date'
-            type='date'
-            value={bookingForm.date}
-            onChange={handleInputChange}
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
-          />
-
-          <label htmlFor='time'>Select Time</label>
-          <input
-            id='time'
-            name='time'
-            type='time'
-            value={bookingForm.time}
-            onChange={handleInputChange}
-            className='w-full p-2 mb-2 border border-gray-300 rounded'
-          />
-
-          <button
-            type='submit'
-            className='w-full bg-blue-500 text-white py-2 mt-4 rounded'
-          >
-            Submit
-          </button>
-        </form>
-      </section>
-    );
-  };
-
   return (
     <main role='main' className='grid w-full'>
       {/* Booking grid */}
       <section className='grid w-full'>
+        {/* Calendar container */}
         <div className='grid w-full px-8 lg:container lg:mx-auto'>
-          {/* Container */}
           <div className='grid w-fit mx-auto'>
             {/* Calendar Heading */}
             <section className='grid grid-cols-a1a gap-x-1 items-center'>
@@ -393,9 +313,15 @@ function BookingPageMainContainer() {
                 })}
               </div>
             </section>
-            {/* Booking Form Below Calendar */}
-            {renderBookingForm()}
           </div>
+
+          {/* Booking form */}
+          {showBookingForm && (
+            <BookingForm
+              bookingForm={bookingForm}
+              setBookingForm={setBookingForm}
+            />
+          )}
         </div>
       </section>
     </main>
