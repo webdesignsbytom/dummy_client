@@ -10,13 +10,17 @@ import {
   GET_BOOKING_ADMIN_API,
 } from '../../../utils/Constants';
 import { filteredBookings } from '../../../utils/functions/BookingFunctions';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function BookingAdminPageMainContainer() {
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef();
+
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   // Confirm states
   const [isConfirmingBooking, setIsConfirmingBooking] = useState(false);
@@ -24,8 +28,6 @@ function BookingAdminPageMainContainer() {
   const [isCancellingBooking, setIsCancellingBooking] = useState(false);
   const [isEditingBooking, setIsEditingBooking] = useState(false);
   const [isDeletingBooking, setIsDeletingBooking] = useState(false);
-
-  console.log('isConfirmingBooking', isConfirmingBooking);
 
   useEffect(() => {
     client
@@ -68,10 +70,11 @@ function BookingAdminPageMainContainer() {
 
   // Confirm a booking
   const confirmBookingHandler = async (bookingId) => {
+    setIsSubmitting(true);
     client
-      .patch(`${CONFIRM_BOOKING_API}/${bookingId}`)
+      .patch(`${CONFIRM_BOOKING_API}/${bookingId}`, null, false)
       .then((res) => {
-        console.log(res.data.bookings);
+        console.log(res.data.message);
         setBookings(
           bookings.map((booking) =>
             booking.id === bookingId
@@ -80,10 +83,12 @@ function BookingAdminPageMainContainer() {
           )
         );
         setIsConfirmingBooking(false);
+        setIsSubmitting(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
         setIsConfirmingBooking(false);
+        setIsSubmitting(false);
       });
   };
 
@@ -93,8 +98,9 @@ function BookingAdminPageMainContainer() {
 
   // Deny a booking
   const denyBookingHandler = async (bookingId) => {
+    setIsSubmitting(true);
     client
-      .patch(`${DENY_BOOKING_API}/${bookingId}`)
+      .patch(`${DENY_BOOKING_API}/${bookingId}`, null, false)
       .then((res) => {
         console.log(res.data.bookings);
         setBookings(
@@ -103,10 +109,12 @@ function BookingAdminPageMainContainer() {
           )
         );
         setIsDenyingBooking(false);
+        setIsSubmitting(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
         setIsDenyingBooking(false);
+        setIsSubmitting(false);
       });
   };
 
@@ -116,16 +124,23 @@ function BookingAdminPageMainContainer() {
 
   // Cancel a booking
   const cancelBookingHandler = async (bookingId) => {
+    setIsSubmitting(true);
     client
-      .patch(`${CANCEL_BOOKING_API}/${bookingId}`)
+      .patch(`${CANCEL_BOOKING_API}/${bookingId}`, null, false)
       .then((res) => {
-        console.log(res.data.bookings);
-        setBookings(bookings.filter((booking) => booking.id !== bookingId));
+        console.log(res.data.message);
+        setBookings(
+          bookings.map((booking) =>
+            booking.id === bookingId ? { ...booking, cancelled: true } : booking
+          )
+        );
         setIsCancellingBooking(false);
+        setIsSubmitting(false);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
         setIsCancellingBooking(false);
+        setIsSubmitting(false);
       });
   };
 
@@ -135,17 +150,13 @@ function BookingAdminPageMainContainer() {
 
   // Delete a booking
   const deleteBookingHandler = async (bookingId) => {
-    client
-      .delete(`${DELETE_BOOKING_API}/${bookingId}`, false)
-      .then((res) => {
-        console.log(res.data.message);
-        setBookings(bookings.filter((booking) => booking.id !== bookingId));
-        setIsDeletingBooking(false);
-      })
-      .catch((err) => {
-        console.error('Unable to delete booking data', err);
-        setIsDeletingBooking(false);
-      });
+    setIsSubmitting(true);
+    client.delete(`${DELETE_BOOKING_API}/${bookingId}`, false).then((res) => {
+      console.log(res.data.message);
+      setBookings(bookings.filter((booking) => booking.id !== bookingId));
+      setIsDeletingBooking(false);
+      setIsSubmitting(false);
+    });
   };
 
   const toggleEditBooking = () => {
@@ -159,6 +170,15 @@ function BookingAdminPageMainContainer() {
 
   const toggleMenu = (bookingId) => {
     setOpenMenuId(openMenuId === bookingId ? null : bookingId);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setSelectedBooking({
+      ...selectedBooking,
+      [name]: value,
+    });
   };
 
   return (
@@ -193,14 +213,46 @@ function BookingAdminPageMainContainer() {
                     <section className='grid lg:grid-flow-col'>
                       <div className='grid w-fit'>
                         <strong>Date:</strong>
-                        <p className='text-sm w-fit'>
-                          {new Date(booking.date).toLocaleDateString()}
-                        </p>
+                        {isEditingBooking ? (
+                          <input
+                            type='date'
+                            value={
+                              new Date(booking.date).toISOString().split('T')[0]
+                            }
+                            onChange={(e) => handleChange(e.target.value)}
+                            className='border rounded p-1 ml-2'
+                          />
+                        ) : (
+                          <p className='text-sm w-fit'>
+                            {new Date(booking.date).toLocaleDateString()}
+                          </p>
+                        )}
                       </div>
-                      <div>
-                        <strong>Time:</strong>
-                        <p className='text-sm'>{booking.time}:00</p>
-                      </div>
+
+                      {isEditingBooking ? (
+                        <div>
+                          <strong>Time:</strong>
+                          <select
+                            value={booking.time}
+                            onChange={(e) =>
+                              handleChange(parseInt(e.target.value))
+                            }
+                            className='border rounded p-1 ml-2'
+                          >
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <option key={i} value={i}>
+                                {i < 10 ? `0${i}:00` : `${i}:00`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ) : (
+                        <div>
+                          <strong>Time:</strong>
+                          <p className='text-sm'>{booking.time}:00</p>
+                        </div>
+                      )}
+
                       <div>
                         <strong>Name:</strong>
                         <p className='text-sm'>{booking.fullName}</p>
@@ -274,10 +326,17 @@ function BookingAdminPageMainContainer() {
                                     isConfirmingBooking ? 'bg-red-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-green-100`}
                                 >
-                                  {isConfirmingBooking ? 'Confirm!' : 'Confirm'}
+                                  {isSubmitting ? (
+                                    <LoadingSpinner xs={true} />
+                                  ) : isConfirmingBooking ? (
+                                    'Confirm!'
+                                  ) : (
+                                    'Confirm'
+                                  )}
                                 </button>
                               </li>
                             )}
+
                             {!booking.denied && !booking.bookingApproved && (
                               <li>
                                 <button
@@ -292,10 +351,17 @@ function BookingAdminPageMainContainer() {
                                     isDenyingBooking ? 'bg-red-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-orange-100`}
                                 >
-                                  {isDenyingBooking ? 'Confirm!' : 'Deny'}
+                                  {isSubmitting ? (
+                                    <LoadingSpinner xs={true} />
+                                  ) : isDenyingBooking ? (
+                                    'Confirm!'
+                                  ) : (
+                                    'Deny'
+                                  )}
                                 </button>
                               </li>
                             )}
+
                             {!booking.cancelled && (
                               <li>
                                 <button
@@ -310,11 +376,18 @@ function BookingAdminPageMainContainer() {
                                     isCancellingBooking ? 'bg-red-500' : ''
                                   } w-full px-4 py-2 text-left hover:bg-yellow-100`}
                                 >
-                                  {isCancellingBooking ? 'Confirm!' : 'Cancel'}
+                                  {isSubmitting ? (
+                                    <LoadingSpinner xs={true} />
+                                  ) : isCancellingBooking ? (
+                                    'Confirm!'
+                                  ) : (
+                                    'Cancel'
+                                  )}
                                 </button>
                               </li>
                             )}
-                            <li>
+
+                            {/* <li>
                               <button
                                 onClick={() => {
                                   if (isEditingBooking) {
@@ -327,9 +400,16 @@ function BookingAdminPageMainContainer() {
                                   isEditingBooking ? 'bg-red-500' : ''
                                 } w-full px-4 py-2 text-left hover:bg-red-300`}
                               >
-                                {isEditingBooking ? 'Confirm!' : 'Edit'}
+                                {isSubmitting ? (
+                                  <LoadingSpinner xs={true} />
+                                ) : isEditingBooking ? (
+                                  'Confirm!'
+                                ) : (
+                                  'Edit'
+                                )}
                               </button>
-                            </li>
+                            </li> */}
+
                             <li>
                               <button
                                 onClick={() => {
@@ -343,7 +423,13 @@ function BookingAdminPageMainContainer() {
                                   isDeletingBooking ? 'bg-red-500' : ''
                                 } w-full px-4 py-2 text-left hover:bg-red-300`}
                               >
-                                {isDeletingBooking ? 'Confirm!' : 'Delete'}
+                                {isSubmitting ? (
+                                  <LoadingSpinner xs={true} />
+                                ) : isDeletingBooking ? (
+                                  'Confirm!'
+                                ) : (
+                                  'Delete'
+                                )}
                               </button>
                             </li>
                           </ul>

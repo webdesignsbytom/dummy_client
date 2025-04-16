@@ -20,6 +20,8 @@ function BookingPageMainContainer() {
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
+  console.log('bookings', bookings);
+
   const [currentDate] = useState(new Date());
   const [viewedDate, setViewedDate] = useState(new Date());
   const [displayMonth, setDisplayMonth] = useState(
