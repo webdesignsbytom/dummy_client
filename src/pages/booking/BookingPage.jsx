@@ -27,10 +27,15 @@ function BookingPage() {
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
-
-          {/* Main */}
-          <BookingPageMainContainer />
+          <header className='grid w-full'>
+            <div className='grid w-full px-8 text-center lg:container lg:mx-auto py-6'>
+              <h1 className='text-xl font-semibold'>Book Now</h1>
+            </div>
+          </header>
         </div>
+
+        {/* Main */}
+        <BookingPageMainContainer />
       </div>
     </>
   );

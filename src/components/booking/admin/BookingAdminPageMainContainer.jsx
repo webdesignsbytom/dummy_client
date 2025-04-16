@@ -9,7 +9,9 @@ import {
   DENY_BOOKING_API,
   GET_BOOKING_ADMIN_API,
 } from '../../../utils/Constants';
+// Utils
 import { filteredBookings } from '../../../utils/functions/BookingFunctions';
+// Components
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function BookingAdminPageMainContainer() {
@@ -28,6 +30,8 @@ function BookingAdminPageMainContainer() {
   const [isCancellingBooking, setIsCancellingBooking] = useState(false);
   const [isEditingBooking, setIsEditingBooking] = useState(false);
   const [isDeletingBooking, setIsDeletingBooking] = useState(false);
+
+  console.log('bookings', bookings);
 
   useEffect(() => {
     client
@@ -182,10 +186,10 @@ function BookingAdminPageMainContainer() {
   };
 
   return (
-    <main role='main' className='grid w-full'>
+    <main role='main' className='grid h-full w-full'>
       <section className='grid w-full'>
-        <div className='grid w-full px-8 lg:container lg:mx-auto bg-colour5'>
-          <section className='grid grid-flow-col justify-between items-center py-4'>
+        <div className='grid grid-rows-reg gap-y-4 w-full px-8 lg:container lg:mx-auto bg-colour5 py-2'>
+          <section className='grid grid-flow-col justify-between items-center py-4 px-4 bg-colour3 h-fit'>
             <label>Filter by:</label>
             <select onChange={handleFilterChange} value={filter}>
               <option value='all'>All Bookings</option>
@@ -199,9 +203,11 @@ function BookingAdminPageMainContainer() {
           </section>
 
           {/* Bookings */}
-          <section>
+          <section className='grid h-full w-full bg-colour1'>
             {filteredBookings(bookings, filter).length === 0 ? (
-              <p>No bookings found for the selected filter.</p>
+              <div className='grid items-center justify-center'>
+                <p>No bookings found for the selected filter.</p>
+              </div>
             ) : (
               <div className='space-y-4'>
                 {filteredBookings(bookings, filter).map((booking) => (
@@ -265,7 +271,7 @@ function BookingAdminPageMainContainer() {
                           </a>
                         </p>
                       </div>
-                      <div>
+                      <div className='grid w-full'>
                         <strong>Phone:</strong>
                         <a href={`tel:${booking.phoneNumber}`}>
                           {booking.phoneNumber}
@@ -275,21 +281,21 @@ function BookingAdminPageMainContainer() {
                         <strong>Status:</strong>
                         <p
                           className={`text-sm ${
-                            booking.bookingApproved
-                              ? booking.cancelled
-                                ? 'text-red-600 font-semibold'
-                                : booking.denied
-                                ? 'text-yellow-500 font-semibold'
-                                : 'text-green-600 font-semibold'
+                            booking.cancelled
+                              ? 'text-red-600 font-semibold'
+                              : booking.denied
+                              ? 'text-yellow-500 font-semibold'
+                              : booking.bookingApproved
+                              ? 'text-green-600 font-semibold'
                               : 'text-blue-600 font-semibold'
                           }`}
                         >
-                          {booking.bookingApproved
-                            ? booking.cancelled
-                              ? 'Cancelled'
-                              : booking.denied
-                              ? 'Denied'
-                              : 'Confirmed'
+                          {booking.cancelled
+                            ? 'Cancelled'
+                            : booking.denied
+                            ? 'Denied'
+                            : booking.bookingApproved
+                            ? 'Confirmed'
                             : 'Unconfirmed'}
                         </p>
                       </div>
@@ -312,7 +318,7 @@ function BookingAdminPageMainContainer() {
                           className='absolute right-0 items-center mt-2 w-40 bg-white border rounded shadow z-10'
                         >
                           <ul className='flex flex-col text-sm'>
-                            {!booking.bookingApproved && (
+                            {!booking.bookingApproved && !booking.cancelled && (
                               <li>
                                 <button
                                   onClick={() => {
@@ -324,7 +330,7 @@ function BookingAdminPageMainContainer() {
                                   }}
                                   className={`block ${
                                     isConfirmingBooking ? 'bg-red-500' : ''
-                                  } w-full px-4 py-2 text-left hover:bg-green-100`}
+                                  } w-full flex justify-center px-4 py-2 text-left hover:bg-green-100`}
                                 >
                                   {isSubmitting ? (
                                     <LoadingSpinner xs={true} />
@@ -337,32 +343,34 @@ function BookingAdminPageMainContainer() {
                               </li>
                             )}
 
-                            {!booking.denied && !booking.bookingApproved && (
-                              <li>
-                                <button
-                                  onClick={() => {
-                                    if (isDenyingBooking) {
-                                      denyBookingHandler(booking.id);
-                                    } else {
-                                      toggleDenyBooking();
-                                    }
-                                  }}
-                                  className={`block ${
-                                    isDenyingBooking ? 'bg-red-500' : ''
-                                  } w-full px-4 py-2 text-left hover:bg-orange-100`}
-                                >
-                                  {isSubmitting ? (
-                                    <LoadingSpinner xs={true} />
-                                  ) : isDenyingBooking ? (
-                                    'Confirm!'
-                                  ) : (
-                                    'Deny'
-                                  )}
-                                </button>
-                              </li>
-                            )}
+                            {!booking.denied &&
+                              !booking.bookingApproved &&
+                              !booking.cancelled && (
+                                <li>
+                                  <button
+                                    onClick={() => {
+                                      if (isDenyingBooking) {
+                                        denyBookingHandler(booking.id);
+                                      } else {
+                                        toggleDenyBooking();
+                                      }
+                                    }}
+                                    className={`block ${
+                                      isDenyingBooking ? 'bg-red-500' : ''
+                                    } w-full flex justify-center px-4 py-2 text-left hover:bg-orange-100`}
+                                  >
+                                    {isSubmitting ? (
+                                      <LoadingSpinner xs={true} />
+                                    ) : isDenyingBooking ? (
+                                      'Confirm!'
+                                    ) : (
+                                      'Deny'
+                                    )}
+                                  </button>
+                                </li>
+                              )}
 
-                            {!booking.cancelled && (
+                            {!booking.cancelled && booking.bookingApproved && (
                               <li>
                                 <button
                                   onClick={() => {
@@ -374,7 +382,7 @@ function BookingAdminPageMainContainer() {
                                   }}
                                   className={`block ${
                                     isCancellingBooking ? 'bg-red-500' : ''
-                                  } w-full px-4 py-2 text-left hover:bg-yellow-100`}
+                                  } w-full flex justify-center px-4 py-2 text-left hover:bg-yellow-100`}
                                 >
                                   {isSubmitting ? (
                                     <LoadingSpinner xs={true} />
@@ -398,7 +406,7 @@ function BookingAdminPageMainContainer() {
                                 }}
                                 className={`block ${
                                   isEditingBooking ? 'bg-red-500' : ''
-                                } w-full px-4 py-2 text-left hover:bg-red-300`}
+                                } w-full flex justify-center px-4 py-2 text-left hover:bg-red-300`}
                               >
                                 {isSubmitting ? (
                                   <LoadingSpinner xs={true} />
@@ -421,7 +429,7 @@ function BookingAdminPageMainContainer() {
                                 }}
                                 className={`block ${
                                   isDeletingBooking ? 'bg-red-500' : ''
-                                } w-full px-4 py-2 text-left hover:bg-red-300`}
+                                } w-full flex justify-center px-4 py-2 text-left hover:bg-red-300`}
                               >
                                 {isSubmitting ? (
                                   <LoadingSpinner xs={true} />
