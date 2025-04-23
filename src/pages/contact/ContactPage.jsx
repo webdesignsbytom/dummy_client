@@ -28,10 +28,16 @@ function ContactPage() {
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
-
-          {/* Main page content */}
-          <ContactPageMainContainer />
+          {/* Header */}
+          <header className='grid px-6 text-center lg:px-10'>
+            <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
+              Contact Us
+            </h1>
+          </header>
         </div>
+
+        {/* Main page content */}
+        <ContactPageMainContainer />
       </div>
     </>
   );
