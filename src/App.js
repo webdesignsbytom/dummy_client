@@ -1,5 +1,9 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+// Components
+import LoadingScreen from './components/utils/LoadingScreen';
+// Utils
+import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
 // Constants
 import {
   ADMIN_PAGE_URL,
@@ -18,14 +22,13 @@ import {
   EDIT_BLOG_POST_PAGE_URL,
   BOOKING_PAGE_URL,
   BOOKING_ADMIN_PAGE_URL,
-} from './utils/Constants';
-// Components
-import LoadingScreen from './components/utils/LoadingScreen';
-// Utils
-import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
-// Normal import for HomePage (no lazy loading)
+  ADMIN_CONTACT_FORM_PAGE_URL,
+} from './utils/Routes';
+// Pages
+// Public
 import HomePage from './pages/home/HomePage';
 import HomePageSideNav from './pages/home/HomePageSideNav';
+import ContactPage from './pages/contact/ContactPage';
 // Blog
 import BlogPage from './pages/blog/BlogPage';
 import BlogPostPage from './pages/blog/BlogPostPage';
@@ -34,21 +37,19 @@ import BlogPostEditPage from './pages/blog/BlogPostEditPage';
 // Booking
 import BookingPage from './pages/booking/BookingPage';
 import BookingAdminPage from './pages/booking/BookingAdminPage';
-// Lazy-loaded Pages
-const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
-const MaintenancePage = lazy(() =>
-  import('./pages/maintenance/MaintenancePage')
-);
-const ContactPage = lazy(() => import('./pages/contact/ContactPage'));
-const Error404 = lazy(() => import('./pages/error/Error404'));
-const ForgettenPasswordPage = lazy(() =>
-  import('./pages/user/ForgettenPasswordPage')
-);
-const LoginPage = lazy(() => import('./users/login/LoginPage'));
-const RegisterPage = lazy(() => import('./users/register/RegisterPage'));
-const TermAndPoliciesPage = lazy(() =>
-  import('./pages/policies/TermAndPoliciesPage')
-);
+// User pages
+import ForgettenPasswordPage from './pages/user/ForgettenPasswordPage';
+import LoginPage from './users/login/LoginPage';
+import RegisterPage from './users/register/RegisterPage';
+// Admin
+import AdminPage from './pages/admin/AdminPage';
+import ContactFormAdminPage from './pages/contact/ContactFormAdminPage';
+// Terms and conditions
+import TermAndPoliciesPage from './pages/policies/TermAndPoliciesPage';
+// Maintainance
+import MaintenancePage from './pages/maintenance/MaintenancePage';
+// Error
+import Error404 from './pages/error/Error404';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -96,10 +97,13 @@ function App() {
         <Routes>
           {/* Main page routes */}
           <Route path={HOME_PAGE_URL} index element={<HomePage />} />
-          
+
           {/* Blog routes */}
-          <Route path={BLOG_PAGE_URL}  element={<BlogPage />} />
-          <Route path={`${BLOG_POST_PAGE_URL}/:title`} element={<BlogPostPage />} />
+          <Route path={BLOG_PAGE_URL} element={<BlogPage />} />
+          <Route
+            path={`${BLOG_POST_PAGE_URL}/:title`}
+            element={<BlogPostPage />}
+          />
           <Route
             path={CREATE_BLOG_POST_PAGE_URL}
             element={<BlogPostCreationPage />}
@@ -110,12 +114,20 @@ function App() {
           />
 
           {/* Booking routes */}
-          <Route path={BOOKING_PAGE_URL}  element={<BookingPage />} />
-          <Route path={BOOKING_ADMIN_PAGE_URL}  element={<BookingAdminPage />} />
+          <Route path={BOOKING_PAGE_URL} element={<BookingPage />} />
+          <Route path={BOOKING_ADMIN_PAGE_URL} element={<BookingAdminPage />} />
 
-          {/* Eager loaded */}
+          {/* Contact routes */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
-          <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
+          <Route
+            path={ADMIN_CONTACT_FORM_PAGE_URL}
+            element={
+              <AuthenticateAdmin>
+                <ContactFormAdminPage />
+              </AuthenticateAdmin>
+            }
+          />
+
           {/* User routes */}
           <Route path={LOGIN_PAGE_URL} element={<LoginPage />} />
           <Route path={SIGN_UP_PAGE_URL} element={<RegisterPage />} />
@@ -123,8 +135,13 @@ function App() {
             path={RESET_PASS_PAGE_URL}
             element={<ForgettenPasswordPage />}
           />
+
+          {/* Terms and conditions */}
+          <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
+          
           {/* Other */}
           <Route path={MAINTENANCE_PAGE_URL} element={<MaintenancePage />} />
+
           {/* Secured routes */}
           <Route
             path={ADMIN_PAGE_URL}
@@ -134,6 +151,7 @@ function App() {
               </AuthenticateAdmin>
             }
           />
+
           {/* Error routes */}
           <Route path='*' element={<Error404 />} />
         </Routes>
