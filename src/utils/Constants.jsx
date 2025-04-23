@@ -26,64 +26,10 @@ export const NumberOfCookies = 0;
 export const COOKIE_TIMER = 10000;
 export const CookiePolicyName = 'CookiePolicy';
 
-// Pages
-export const HOME_PAGE_URL = '/';
-export const CONTACT_PAGE_URL = '/contact';
-export const RESET_PASS_PAGE_URL = '/reset-password';
-export const POLICIES_PAGE_URL = '/user-agreements';
-export const ADMIN_PAGE_URL = '/admin';
-export const LOGIN_PAGE_URL = '/login';
-export const SIGN_UP_PAGE_URL = '/sign-up';
-export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
-export const ERROR_404_PAGE_URL = '*';
-
-// Blog routes
-export const BLOG_PAGE_URL = '/blog';
-export const BLOG_POST_PAGE_URL = '/blog';
-export const CREATE_BLOG_POST_PAGE_URL = '/blog/create-new-post';
-export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
-
-// Blog API routes
-export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
-export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
-
-// Booking routes
-export const BOOKING_PAGE_URL = '/booking';
-export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
-
-// Booking routes
-export const GET_BOOKING_API = '/bookings/get-all-bookings';
-export const GET_BOOKING_ADMIN_API = '/bookings/get-all-bookings-admin';
-export const CREATE_NEW_BOOKING_API = '/bookings/create-new-booking';
-export const CONFIRM_BOOKING_API = '/bookings/confirm-booking';
-export const DENY_BOOKING_API = '/bookings/deny-booking';
-export const CANCEL_BOOKING_API = '/bookings/cancel-booking';
-export const EDIT_BOOKING_API = '/bookings/edit-booking';
-export const DELETE_BOOKING_API = '/bookings/delete-booking';
-export const DELETE_ALL_BOOKING_API = '/bookings/delete-all-bookings';
-
-// URL
+// Business URL
 export const FULL_BUSINESS_URL = 'https://www.bytetoast-studio.co.uk';
 export const SHORT_BUSINESS_URL = 'bytetoast-studio.co.uk';
 export const DISPLAY_BUSINESS_URL = 'www.bytetoast-studio.co.uk';
-
-// API
-export const LOGIN_API = '/login';
-export const GET_LOGGED_IN_USER_API = '/users/user/get-logged-in-user'; // userId
-export const REGISTER_API = '/users/register';
-export const RESET_PASSWORD_API = '/users/user/reset-password'; // userId
-export const SUBMIT_CONTACT_FORM_API = '/contact/submit-form'; // userId
-
-// Bot Data
-export const BotName = 'Jerry'
-
-// Social Media Services
-export const FACEBOOK_SERVICE = 'facebook';
-export const INSTAGRAM_SERVICE = 'instagram';
-export const GOOGLE_SERVICE = 'google';
-export const GITHUB_SERVICE = 'github';
-export const APPLE_SERVICE = 'apple';
-export const X_SERVICE = 'x';
 
 // Social Media URLs
 export const FACEBOOK_URL = 'https://facebook.com/';
@@ -93,12 +39,5 @@ export const GITHUB_URL = 'https://github.com/';
 export const APPLE_URL = 'https://apple.com/';
 export const X_URL = 'https://x.com/';
 
-export const FACEBOOK_NAME = 'bytetoast-studio';
-export const INSTAGRAM_NAME = 'bytetoast-studio';
-export const LINKEDIN_NAME = 'bytetoast-studio';
-
-export const FACEBOOK_BUSINESS_URL = `https://www.facebook.com/company/bytetoast-studio`;
-export const INSTAGRAM_BUSINESS_URL = `https://instagram.com/bytetoast-studio`;
-export const LINKEDIN_BUSINESS_URL = `https://www.linkedin.com/bytetoast-studio`;
-export const GITHUB_BUSINESS_URL = `https://www.github.com/bytetoast-studio`;
-export const GOOGLE_BUSINESS_URL = `https://www.google.com/bytetoast-studio`;
+// Bot Data
+export const BotName = 'Jerry'

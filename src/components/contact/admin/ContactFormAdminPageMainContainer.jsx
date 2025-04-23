@@ -1,6 +1,5 @@
 import React from 'react';
 // Components
-import ContactForm from '../forms/ContactForm';
 
 function ContactFormAdminPageMainContainer() {
   return (

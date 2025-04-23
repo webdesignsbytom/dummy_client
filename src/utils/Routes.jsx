@@ -1,0 +1,28 @@
+// Pages
+export const HOME_PAGE_URL = '/';
+export const CONTACT_PAGE_URL = '/contact';
+export const POLICIES_PAGE_URL = '/user-agreements';
+export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
+export const ERROR_404_PAGE_URL = '*';
+
+// User pages
+export const SIGN_UP_PAGE_URL = '/sign-up';
+export const LOGIN_PAGE_URL = '/login';
+export const RESET_PASS_PAGE_URL = '/reset-password';
+
+// Admin pages
+export const ADMIN_PAGE_URL = '/admin';
+
+// Blog routes
+export const BLOG_PAGE_URL = '/blog';
+export const BLOG_POST_PAGE_URL = '/blog';
+export const CREATE_BLOG_POST_PAGE_URL = '/blog/create-new-post';
+export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
+
+// Blog API routes
+export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
+export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
+
+// Booking routes
+export const BOOKING_PAGE_URL = '/booking';
+export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
