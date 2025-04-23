@@ -5,13 +5,14 @@ import client from '../../api/client';
 // Constants
 import {
   HOME_PAGE_URL,
-  LOGIN_API,
   RESET_PASS_PAGE_URL,
   SIGN_UP_PAGE_URL,
-} from '../../utils/Constants';
+} from '../../utils/Routes';
+import {
+  LOGIN_API,
+} from '../../utils/ApiRoutes';
+// Components
 import LoadingSpinner from '../utils/LoadingSpinner';
-// Styles
-import { ButtonStyle, InputStyle } from '../../utils/Styles';
 // Context
 import { useUser } from '../../context/UserContext';
 // Hooks
@@ -110,7 +111,7 @@ function LoginForm() {
           type='email'
           name='email'
           id='email'
-          className={InputStyle}
+          className={``}
           placeholder='name@email.com'
           onChange={handleChange}
           required
@@ -130,7 +131,7 @@ function LoginForm() {
           name='password'
           id='password'
           placeholder='••••••••'
-          className={InputStyle}
+          className={``}
           required
           onChange={handleChange}
           aria-invalid={loginError ? 'true' : 'false'}
@@ -170,7 +171,7 @@ function LoginForm() {
       <div>
         <button
           type='submit'
-          className={ButtonStyle}
+          className={``}
           aria-label='Sign in to your account'
           disabled={loginInProgress}
         >

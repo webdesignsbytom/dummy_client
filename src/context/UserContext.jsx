@@ -3,9 +3,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import client from '../api/client';
 // Constants
 import {
-  GET_LOGGED_IN_USER_API,
   HOME_PAGE_URL,
-} from '../utils/Constants';
+} from '../utils/Routes';
+import {
+  GET_LOGGED_IN_USER_API,
+} from '../utils/ApiRoutes';
 // Hooks
 import useNavigateToPage from '../hooks/useNavigateToPage';
 // Utils

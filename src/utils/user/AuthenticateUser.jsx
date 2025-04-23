@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 // Constants
-import { HOME_PAGE_URL } from '../Constants';
+import { HOME_PAGE_URL } from '../Routes';
 // Context
 import { useUser } from '../../context/UserContext';
 // Utils

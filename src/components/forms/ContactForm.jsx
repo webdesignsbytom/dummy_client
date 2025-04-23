@@ -3,11 +3,10 @@ import React, { useState } from 'react';
 import client from '../../api/client';
 // Data
 import { emptyContactFormData } from '../../utils/data/FormData';
-// Style
-import { ButtonStyle } from '../../utils/Styles';
 // Utils
 import LoadingSpinner from '../utils/LoadingSpinner';
-import { SUBMIT_CONTACT_FORM_API } from '../../utils/Constants';
+// Constants
+import { SUBMIT_CONTACT_FORM_API } from '../../utils/ApiRoutes';
 
 function ContactForm() {
   const submitStates = ['waiting', 'inprogress', 'failed', 'success'];
@@ -229,7 +228,7 @@ function ContactForm() {
       <div className='grid items-center'>
         <button
           type='submit'
-          className={ButtonStyle}
+          className={``}
           aria-label='Submit your form'
           disabled={submitState === submitStates[1]} // "inprogress"
         >

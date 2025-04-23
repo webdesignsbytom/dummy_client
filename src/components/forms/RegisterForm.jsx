@@ -9,9 +9,8 @@ import LoadingSpinner from '../../components/utils/LoadingSpinner';
 // Utils
 import CountrySelect from '../utils/CountrySelect';
 // Constants
-import { LOGIN_PAGE_URL, REGISTER_API } from '../../utils/Constants';
-// Styles
-import { ButtonStyle, InputStyle, LinkStyle } from '../../utils/Styles';
+import { LOGIN_PAGE_URL } from '../../utils/Routes';
+import { REGISTER_API } from '../../utils/ApiRoutes';
 // Hooks
 import useNavigateToPage from '../../hooks/useNavigateToPage';
 
@@ -111,7 +110,7 @@ function RegisterForm() {
         </label>
         <input
           type='text'
-          className={InputStyle}
+          className={``}
           placeholder='Username'
           id='username'
           name='username'
@@ -128,7 +127,7 @@ function RegisterForm() {
           type='email'
           id='email'
           name='email'
-          className={InputStyle}
+          className={``}
           placeholder='Email address'
           onChange={handleChange}
           required
@@ -144,7 +143,7 @@ function RegisterForm() {
           type='password'
           id='password'
           name='password'
-          className={InputStyle}
+          className={``}
           placeholder='Password'
           onChange={handleChange}
           required
@@ -160,7 +159,7 @@ function RegisterForm() {
           type='password'
           id='confirmPassword'
           name='confirmPassword'
-          className={InputStyle}
+          className={``}
           placeholder='Confirm Password'
           onChange={handleChange}
           required
@@ -201,7 +200,7 @@ function RegisterForm() {
           type='submit'
           data-mdb-ripple='true'
           data-mdb-ripple-color='light'
-          className={ButtonStyle}
+          className={``}
           disabled={registrationInProgress}
           aria-disabled={registrationInProgress}
           aria-label='Register your account'
@@ -232,7 +231,7 @@ function RegisterForm() {
           Already a member?{' '}
           <Link
             to={LOGIN_PAGE_URL}
-            className={LinkStyle}
+            className={``}
             aria-label='Go to login page'
           >
             Login Now

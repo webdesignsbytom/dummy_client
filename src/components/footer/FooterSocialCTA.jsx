@@ -2,10 +2,10 @@ import React from 'react';
 import { FaFacebookF, FaInstagram, FaGoogle, FaGithub } from 'react-icons/fa';
 import SocialMediaPin from '../socialMedia/SocialMediaPin';
 import {
-  FACEBOOK_BUSINESS_URL,
-  GITHUB_BUSINESS_URL,
-  GOOGLE_BUSINESS_URL,
-  INSTAGRAM_BUSINESS_URL,
+  FACEBOOK_URL,
+  GITHUB_URL,
+  GOOGLE_URL,
+  INSTAGRAM_URL,
 } from '../../utils/Constants';
 
 function FooterSocialCTA() {
@@ -17,22 +17,22 @@ function FooterSocialCTA() {
     {
       serviceName: 'Facebook',
       icon: <FaFacebookF size={24} />,
-      url: FACEBOOK_BUSINESS_URL,
+      url: FACEBOOK_URL,
     },
     {
       serviceName: 'Instagram',
       icon: <FaInstagram size={24} />,
-      url: INSTAGRAM_BUSINESS_URL,
+      url: INSTAGRAM_URL,
     },
     {
       serviceName: 'Google',
       icon: <FaGoogle size={24} />,
-      url: GOOGLE_BUSINESS_URL,
+      url: GOOGLE_URL,
     },
     {
       serviceName: 'GitHub',
       icon: <FaGithub size={24} />,
-      url: GITHUB_BUSINESS_URL,
+      url: GITHUB_URL,
     },
   ];
 

@@ -20,10 +20,6 @@ export const BLOG_POST_PAGE_URL = '/blog';
 export const CREATE_BLOG_POST_PAGE_URL = '/blog/create-new-post';
 export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
 
-// Blog API routes
-export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
-export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
-
 // Booking routes
 export const BOOKING_PAGE_URL = '/booking';
 export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';

@@ -1,12 +1,6 @@
 import React from 'react';
 // Constants
 import {
-  FACEBOOK_SERVICE,
-  INSTAGRAM_SERVICE,
-  GOOGLE_SERVICE,
-  GITHUB_SERVICE,
-  APPLE_SERVICE,
-  X_SERVICE,
   FACEBOOK_URL,
   INSTAGRAM_URL,
   GOOGLE_URL,
@@ -33,14 +27,14 @@ function SocialMediaCTA() {
     {
       serviceName: 'Facebook',
       icon: FacebookLogo,
-      service: FACEBOOK_SERVICE,
+      service: 'Facebook',
       url: FACEBOOK_URL,
       background: { background: '#1877F2' },
     },
     {
       serviceName: 'Instagram',
       icon: InstagramLogo,
-      service: INSTAGRAM_SERVICE,
+      service: 'Instagram',
       url: INSTAGRAM_URL,
       background: {
         background:
@@ -50,28 +44,28 @@ function SocialMediaCTA() {
     {
       serviceName: 'Google',
       icon: GoogleLogo,
-      service: GOOGLE_SERVICE,
+      service: 'Google',
       url: GOOGLE_URL,
       background: { background: '#4285F4' },
     },
     {
       serviceName: 'GitHub',
       icon: GithubLogo,
-      service: GITHUB_SERVICE,
+      service: 'Github',
       url: GITHUB_URL,
       background: { background: '#333' },
     },
     {
       serviceName: 'Apple',
       icon: AppleLogo,
-      service: APPLE_SERVICE,
+      service: 'Apple',
       url: APPLE_URL,
       background: { background: '#000' },
     },
     {
       serviceName: 'X',
       icon: XLogo,
-      service: X_SERVICE,
+      service: 'Twitter',
       url: X_URL,
       background: { background: '#1DA1F2' },
     },

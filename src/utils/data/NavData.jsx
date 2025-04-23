@@ -3,7 +3,7 @@ import {
   ADMIN_PAGE_URL,
   LOGIN_PAGE_URL,
   SIGN_UP_PAGE_URL,
-} from '../Constants';
+} from '../Routes';
 
 export const getNavLinkItemsArray = (user) => [
   { path: HOME_PAGE_URL, label: 'Home' },

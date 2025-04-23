@@ -1,4 +1,4 @@
-import { CONTACT_PAGE_URL, HOME_PAGE_URL, LOGIN_PAGE_URL, SIGN_UP_PAGE_URL } from '../Constants';
+import { CONTACT_PAGE_URL, HOME_PAGE_URL, LOGIN_PAGE_URL, SIGN_UP_PAGE_URL } from '../Routes';
 
 export const FooterLinksArray = [
     {

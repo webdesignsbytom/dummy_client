@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
-import { GET_BLOG_POSTS_API } from '../../../utils/Constants';
+import { GET_BLOG_POSTS_API } from '../../../utils/ApiRoutes';
 // Data
 import { tempBlogPosts } from '../../../utils/data/BlogData';
 // Components

@@ -8,7 +8,7 @@ import {
   DELETE_BOOKING_API,
   DENY_BOOKING_API,
   GET_BOOKING_ADMIN_API,
-} from '../../../utils/Constants';
+} from '../../../utils/ApiRoutes';
 // Utils
 import { filteredBookings } from '../../../utils/functions/BookingFunctions';
 // Components

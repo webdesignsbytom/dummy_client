@@ -1,6 +1,4 @@
 import React from 'react';
-// Styles
-import { InputStyle } from '../../utils/Styles';
 
 function CountrySelect({ handleChange }) {
   return (
@@ -9,7 +7,7 @@ function CountrySelect({ handleChange }) {
         id='country'
         name='country'
         onChange={handleChange}
-        className={InputStyle}
+        className={``}
         required
         aria-label='Select your country'
         defaultValue='United Kingdom'

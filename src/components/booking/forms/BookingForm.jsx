@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
-import { CREATE_NEW_BOOKING_API } from '../../../utils/Constants';
+import { CREATE_NEW_BOOKING_API } from '../../../utils/ApiRoutes';
 // Data
 import { formatDateHandler } from '../../../utils/functions/BookingFunctions';
 // Utils

@@ -8,8 +8,10 @@ import MainLogoImage from '../../assets/images/logos/byte-toast-studio-logo-web-
 import { useUser } from '../../context/UserContext';
 // Constants
 import {
-  CompanyName,
   HOME_PAGE_URL,
+} from '../../utils/Routes';
+import {
+  CompanyName,
 } from '../../utils/Constants';
 // Hooks
 import useNavigateToPage from '../../hooks/useNavigateToPage';

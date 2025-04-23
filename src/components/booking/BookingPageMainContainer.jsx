@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // Api
 import client from '../../api/client';
 // Constants
-import { GET_BOOKING_API } from '../../utils/Constants';
+import { GET_BOOKING_API } from '../../utils/ApiRoutes';
 // Utils
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Data

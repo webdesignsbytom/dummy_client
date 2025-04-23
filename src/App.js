@@ -8,8 +8,6 @@ import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
 import {
   ADMIN_PAGE_URL,
   CONTACT_PAGE_URL,
-  COOKIE_TIMER,
-  CookiePolicyName,
   HOME_PAGE_URL,
   LOGIN_PAGE_URL,
   MAINTENANCE_PAGE_URL,
@@ -24,6 +22,10 @@ import {
   BOOKING_ADMIN_PAGE_URL,
   ADMIN_CONTACT_FORM_PAGE_URL,
 } from './utils/Routes';
+import {
+  COOKIE_TIMER,
+  CookiePolicyName,
+} from './utils/Constants';
 // Pages
 // Public
 import HomePage from './pages/home/HomePage';
@@ -38,7 +40,7 @@ import BlogPostEditPage from './pages/blog/BlogPostEditPage';
 import BookingPage from './pages/booking/BookingPage';
 import BookingAdminPage from './pages/booking/BookingAdminPage';
 // User pages
-import ForgettenPasswordPage from './pages/user/ForgettenPasswordPage';
+import ForgettenPasswordPage from './users/password/ForgettenPasswordPage';
 import LoginPage from './users/login/LoginPage';
 import RegisterPage from './users/register/RegisterPage';
 // Admin

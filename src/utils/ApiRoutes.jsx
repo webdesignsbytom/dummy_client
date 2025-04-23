@@ -10,6 +10,10 @@ export const SUBMIT_CONTACT_FORM_API = '/contact/submit-form'; // userId
 export const GET_ALL_CONTACT_FROMS_API = '/contact/get-all-contact-forms'; 
 export const DELETE_CONTACT_FORM_API = '/contact/get-all-contact-forms'; 
 
+// Blog API routes
+export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
+export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
+
 // Booking routes
 export const GET_BOOKING_API = '/bookings/get-all-bookings';
 export const GET_BOOKING_ADMIN_API = '/bookings/get-all-bookings-admin';

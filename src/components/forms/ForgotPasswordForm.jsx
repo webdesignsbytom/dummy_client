@@ -7,10 +7,10 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 // Constants
 import {
   RESET_PASSWORD_API,
+} from '../../utils/ApiRoutes';
+import {
   SIGN_UP_PAGE_URL,
-} from '../../utils/Constants';
-// Styles
-import { ButtonStyle, InputStyle, LinkStyle } from '../../utils/Styles';
+} from '../../utils/Routes';
 
 function ForgotPasswordForm() {
   const [resetRequestInProgress, setResetRequestInProgress] = useState(false);
@@ -63,7 +63,7 @@ function ForgotPasswordForm() {
           type='email'
           name='email'
           id='email'
-          className={InputStyle}
+          className={``}
           placeholder='name@email.com'
           onChange={handleChange}
           required
@@ -75,7 +75,7 @@ function ForgotPasswordForm() {
       <div>
         <button
           type='submit'
-          className={ButtonStyle}
+          className={``}
           aria-label='Request a password reset'
           disabled={resetRequestInProgress}
         >
@@ -92,7 +92,7 @@ function ForgotPasswordForm() {
           Don’t have an account yet?
           <Link
             to={SIGN_UP_PAGE_URL}
-            className={LinkStyle}
+            className={``}
             aria-label='Sign up for a new account'
           >
             Sign up

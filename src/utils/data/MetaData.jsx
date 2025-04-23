@@ -1,10 +1,10 @@
 import {
   CompanyName,
   CompanyPhoneNumber,
-  FACEBOOK_BUSINESS_URL,
+  FACEBOOK_URL,
   FULL_BUSINESS_URL,
-  INSTAGRAM_BUSINESS_URL,
-  LINKEDIN_BUSINESS_URL,
+  INSTAGRAM_URL,
+  LINKEDIN_URL,
 } from '../Constants';
 
 // Home page
@@ -20,9 +20,9 @@ export const homePageStructuredData = {
     'query-input': 'required name=search_term_string',
   },
   sameAs: [
-    `${FACEBOOK_BUSINESS_URL}`,
-    `${INSTAGRAM_BUSINESS_URL}`,
-    `${LINKEDIN_BUSINESS_URL}`,
+    `${FACEBOOK_URL}`,
+    `${INSTAGRAM_URL}`,
+    `${LINKEDIN_URL}`,
   ],
   contactPoint: {
     '@type': 'ContactPoint',
@@ -62,9 +62,9 @@ export const bookingPageStructuredData = {
     url: FULL_BUSINESS_URL,
     telephone: CompanyPhoneNumber,
     sameAs: [
-      `${FACEBOOK_BUSINESS_URL}`,
-      `${INSTAGRAM_BUSINESS_URL}`,
-      `${LINKEDIN_BUSINESS_URL}`,
+      `${FACEBOOK_URL}`,
+      `${INSTAGRAM_URL}`,
+      `${LINKEDIN_URL}`,
     ],
   },
   areaServed: {
@@ -116,9 +116,9 @@ export const blogPageStructuredData = {
     '@id': `${FULL_BUSINESS_URL}/blog`,
   },
   sameAs: [
-    `${FACEBOOK_BUSINESS_URL}`,
-    `${INSTAGRAM_BUSINESS_URL}`,
-    `${LINKEDIN_BUSINESS_URL}`,
+    `${FACEBOOK_URL}`,
+    `${INSTAGRAM_URL}`,
+    `${LINKEDIN_URL}`,
   ],
 };
 
@@ -399,9 +399,9 @@ export const contactPageStructuredData = {
       availableLanguage: ['English'],
     },
     sameAs: [
-      FACEBOOK_BUSINESS_URL,
-      INSTAGRAM_BUSINESS_URL,
-      LINKEDIN_BUSINESS_URL,
+      FACEBOOK_URL,
+      INSTAGRAM_URL,
+      LINKEDIN_URL,
     ],
     logo: {
       '@type': 'ImageObject',

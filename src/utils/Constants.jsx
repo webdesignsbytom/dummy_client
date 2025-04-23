@@ -37,6 +37,7 @@ export const INSTAGRAM_URL = 'https://instagram.com/';
 export const GOOGLE_URL = 'https://google.com/';
 export const GITHUB_URL = 'https://github.com/';
 export const APPLE_URL = 'https://apple.com/';
+export const LINKEDIN_URL = 'https://apple.com/';
 export const X_URL = 'https://x.com/';
 
 // Bot Data

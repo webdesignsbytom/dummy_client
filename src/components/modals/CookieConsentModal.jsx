@@ -4,8 +4,10 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   CookiePolicyName,
   NumberOfCookies,
-  POLICIES_PAGE_URL,
 } from '../../utils/Constants';
+import {
+  POLICIES_PAGE_URL,
+} from '../../utils/Routes';
 // Images
 import CookieSVG from '../../assets/images/icons/cookie-icon.svg';
 
