@@ -1,7 +1,8 @@
 // Company data
 export const CompanyName = 'ByteToast Studio';
 export const CompanyPhoneNumber = '07846286385';
-export const ContactEmailAddress = 'hello@bytetoast-studio.com';
+export const CompanyWhatsappNumber = '02031234567';
+export const CompanyEmailAddress = 'hello@bytetoast-studio.com';
 export const DirectorName = 'Tom Brockington';
 export const LocationCity = 'Boston';
 export const LocationCountry = 'United Kingdom';
@@ -39,6 +40,9 @@ export const GITHUB_URL = 'https://github.com/';
 export const APPLE_URL = 'https://apple.com/';
 export const LINKEDIN_URL = 'https://apple.com/';
 export const X_URL = 'https://x.com/';
+
+// Maps
+export const GoogleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=YOUR-EMBEDDED-MAP-URL";
 
 // Bot Data
 export const BotName = 'Jerry'

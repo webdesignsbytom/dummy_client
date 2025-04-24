@@ -1,8 +1,14 @@
 // Pages
 export const HOME_PAGE_URL = '/';
 export const CONTACT_PAGE_URL = '/contact';
+
+// Terms and Conditions
 export const POLICIES_PAGE_URL = '/user-agreements';
+
+// Maintainance
 export const MAINTENANCE_PAGE_URL = '/down-for-maintenance';
+
+// Error
 export const ERROR_404_PAGE_URL = '*';
 
 // User pages

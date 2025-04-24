@@ -5,7 +5,7 @@ import {
   CompanyTagLine,
   CompanyName,
   CompanyPhoneNumber,
-  ContactEmailAddress,
+  CompanyEmailAddress,
 } from '../../utils/Constants';
 // Components
 import FooterSocialCTA from './FooterSocialCTA';
@@ -91,10 +91,10 @@ function FooterComponent() {
           <section className='grid gap-1 h-fit text-sm'>
             {/* Email */}
             <div>
-              <a href={`mailto:${ContactEmailAddress}`}>
+              <a href={`mailto:${CompanyEmailAddress}`}>
                 <p>
                   <span className='font-semibold'>Email: </span>
-                  {ContactEmailAddress}
+                  {CompanyEmailAddress}
                 </p>
               </a>
             </div>
