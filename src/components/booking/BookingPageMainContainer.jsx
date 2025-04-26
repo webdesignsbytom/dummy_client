@@ -122,8 +122,9 @@ function BookingPageMainContainer() {
 
   const handleDayClick = (day) => {
     const date = new Date(year, month, day, 1);
-    const dayName = date.toLocaleString('default', { weekday: 'long' });
-    const dayOpening = bookingOpeningTimes[dayName];
+    const dayIndex = date.getDay(); // Sunday = 0
+    const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
+    const dayOpening = bookingOpeningTimes[correctedDayIndex];
 
     if (dayOpening?.open) {
       setSelectedDay(day);

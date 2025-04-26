@@ -17,8 +17,9 @@ function CalenderGrid({
     if (!selectedDay) return null;
 
     const selectedDate = new Date(year, month, selectedDay);
-    const dayName = selectedDate.toLocaleString('default', { weekday: 'long' });
-    const { start, end } = openingTimes[dayName];
+    const dayIndex = selectedDate.getDay(); // Sunday = 0
+    const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
+    const { start, end } = openingTimes[correctedDayIndex];
 
     if (!start || !end)
       return <div role='status'>No available times for this day.</div>;
@@ -108,7 +109,9 @@ function CalenderGrid({
           }
 
           const date = new Date(year, month, day);
-          const dayName = date.toLocaleString('default', { weekday: 'long' });
+          const dayIndex = date.getDay(); // Sunday = 0
+          const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
+          const dayName = correctedDayIndex;
           const isOpen = openingTimes[dayName]?.open;
           const today = new Date();
           today.setHours(0, 0, 0, 0);

@@ -8,7 +8,7 @@ import client from '../../api/client';
 import { HOME_PAGE_URL } from '../../utils/Routes';
 import { VERIFY_EMAIL_API } from '../../utils/ApiRoutes';
 // Hooks
-import { useNavigateToPage } from '../../hooks/useNavigateToPage';
+import useNavigateToPage from '../../hooks/useNavigateToPage';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
