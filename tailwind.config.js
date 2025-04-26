@@ -23,6 +23,8 @@ module.exports = {
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
+        titleFont: ['Poppins'],
+        fancyFont: ['Poppins'],
       },
       gridTemplateRows: {
         reg: 'auto 1fr',

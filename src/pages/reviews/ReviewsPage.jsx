@@ -24,13 +24,14 @@ function ReviewsPage() {
       />
 
       {/* Page */}
-      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
-        <div className='grid grid-rows-reg'>
+      <div className='grid min-h-screen bg-colour1 dark:bg-colour2 text-colour1 dark:text-colour2 font-poppins'>
+        <div className='grid h-fit'>
           {/* Navigation */}
           <Navbar />
+          
           {/* Header */}
-          <header className='grid px-6 text-center lg:px-10'>
-            <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
+          <header className='grid px-6 text-center'>
+            <h1 className='text-xl md:text-2xl lg:text-3xl font-titleFont font-bold text-colour7'>
               Contact Us
             </h1>
           </header>
