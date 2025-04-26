@@ -14,7 +14,7 @@ import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 
 function VerifyEmailPage() {
-  const { userId, uniqueString } = useParams(); 
+  const { userId, uniqueString } = useParams();
   const [hasFailed, setHasFailed] = useState(false);
   const navigateToPage = useNavigateToPage();
 
@@ -49,17 +49,31 @@ function VerifyEmailPage() {
           {/* Navigation */}
           <Navbar />
 
+          {/* Header */}
+          <header className='grid text-center'>
+            <h1
+              id="verify-email-heading"
+              className='text-3xl font-bold leading-tight tracking-tight font-gladolia text-colour2 md:text-2xl dark:text-colour6'
+              aria-live="polite" // Announce changes to screen readers
+            >
+              {hasFailed ? 'Verification Failed' : 'Verifying Email...'}
+            </h1>
+          </header>
+          
           {/* Main page content */}
           <main role='main' className='grid w-full h-full overflow-hidden'>
             <div className='grid w-full h-full items-center py-2 px-10 overflow-hidden'>
-              <section className='grid border-[1px] border-colour6 border-solid rounded-xl shadow-cardShadow w-full bg-colour1'>
+              <section
+                className='grid border-[1px] border-colour6 border-solid rounded-xl shadow-cardShadow w-full bg-colour1'
+                aria-labelledby="verify-email-heading" // Linking section to header
+              >
                 <div className='grid grid-rows-reg gap-4 w-full h-full px-6 py-6'>
-                  {/* Header */}
-                  <header className='grid text-center'>
-                    <h1 className='text-3xl font-bold leading-tight tracking-tight font-gladolia text-colour2 md:text-2xl dark:text-colour6'>
-                      {hasFailed ? 'Verification Failed' : 'Verifying Email...'}
-                    </h1>
-                  </header>
+                  {/* You can add a message indicating the process here */}
+                  {hasFailed && (
+                    <p role="alert" aria-live="assertive" className="text-red-600">
+                      There was an issue verifying your email. Please try again later.
+                    </p>
+                  )}
                 </div>
               </section>
             </div>
