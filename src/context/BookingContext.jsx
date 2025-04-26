@@ -5,6 +5,7 @@ import client from '../api/client';
 import {
   GET_BOOKING_DATA_API,
   SET_BOOKING_DAY_CLOSED_API,
+  SET_BOOKING_DAY_OPEN_API,
 } from '../utils/ApiRoutes';
 
 // Create the context
@@ -15,6 +16,7 @@ const BookingProvider = ({ children }) => {
   const [openingTimes, setOpeningTimes] = useState({});
   const [closedDays, setClosedDays] = useState([]);
   const [isSettingDayClosed, setIsSettingDayClosed] = useState([]);
+  const [isSettingDayOpen, setIsSettingDayOpen] = useState([]);
 
   useEffect(() => {
     client
@@ -32,7 +34,7 @@ const BookingProvider = ({ children }) => {
 
   const setDayToClosed = (date, reason) => {
     setIsSettingDayClosed(true);
-    
+
     const data = {
       date: date,
       reason: reason,
@@ -49,6 +51,20 @@ const BookingProvider = ({ children }) => {
       });
   };
 
+  const setDayToOpen = (date) => {
+    setIsSettingDayOpen(true);
+
+    client
+      .post(SET_BOOKING_DAY_OPEN_API, date, false)
+      .then((res) => {
+        setIsSettingDayOpen(false);
+      })
+      .catch((err) => {
+        setIsSettingDayOpen(false);
+        console.error('Unable to set day open', err);
+      });
+  };
+
   return (
     <BookingContext.Provider
       value={{
@@ -59,6 +75,9 @@ const BookingProvider = ({ children }) => {
         setOpeningTimes,
         setClosedDays,
         setDayToClosed,
+        isSettingDayClosed,
+        isSettingDayOpen,
+        setDayToOpen,
       }}
     >
       {children}

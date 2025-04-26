@@ -17,7 +17,7 @@ function CalenderGrid({
   setTimeSelected,
 }) {
   const { user } = useUser();
-  const { setDayToClosed } = useBooking();
+  const { setDayToClosed, setDayToOpen } = useBooking();
 
   const renderAvailableTimes = () => {
     if (!selectedDay) return null;
