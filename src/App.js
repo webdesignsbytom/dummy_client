@@ -41,9 +41,10 @@ import BlogPostEditPage from './pages/blog/BlogPostEditPage';
 import BookingPage from './pages/booking/BookingPage';
 import BookingAdminPage from './pages/booking/BookingAdminPage';
 // User pages
-import ForgettenPasswordPage from './users/password/ForgettenPasswordPage';
-import LoginPage from './users/login/LoginPage';
 import RegisterPage from './users/register/RegisterPage';
+import LoginPage from './users/login/LoginPage';
+import ForgettenPasswordPage from './users/password/ForgettenPasswordPage';
+import VerifyEmailPage from './users/verify/VerifyEmailPage';
 // Admin
 import AdminPage from './pages/admin/AdminPage';
 import ContactFormAdminPage from './pages/contact/ContactFormAdminPage';
@@ -53,7 +54,6 @@ import TermAndPoliciesPage from './pages/policies/TermAndPoliciesPage';
 import MaintenancePage from './pages/maintenance/MaintenancePage';
 // Error
 import Error404 from './pages/error/Error404';
-import VerifyEmailPage from './users/verify/VerifyEmailPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
