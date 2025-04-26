@@ -1,9 +1,9 @@
 import React from 'react';
 // Components
 import Navbar from '../../components/nav/Navbar';
-import ContactFormAdminPageMainContainer from '../../components/contact/admin/CallbackFormAdminPageMainContainer';
+import CallbackFormAdminPageMainContainer from '../../components/contact/admin/CallbackFormAdminPageMainContainer';
 
-function ContactFormAdminPage() {
+function CallbackFormAdminPage() {
   return (
     <>
       {/* Page */}
@@ -13,11 +13,11 @@ function ContactFormAdminPage() {
           <Navbar />
 
           {/* Main page content */}
-          <ContactFormAdminPageMainContainer />
+          <CallbackFormAdminPageMainContainer />
         </div>
       </div>
     </>
   );
 }
 
-export default ContactFormAdminPage;
+export default CallbackFormAdminPage;
