@@ -1,6 +1,9 @@
 import React from 'react';
 // Icons
 import { GrFormClose } from 'react-icons/gr';
+// Context
+import { useUser } from '../../context/UserContext';
+import { useBooking } from '../../context/BookingContext';
 
 function CalenderGrid({
   showBookingTimes,
@@ -13,6 +16,9 @@ function CalenderGrid({
   closeDaySelection,
   setTimeSelected,
 }) {
+  const { user } = useUser();
+  const { setDayToClosed } = useBooking();
+
   const renderAvailableTimes = () => {
     if (!selectedDay) return null;
 
@@ -40,6 +46,17 @@ function CalenderGrid({
       >
         <div>
           <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
+            {/* Admin button */}
+            {user?.role === 'ADMIN' && (
+              <section>
+                <button
+                  onClick={() => setDayToClosed(selectedDay, '')}
+                  className=''
+                >
+                  Set Closed For The Day
+                </button>
+              </section>
+            )}
             <h3
               id='available-times-heading'
               className='text-white text-lg font-semibold'

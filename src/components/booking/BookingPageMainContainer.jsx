@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // Api
 import client from '../../api/client';
 // Constants
-import { GET_BOOKING_API } from '../../utils/ApiRoutes';
+import { GET_BOOKING_DATA_API } from '../../utils/ApiRoutes';
 // Utils
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Data
@@ -52,7 +52,7 @@ function BookingPageMainContainer() {
   // Fetch all bookings
   useEffect(() => {
     client
-      .get(GET_BOOKING_API)
+      .get(GET_BOOKING_DATA_API)
       .then((res) => {
         setBookings(res.data.bookings);
         setLoading(false);
@@ -186,6 +186,7 @@ function BookingPageMainContainer() {
                   <LoadingSpinner lg={true} />
                 </div>
               )}
+              
               <CalenderGrid
                 showBookingTimes={showBookingTimes}
                 selectedDay={selectedDay}
