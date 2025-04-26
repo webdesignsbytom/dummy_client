@@ -14,6 +14,7 @@ export const ERROR_404_PAGE_URL = '*';
 // User pages
 export const SIGN_UP_PAGE_URL = '/sign-up';
 export const LOGIN_PAGE_URL = '/login';
+export const VERIFY_EMAIL_PAGE_URL = '/verify-email-address';
 export const RESET_PASS_PAGE_URL = '/reset-password';
 
 // Admin pages

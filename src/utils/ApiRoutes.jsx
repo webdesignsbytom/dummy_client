@@ -4,6 +4,7 @@ export const GET_LOGGED_IN_USER_API = '/users/user/get-logged-in-user'; // userI
 export const REGISTER_API = '/users/register';
 export const RESET_PASSWORD_API = '/users/user/reset-password'; // userId
 export const DELETE_ACCOUNT_API = '/users/user/delete-account'; // userId
+export const VERIFY_EMAIL_API = '/users/verify-email-address'; // userId
 
 // Contact forms API
 export const SUBMIT_CONTACT_FORM_API = '/contact/submit-form'; // userId

@@ -21,6 +21,7 @@ import {
   BOOKING_PAGE_URL,
   BOOKING_ADMIN_PAGE_URL,
   ADMIN_CONTACT_FORM_PAGE_URL,
+  VERIFY_EMAIL_PAGE_URL,
 } from './utils/Routes';
 import {
   COOKIE_TIMER,
@@ -52,6 +53,7 @@ import TermAndPoliciesPage from './pages/policies/TermAndPoliciesPage';
 import MaintenancePage from './pages/maintenance/MaintenancePage';
 // Error
 import Error404 from './pages/error/Error404';
+import VerifyEmailPage from './users/verify/VerifyEmailPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -133,6 +135,7 @@ function App() {
           {/* User routes */}
           <Route path={LOGIN_PAGE_URL} element={<LoginPage />} />
           <Route path={SIGN_UP_PAGE_URL} element={<RegisterPage />} />
+          <Route path={VERIFY_EMAIL_PAGE_URL} element={<VerifyEmailPage />} />
           <Route
             path={RESET_PASS_PAGE_URL}
             element={<ForgettenPasswordPage />}
