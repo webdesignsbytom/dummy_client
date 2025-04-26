@@ -21,6 +21,7 @@ export const RESET_PASS_PAGE_URL = '/reset-password';
 // Admin pages
 export const ADMIN_PAGE_URL = '/admin';
 export const ADMIN_CONTACT_FORM_PAGE_URL = '/admin/contact-forms';
+export const ADMIN_CALLBACK_FORM_PAGE_URL = '/admin/callback-forms';
 
 // Blog routes
 export const BLOG_PAGE_URL = '/blog';

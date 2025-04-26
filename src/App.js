@@ -23,11 +23,9 @@ import {
   ADMIN_CONTACT_FORM_PAGE_URL,
   VERIFY_EMAIL_PAGE_URL,
   REVIEWS_PAGE_URL,
+  ADMIN_CALLBACK_FORM_PAGE_URL,
 } from './utils/Routes';
-import {
-  COOKIE_TIMER,
-  CookiePolicyName,
-} from './utils/Constants';
+import { COOKIE_TIMER, CookiePolicyName } from './utils/Constants';
 // Pages
 // Public
 import HomePage from './pages/home/HomePage';
@@ -49,6 +47,7 @@ import VerifyEmailPage from './users/verify/VerifyEmailPage';
 // Admin
 import AdminPage from './pages/admin/AdminPage';
 import ContactFormAdminPage from './pages/contact/ContactFormAdminPage';
+import CallbackFormAdminPage from './pages/contact/CallbackFormAdminPage';
 // Terms and conditions
 import TermAndPoliciesPage from './pages/policies/TermAndPoliciesPage';
 // Maintainance
@@ -126,11 +125,20 @@ function App() {
 
           {/* Contact routes */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
+          {/* Contact admin routes */}
           <Route
             path={ADMIN_CONTACT_FORM_PAGE_URL}
             element={
               <AuthenticateAdmin>
                 <ContactFormAdminPage />
+              </AuthenticateAdmin>
+            }
+          />
+          <Route
+            path={ADMIN_CALLBACK_FORM_PAGE_URL}
+            element={
+              <AuthenticateAdmin>
+                <CallbackFormAdminPage />
               </AuthenticateAdmin>
             }
           />
@@ -146,7 +154,7 @@ function App() {
 
           {/* Terms and conditions */}
           <Route path={POLICIES_PAGE_URL} element={<TermAndPoliciesPage />} />
-          
+
           {/* Other */}
           <Route path={MAINTENANCE_PAGE_URL} element={<MaintenancePage />} />
 
