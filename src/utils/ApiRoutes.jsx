@@ -21,7 +21,7 @@ export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
 export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
 
 // Booking routes
-export const GET_BOOKING_API = '/bookings/get-all-bookings';
+export const GET_BOOKING_DATA_API = '/bookings/get-booking-data';
 export const GET_BOOKING_ADMIN_API = '/bookings/get-all-bookings-admin';
 export const CREATE_NEW_BOOKING_API = '/bookings/create-new-booking';
 export const CONFIRM_BOOKING_API = '/bookings/confirm-booking';

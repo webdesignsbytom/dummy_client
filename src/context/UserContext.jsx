@@ -36,7 +36,7 @@ const UserProvider = ({ children }) => {
       client
         .get(`${GET_LOGGED_IN_USER_API}/${userId}`)
         .then((res) => {
-          setUser(res.data.data.user); // Set user state based on API response
+          setUser(res.data.user); // Set user state based on API response
         })
         .then(() => navigateToPage(HOME_PAGE_URL)) // Navigate to home page
         .catch((err) => {

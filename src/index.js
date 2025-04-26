@@ -7,6 +7,7 @@ import ReactGA from 'react-ga4';
 import App from './App';
 // Context
 import UserProvider from './context/UserContext';
+import BookingProvider from './context/BookingContext';
 // Styles
 import './styles/index.css';
 import './styles/components.css';
@@ -22,7 +23,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <UserProvider>
-      <App />
+      <BookingProvider>
+        <App />
+      </BookingProvider>
     </UserProvider>
   </BrowserRouter>
 );
