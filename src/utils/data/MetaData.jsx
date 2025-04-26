@@ -51,6 +51,46 @@ export const homePageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
+// Reviews //
+// Reviews page
+export const reviewsPageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: `${CompanyName} Reviews`,
+  url: `${FULL_BUSINESS_URL}/reviews`,
+  description: `Read customer reviews and testimonials about ${CompanyName}'s web and circuit design services. Discover how we’ve helped businesses thrive with our expertise.`,
+  sameAs: [
+    `${FACEBOOK_URL}`,
+    `${INSTAGRAM_URL}`,
+    `${LINKEDIN_URL}`,
+  ],
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${FULL_BUSINESS_URL}/reviews?s={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+export const reviewsPageAdditionalMeta = [
+  { property: 'og:title', content: `Customer Reviews | ${CompanyName}` },
+  {
+    property: 'og:description',
+    content: `Explore our customer reviews to see how ${CompanyName} delivers exceptional web and circuit design services.`,
+  },
+  { property: 'og:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+  { property: 'og:url', content: `${FULL_BUSINESS_URL}/reviews` },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:title', content: `Customer Reviews | ${CompanyName}` },
+  {
+    name: 'twitter:description',
+    content: `See why customers love ${CompanyName} for web and circuit design services. Read their feedback and experiences.`,
+  },
+  { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+];
+
+
+// Booking //
+// Booking page
 export const bookingPageStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Service',

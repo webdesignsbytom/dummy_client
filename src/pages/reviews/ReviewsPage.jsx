@@ -16,9 +16,9 @@ function ReviewsPage() {
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName='Reviews'
-        desc={`Get in touch with ${CompanyName} for expert web and circuit design services. We're here to help with your inquiries, quotes, or support needs.`}
-        keywords={`contact, web design, circuit design, ${CompanyName}, customer support, inquiries, quotes, UK`}
+        PageName='Customer Reviews'
+        desc={`Read reviews from our satisfied customers about ${CompanyName}'s expert web and circuit design services. Discover how we’ve helped businesses with innovative solutions, support, and more.`}
+        keywords={`reviews, customer feedback, web design, circuit design, ${CompanyName}, testimonials, UK, client experiences, expert services`}
         additionalMeta={reviewsPageAdditionalMeta}
         structuredData={reviewsPageStructuredData}
       />

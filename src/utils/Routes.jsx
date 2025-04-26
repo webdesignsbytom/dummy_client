@@ -1,5 +1,6 @@
 // Pages
 export const HOME_PAGE_URL = '/';
+export const REVIEWS_PAGE_URL = '/reviews';
 export const CONTACT_PAGE_URL = '/contact';
 
 // Terms and Conditions

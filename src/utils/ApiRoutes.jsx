@@ -11,6 +11,11 @@ export const SUBMIT_CONTACT_FORM_API = '/contact/submit-form'; // userId
 export const GET_ALL_CONTACT_FROMS_API = '/contact/get-all-contact-forms'; 
 export const DELETE_CONTACT_FORM_API = '/contact/get-all-contact-forms'; 
 
+// Review API routes
+export const GET_REVIEWS_API = '/reviews/get-all-reviews';
+export const CREATE_NEW_REVIEW_API = '/reviews/create-new-review';
+export const DELETE_REVIEW_API = '/reviews/delete-review'; // /:reviewId
+
 // Blog API routes
 export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
 export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-all-blog-posts';
