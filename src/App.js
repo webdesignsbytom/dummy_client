@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import LoadingScreen from './components/utils/LoadingScreen';
 // Utils
 import { AuthenticateAdmin } from './utils/user/AuthenticateUser';
+import LoginAuth from './utils/user/LoginAuth';
 // Constants
 import {
   ADMIN_PAGE_URL,
@@ -127,11 +128,11 @@ function App() {
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
           {/* Contact admin routes */}
           <Route
-            path={ADMIN_CONTACT_FORM_PAGE_URL}
+            path={`${ADMIN_CONTACT_FORM_PAGE_URL}/:password`}
             element={
-              <AuthenticateAdmin>
+              <LoginAuth>
                 <ContactFormAdminPage />
-              </AuthenticateAdmin>
+              </LoginAuth>
             }
           />
           <Route
