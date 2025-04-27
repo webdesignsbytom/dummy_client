@@ -40,7 +40,7 @@ function Navbar() {
     <nav
       role='navigation'
       aria-label='Main Navigation'
-      className='relative bg-nav-background shadow-md h-fit'
+      className='relative bg-colour2 shadow-md h-fit'
     >
       <section className='grid grid-cols-reg px-4 py-4'>
         <section>
@@ -116,7 +116,7 @@ const NavItem = ({ url, title }) => {
       <NavLink
         to={url}
         aria-label={`${title} page navigation tab`}
-        className='text-xl md:text-lg font-semibold font-poppins hover:brightness-90 duration-200 active:scale-75'
+        className='text-xl md:text-lg text-colour1 font-semibold font-poppins hover:brightness-90 duration-200 active:scale-75'
         aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
         style={({ isActive }) => {
           return isActive ? { color: '#f8fafc' } : {};

@@ -23,10 +23,13 @@ function BookingPageMainContainer() {
   console.log('bookings', bookings);
 
   const [currentDate] = useState(new Date());
+  console.log('currentDate', currentDate);
   const [viewedDate, setViewedDate] = useState(new Date());
+  console.log('viewedDate', viewedDate);
   const [displayMonth, setDisplayMonth] = useState(
     viewedDate.toLocaleString('default', { month: 'long' })
   );
+  const [selectedDate, setSelectedDate] = useState();
 
   const [showMonthList, setShowMonthList] = useState(false);
   const [showBookingTimes, setShowBookingTimes] = useState(false);
@@ -122,6 +125,8 @@ function BookingPageMainContainer() {
 
   const handleDayClick = (day) => {
     const date = new Date(year, month, day, 1);
+    setSelectedDate(date)
+    console.log('XX date', date);
     const dayIndex = date.getDay(); // Sunday = 0
     const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
     const dayOpening = bookingOpeningTimes[correctedDayIndex];
@@ -197,6 +202,7 @@ function BookingPageMainContainer() {
                 handleDayClick={handleDayClick}
                 closeDaySelection={closeDaySelection}
                 setTimeSelected={setTimeSelected}
+                selectedDate={selectedDate}
               />
             </div>
           </div>

@@ -38,7 +38,6 @@ const UserProvider = ({ children }) => {
         .then((res) => {
           setUser(res.data.user); // Set user state based on API response
         })
-        .then(() => navigateToPage(HOME_PAGE_URL)) // Navigate to home page
         .catch((err) => {
           console.error('Unable to retrieve user data', err);
         });

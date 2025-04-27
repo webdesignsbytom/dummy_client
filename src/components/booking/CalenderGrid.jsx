@@ -14,7 +14,7 @@ function CalenderGrid({
   openingTimes,
   handleDayClick,
   closeDaySelection,
-  setTimeSelected,
+  setTimeSelected,selectedDate
 }) {
   const { user } = useUser();
   const { setDayToClosed, setDayToOpen } = useBooking();
@@ -23,6 +23,7 @@ function CalenderGrid({
     if (!selectedDay) return null;
 
     const selectedDate = new Date(year, month, selectedDay);
+    console.log('selectedDate', selectedDate);
     const dayIndex = selectedDate.getDay(); // Sunday = 0
     const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
     const { start, end } = openingTimes[correctedDayIndex];
@@ -50,7 +51,7 @@ function CalenderGrid({
             {user?.role === 'ADMIN' && (
               <section>
                 <button
-                  onClick={() => setDayToClosed(selectedDay, '')}
+                  onClick={() => setDayToClosed(selectedDate, '')}
                   className=''
                 >
                   Set Closed For The Day
