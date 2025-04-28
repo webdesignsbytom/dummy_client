@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-// Api
-import client from '../../api/client';
-// Constants
-import { GET_BOOKING_DATA_API } from '../../utils/ApiRoutes';
 // Utils
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Data
 import { bookingOpeningTimes } from '../../utils/data/BookingData';
+// Context
+import { useBooking } from '../../context/BookingContext';
 // Components
 import BookingForm from './forms/BookingForm';
 import MonthSelector from './MonthSelector';
@@ -14,12 +12,10 @@ import CalenderGrid from './CalenderGrid';
 import BookingRequestConfirmed from './BookingRequestConfirmed';
 import BookingRequestFailed from './BookingRequestFailed';
 import BookingRequestUnavailable from './BookingRequestUnavailable';
-import { BookingContext } from '../../context/BookingContext';
 
 function BookingPageMainContainer() {
-  const { bookingData, openingTimes, closedDays, setBookingData } =
-    BookingContext();
-
+  const { bookingData, } = useBooking();
+  
   const [loading, setLoading] = useState(true);
 
   console.log('bookings', bookingData);

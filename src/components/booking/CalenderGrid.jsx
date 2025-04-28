@@ -14,7 +14,8 @@ function CalenderGrid({
   openingTimes,
   handleDayClick,
   closeDaySelection,
-  setTimeSelected,selectedDate
+  setTimeSelected,
+  selectedDate,
 }) {
   const { user } = useUser();
   const { setDayToClosed, setDayToOpen } = useBooking();
@@ -46,10 +47,10 @@ function CalenderGrid({
         aria-labelledby='available-times-heading'
       >
         <div>
-          <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
+          <div className='grid'>
             {/* Admin button */}
             {user?.role === 'ADMIN' && (
-              <section>
+              <section className='bg-colour4 py-1'>
                 <button
                   onClick={() => setDayToClosed(selectedDate, '')}
                   className=''
@@ -58,19 +59,21 @@ function CalenderGrid({
                 </button>
               </section>
             )}
-            <h3
-              id='available-times-heading'
-              className='text-white text-lg font-semibold'
-            >
-              Available Times
-            </h3>
-            <button
-              className='my-auto flex items-center'
-              onClick={closeDaySelection}
-              aria-label='Close available times selection'
-            >
-              <GrFormClose />
-            </button>
+            <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
+              <h3
+                id='available-times-heading'
+                className='text-white text-lg font-semibold'
+              >
+                Available Times
+              </h3>
+              <button
+                className='my-auto flex items-center'
+                onClick={closeDaySelection}
+                aria-label='Close available times selection'
+              >
+                <GrFormClose />
+              </button>
+            </div>
           </div>
           <ul
             aria-label={`Available booking times for ${selectedDate.toDateString()}`}
