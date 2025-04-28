@@ -4,6 +4,7 @@ import {
   LOGIN_PAGE_URL,
   SIGN_UP_PAGE_URL,
   BOOKING_PAGE_URL,
+  BOOKING_ADMIN_PAGE_URL,
 } from '../Routes';
 
 export const getNavLinkItemsArray = (user) => [
@@ -11,7 +12,7 @@ export const getNavLinkItemsArray = (user) => [
   { path: BOOKING_PAGE_URL, label: 'Booking' },
   ...(user?.email
     ? user.role === 'ADMIN' || user.role === 'DEVELOPER'
-      ? [{ path: ADMIN_PAGE_URL, label: 'Admin' }]
+      ? [{ path: ADMIN_PAGE_URL, label: 'Admin' }, { path: BOOKING_ADMIN_PAGE_URL, label: 'Booking Admin' }]
       : []
     : [
         { path: LOGIN_PAGE_URL, label: 'Login' },

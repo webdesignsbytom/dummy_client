@@ -111,7 +111,7 @@ function LoginForm() {
           type='email'
           name='email'
           id='email'
-          className={``}
+          className={`bg-colour9 w-full rounded-md py-1 px-1`}
           placeholder='name@email.com'
           onChange={handleChange}
           required
@@ -131,24 +131,23 @@ function LoginForm() {
           name='password'
           id='password'
           placeholder='••••••••'
-          className={``}
+          className={`bg-colour9 w-full rounded-md py-1 px-1`}
           required
           onChange={handleChange}
           aria-invalid={loginError ? 'true' : 'false'}
           aria-describedby={loginError ? 'password-error' : undefined}
         />
       </div>
-      <div className='grid gap-2 items-center justify-between'>
-        <div className='form-check flex justify-center mb-6'>
+      <div className='grid gap-2 items-center justify-center'>
+        <div className='form-check flex mb-6'>
           <input
-            className='form-check-input h-4 w-4 border border-gray-300 rounded-sm transition duration-200 mt-1 align-top float-left mr-2 cursor-pointer'
+            className='form-check-input h-4 w-4 border border-gray-300 rounded-sm transition duration-200 mt-1 align-top float-left mr-2 cursor-pointer accent-colour5'
             type='checkbox'
             id='keepMeLoggedIn'
             name='keepMeLoggedIn'
             checked={loginFormData.keepMeLoggedIn}
             onChange={handleCheckedKeepMeLoggedIn}
             aria-label='Keep me logged in'
-            style={{ accentColor: '#ff0000' }} // Using `accent-color` here
           />
           <label
             className='form-check-label inline-block text-gray-800'
@@ -161,17 +160,17 @@ function LoginForm() {
       <div className='grid justify-center'>
         <Link
           to={RESET_PASS_PAGE_URL}
-          className='text-sm font-medium text-blue-600 hover:underline'
+          className='text-sm font-medium text-colour5 hover:underline'
           aria-label='Forgot password?'
         >
           Forgot password?
         </Link>
       </div>
 
-      <div>
+      <div className='grid h-fit w-full'>
         <button
           type='submit'
-          className={``}
+          className={`bg-colour5 text-colour1 py-1 rounded-md hover:brightness-110 active:scale-95 active:brightness-90`}
           aria-label='Sign in to your account'
           disabled={loginInProgress}
         >
@@ -194,7 +193,7 @@ function LoginForm() {
           Don’t have an account yet?{' '}
           <Link
             to={SIGN_UP_PAGE_URL}
-            className='font-medium text-blue-600 hover:underline'
+            className='font-medium text-colour5 hover:underline'
             aria-label='Sign up for a new account'
           >
             Sign up now!
