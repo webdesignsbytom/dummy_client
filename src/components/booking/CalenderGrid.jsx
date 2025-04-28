@@ -23,7 +23,6 @@ function CalenderGrid({
     if (!selectedDay) return null;
 
     const selectedDate = new Date(year, month, selectedDay);
-    console.log('selectedDate', selectedDate);
     const dayIndex = selectedDate.getDay(); // Sunday = 0
     const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
     const { start, end } = openingTimes[correctedDayIndex];
@@ -166,7 +165,7 @@ function CalenderGrid({
               user?.role !== 'ADMIN' &&
               user?.role !== 'DEVELOPER');
           const isDevOnClosedDay =
-            isManuallyClosed && user?.role === 'DEVELOPER';
+            isManuallyClosed && (user?.role === 'DEVELOPER' || user?.role === 'ADMIN');
           const isSelected = selectedDay === day;
 
           return (

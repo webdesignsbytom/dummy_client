@@ -16,12 +16,8 @@ import BookingRequestUnavailable from './BookingRequestUnavailable';
 function BookingPageMainContainer() {
   const { bookingData } = useBooking();
 
-  console.log('bookings', bookingData);
-
   const [currentDate] = useState(new Date());
-  console.log('currentDate', currentDate);
   const [viewedDate, setViewedDate] = useState(new Date());
-  console.log('viewedDate', viewedDate);
   const [displayMonth, setDisplayMonth] = useState(
     viewedDate.toLocaleString('default', { month: 'long' })
   );
@@ -45,8 +41,6 @@ function BookingPageMainContainer() {
     email: '',
     phoneNumber: '',
   });
-
-  console.log('bookingForm', bookingForm);
 
   // Calendar details
   const year = viewedDate.getFullYear();
@@ -108,7 +102,6 @@ function BookingPageMainContainer() {
   const handleDayClick = (day) => {
     const date = new Date(year, month, day, 1);
     setSelectedDate(date);
-    console.log('XX date', date);
     const dayIndex = date.getDay(); // Sunday = 0
     const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
     const dayOpening = bookingOpeningTimes[correctedDayIndex];
