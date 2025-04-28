@@ -7,7 +7,7 @@ function CountrySelect({ handleChange }) {
         id='country'
         name='country'
         onChange={handleChange}
-        className={``}
+        className={`bg-colour9 w-full rounded-md py-1 px-1`}
         required
         aria-label='Select your country'
         defaultValue='United Kingdom'

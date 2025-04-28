@@ -110,7 +110,7 @@ function RegisterForm() {
         </label>
         <input
           type='text'
-          className={``}
+                    className={`bg-colour9 w-full rounded-md py-1 px-1`}
           placeholder='Username'
           id='username'
           name='username'
@@ -127,7 +127,7 @@ function RegisterForm() {
           type='email'
           id='email'
           name='email'
-          className={``}
+                    className={`bg-colour9 w-full rounded-md py-1 px-1`}
           placeholder='Email address'
           onChange={handleChange}
           required
@@ -143,7 +143,7 @@ function RegisterForm() {
           type='password'
           id='password'
           name='password'
-          className={``}
+                    className={`bg-colour9 w-full rounded-md py-1 px-1`}
           placeholder='Password'
           onChange={handleChange}
           required
@@ -159,7 +159,7 @@ function RegisterForm() {
           type='password'
           id='confirmPassword'
           name='confirmPassword'
-          className={``}
+                    className={`bg-colour9 w-full rounded-md py-1 px-1`}
           placeholder='Confirm Password'
           onChange={handleChange}
           required
@@ -177,30 +177,30 @@ function RegisterForm() {
       </div>
       <div className='form-check flex justify-center mb-6'>
         <input
-          className='form-check-input h-4 w-4 border border-gray-300 rounded-sm transition duration-200 mt-1 align-top float-left mr-2 cursor-pointer checked:bg-colour2'
+          className='form-check-input h-4 w-4 border border-gray-300 rounded-sm transition duration-200 mt-1 align-top float-left mr-2 cursor-pointer checked:bg-colour2 accent-colour5'
           type='checkbox'
           value=''
           id='termsChecked'
           name='termsChecked'
           aria-label='Agree to terms and conditions'
-          style={{ accentColor: '#ff0000' }} // Using `accent-color` here
           checked={registerFormData.agreedToTerms}
           onChange={handleCheckboxChange}
         />
         <label
-          className='form-check-label inline-block text-gray-800'
+          className='form-check-label inline-block text-colour7'
           htmlFor='termsChecked'
         >
           I agree to all terms and conditions.
         </label>
       </div>
+
       {/* Submit button */}
-      <div>
+      <div className='grid h-fit w-full'>
         <button
           type='submit'
           data-mdb-ripple='true'
           data-mdb-ripple-color='light'
-          className={``}
+                   className={`bg-colour5 text-colour1 py-1 rounded-md hover:brightness-110 active:scale-95 active:brightness-90`}
           disabled={registrationInProgress}
           aria-disabled={registrationInProgress}
           aria-label='Register your account'
@@ -227,11 +227,11 @@ function RegisterForm() {
       )}
 
       <div className='grid justify-center'>
-        <p className='font-light text-gray-500 dark:text-gray-400'>
+        <p className='font-light text-colour5'>
           Already a member?{' '}
           <Link
             to={LOGIN_PAGE_URL}
-            className={``}
+            className={`hover:underline`}
             aria-label='Go to login page'
           >
             Login Now
