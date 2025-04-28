@@ -18,14 +18,15 @@ const BookingProvider = ({ children }) => {
   const [isSettingDayClosed, setIsSettingDayClosed] = useState([]);
   const [isSettingDayOpen, setIsSettingDayOpen] = useState([]);
 
+  console.log('closedDays', closedDays);
+
   useEffect(() => {
     client
       .get(GET_BOOKING_DATA_API, false)
       .then((res) => {
-        const data = res.data.data;
-        setBookingData(data.bookings);
-        setOpeningTimes(data.openingTimes);
-        setClosedDays(data.closedDays);
+        setBookingData(res.data.bookings);
+        setOpeningTimes(res.data.openingTimes);
+        setClosedDays(res.data.closedDays);
       })
       .catch((err) => {
         console.error('Unable to retrieve booking data', err);
@@ -43,6 +44,11 @@ const BookingProvider = ({ children }) => {
     client
       .post(SET_BOOKING_DAY_CLOSED_API, data, false)
       .then((res) => {
+        // ✅ Update closedDays locally
+        setClosedDays((prev) => [
+          ...prev,
+          { date: date.toISOString(), reason },
+        ]);
         setIsSettingDayClosed(false);
       })
       .catch((err) => {
@@ -53,10 +59,23 @@ const BookingProvider = ({ children }) => {
 
   const setDayToOpen = (date) => {
     setIsSettingDayOpen(true);
-
+    console.log('date', date);
+    const data = {
+      date: date,
+    };
     client
-      .post(SET_BOOKING_DAY_OPEN_API, date, false)
+      .post(SET_BOOKING_DAY_OPEN_API, data, false)
       .then((res) => {
+        // ✅ Remove the opened day from closedDays
+        setClosedDays((prev) =>
+          prev.filter((d) => {
+            const closedDate = new Date(d.date);
+            closedDate.setHours(0, 0, 0, 0);
+            const openingDate = new Date(date);
+            openingDate.setHours(0, 0, 0, 0);
+            return closedDate.getTime() !== openingDate.getTime();
+          })
+        );
         setIsSettingDayOpen(false);
       })
       .catch((err) => {

@@ -11,14 +11,13 @@ function CalenderGrid({
   calendarDays,
   year,
   month,
-  openingTimes,
   handleDayClick,
   closeDaySelection,
   setTimeSelected,
-  selectedDate,
 }) {
   const { user } = useUser();
-  const { setDayToClosed, setDayToOpen } = useBooking();
+  const { setDayToClosed, setDayToOpen, openingTimes, closedDays } =
+    useBooking();
 
   const renderAvailableTimes = () => {
     if (!selectedDay) return null;
@@ -43,23 +42,37 @@ function CalenderGrid({
 
     return (
       <section
-        className='absolute w-full bg-gray-100'
+        className='absolute w-full bg-gray-100 border-[1px] border-solid border-colour2'
         aria-labelledby='available-times-heading'
       >
         <div>
           <div className='grid'>
             {/* Admin button */}
-            {user?.role === 'ADMIN' && (
+            {(user?.role === 'ADMIN' || user?.role === 'DEVELOPER') && (
               <section className='bg-colour4 py-1'>
-                <button
-                  onClick={() => setDayToClosed(selectedDate, '')}
-                  className=''
-                >
-                  Set Closed For The Day
-                </button>
+                {closedDays.some((closed) => {
+                  const closedDate = new Date(closed.date);
+                  closedDate.setHours(0, 0, 0, 0);
+                  return closedDate.getTime() === selectedDate.getTime();
+                }) ? (
+                  <button
+                    onClick={() => setDayToOpen(selectedDate)}
+                    className='text-center w-full'
+                  >
+                    Set Open For The Day
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setDayToClosed(selectedDate, '')}
+                    className='text-center w-full'
+                  >
+                    Set Closed For The Day
+                  </button>
+                )}
               </section>
             )}
-            <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2'>
+
+            <div className='grid justify-between items-center grid-flow-col py-1 bg-blue-400 px-2 border-t-[1px] border-b-[1px] border-solid border-colour2'>
               <h3
                 id='available-times-heading'
                 className='text-white text-lg font-semibold'
@@ -133,28 +146,48 @@ function CalenderGrid({
           const dayIndex = date.getDay(); // Sunday = 0
           const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
           const dayName = correctedDayIndex;
+
           const isOpen = openingTimes[dayName]?.open;
           const today = new Date();
           today.setHours(0, 0, 0, 0);
           const isPast = date < today;
 
+          // ✅ Check if this day is manually closed
+          const isManuallyClosed = closedDays.some((closed) => {
+            const closedDate = new Date(closed.date);
+            closedDate.setHours(0, 0, 0, 0);
+            return closedDate.getTime() === date.getTime();
+          });
+
+          const isUnavailable =
+            !isOpen ||
+            isPast ||
+            (isManuallyClosed &&
+              user?.role !== 'ADMIN' &&
+              user?.role !== 'DEVELOPER');
+          const isDevOnClosedDay =
+            isManuallyClosed && user?.role === 'DEVELOPER';
+          const isSelected = selectedDay === day;
+
           return (
             <button
               key={index}
               onClick={() => handleDayClick(day)}
-              disabled={!isOpen || isPast}
+              disabled={isUnavailable}
               className={`h-16 max-h-16 max-w-20 border-b border-r flex items-center justify-center
               ${
-                !isOpen || isPast
+                isUnavailable
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : selectedDay === day
+                  : isDevOnClosedDay
+                  ? 'bg-green-400 text-white'
+                  : isSelected
                   ? 'bg-red-500 text-white'
                   : 'bg-blue-400 hover:bg-blue-500 text-white'
               }`}
               role='gridcell'
               aria-selected={selectedDay === day}
               aria-label={`${dayName}, ${day}, ${
-                !isOpen || isPast ? 'unavailable' : 'available'
+                isUnavailable ? 'unavailable' : 'available'
               }`}
             >
               <span>{day}</span>

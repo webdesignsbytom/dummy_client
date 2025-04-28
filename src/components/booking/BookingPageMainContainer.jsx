@@ -14,7 +14,7 @@ import BookingRequestFailed from './BookingRequestFailed';
 import BookingRequestUnavailable from './BookingRequestUnavailable';
 
 function BookingPageMainContainer() {
-  const { bookingData, } = useBooking();
+  const { bookingData } = useBooking();
 
   console.log('bookings', bookingData);
 
