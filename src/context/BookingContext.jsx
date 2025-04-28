@@ -35,6 +35,7 @@ const BookingProvider = ({ children }) => {
 
   const setDayToClosed = (date, reason) => {
     setIsSettingDayClosed(true);
+    console.log(' setDayToClosed date', date);
 
     const data = {
       date: date,
@@ -56,17 +57,17 @@ const BookingProvider = ({ children }) => {
         console.error('Unable to set day closed', err);
       });
   };
-
   const setDayToOpen = (date) => {
     setIsSettingDayOpen(true);
-    console.log('date', date);
-    const data = {
-      date: date,
-    };
+  
+    // Correctly format full ISO string
+    const isoDate = new Date(date).toISOString();
+  
+    console.log('Setting day open for date:', isoDate);
+  
     client
-      .post(SET_BOOKING_DAY_OPEN_API, data, false)
+      .delete(`${SET_BOOKING_DAY_OPEN_API}/${isoDate}`, false)
       .then((res) => {
-        // ✅ Remove the opened day from closedDays
         setClosedDays((prev) =>
           prev.filter((d) => {
             const closedDate = new Date(d.date);
@@ -83,6 +84,7 @@ const BookingProvider = ({ children }) => {
         console.error('Unable to set day open', err);
       });
   };
+  
 
   return (
     <BookingContext.Provider
