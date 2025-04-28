@@ -2,14 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 // Api
 import client from '../api/client';
 // Constants
-import {
-  HOME_PAGE_URL,
-} from '../utils/Routes';
-import {
-  GET_LOGGED_IN_USER_API,
-} from '../utils/ApiRoutes';
-// Hooks
-import useNavigateToPage from '../hooks/useNavigateToPage';
+import { GET_LOGGED_IN_USER_API } from '../utils/ApiRoutes';
 // Utils
 import LoggedInUser from '../utils/user/LoggedInUser';
 
@@ -17,7 +10,6 @@ import LoggedInUser from '../utils/user/LoggedInUser';
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const navigateToPage = useNavigateToPage();
 
   const [user, setUser] = useState({
     id: null,

@@ -19,17 +19,17 @@ function BookingOpeningTimes() {
 
   const [editingDay, setEditingDay] = useState(null);
   const [formData, setFormData] = useState({
-    daysOfWeek: 1,
+    dayOfWeek: 1,
     open: true,
     start: '',
     end: '',
   });
 
   const handleEditClick = (day) => {
-    console.log('day', day);
     const dayData = openingTimes[day];
+
     setFormData({
-      daysOfWeek: dayData.dayOfWeek,
+      dayOfWeek: day,
       open: dayData.open,
       start: dayData.start || '',
       end: dayData.end || '',
@@ -41,10 +41,12 @@ function BookingOpeningTimes() {
     client
       .patch(EDIT_OPENING_TIMES_API, formData, false)
       .then((res) => {
-        console.log('res', res.data);
+        setOpeningTimes(res.data.updatedTimes)
+        setEditingDay(null);
       })
       .catch((err) => {
         console.error('Edit opeings times failed', err);
+        setEditingDay(null);
       });
   };
 
@@ -64,10 +66,8 @@ function BookingOpeningTimes() {
             key={time.dayOfWeek}
             className='border bg-colour4 py-1 px-4 rounded flex justify-between items-center'
           >
-            {console.log('time', time)}
             <div className='grid grid-flow-col gap-x-8'>
               <div className='font-semibold'>{daysOfWeek[time.dayOfWeek]}</div>
-              {console.log('time.dayOfWeek', time.dayOfWeek)}
 
               {editingDay === time.dayOfWeek ? (
                 <div className='mt-2 space-y-2'>

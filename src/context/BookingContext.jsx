@@ -18,9 +18,6 @@ const BookingProvider = ({ children }) => {
   const [isSettingDayClosed, setIsSettingDayClosed] = useState([]);
   const [isSettingDayOpen, setIsSettingDayOpen] = useState([]);
 
-  console.log('closedDays', closedDays);
-  console.log('openingTimes', openingTimes);
-
   useEffect(() => {
     client
       .get(GET_BOOKING_DATA_API, false)
@@ -36,7 +33,6 @@ const BookingProvider = ({ children }) => {
 
   const setDayToClosed = (date, reason) => {
     setIsSettingDayClosed(true);
-    console.log(' setDayToClosed date', date);
 
     const data = {
       date: date,
@@ -63,8 +59,6 @@ const BookingProvider = ({ children }) => {
   
     // Correctly format full ISO string
     const isoDate = new Date(date).toISOString();
-  
-    console.log('Setting day open for date:', isoDate);
   
     client
       .delete(`${SET_BOOKING_DAY_OPEN_API}/${isoDate}`, false)
