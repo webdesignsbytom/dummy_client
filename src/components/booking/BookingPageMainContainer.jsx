@@ -15,8 +15,6 @@ import BookingRequestUnavailable from './BookingRequestUnavailable';
 
 function BookingPageMainContainer() {
   const { bookingData, } = useBooking();
-  
-  const [loading, setLoading] = useState(true);
 
   console.log('bookings', bookingData);
 
@@ -169,12 +167,6 @@ function BookingPageMainContainer() {
 
             {/* Calendar Grid */}
             <div className='relative'>
-              {loading && (
-                <div className='absolute z-10 h-full w-full grid justify-center items-center'>
-                  <LoadingSpinner lg={true} />
-                </div>
-              )}
-
               <CalenderGrid
                 showBookingTimes={showBookingTimes}
                 selectedDay={selectedDay}
