@@ -14,13 +14,15 @@ import CalenderGrid from './CalenderGrid';
 import BookingRequestConfirmed from './BookingRequestConfirmed';
 import BookingRequestFailed from './BookingRequestFailed';
 import BookingRequestUnavailable from './BookingRequestUnavailable';
+import { BookingContext } from '../../context/BookingContext';
 
 function BookingPageMainContainer() {
-  const [bookings, setBookings] = useState([]);
-  const [filter, setFilter] = useState('all');
+  const { bookingData, openingTimes, closedDays, setBookingData } =
+    BookingContext();
+
   const [loading, setLoading] = useState(true);
 
-  console.log('bookings', bookings);
+  console.log('bookings', bookingData);
 
   const [currentDate] = useState(new Date());
   console.log('currentDate', currentDate);
@@ -51,20 +53,6 @@ function BookingPageMainContainer() {
   });
 
   console.log('bookingForm', bookingForm);
-
-  // Fetch all bookings
-  useEffect(() => {
-    client
-      .get(GET_BOOKING_DATA_API)
-      .then((res) => {
-        setBookings(res.data.bookings);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Unable to retrieve booking data', err);
-        setLoading(false);
-      });
-  }, []);
 
   // Calendar details
   const year = viewedDate.getFullYear();
@@ -125,7 +113,7 @@ function BookingPageMainContainer() {
 
   const handleDayClick = (day) => {
     const date = new Date(year, month, day, 1);
-    setSelectedDate(date)
+    setSelectedDate(date);
     console.log('XX date', date);
     const dayIndex = date.getDay(); // Sunday = 0
     const correctedDayIndex = dayIndex === 0 ? 7 : dayIndex; // Convert Sunday (0) to 7
@@ -151,7 +139,7 @@ function BookingPageMainContainer() {
   const setTimeSelected = (time) => {
     setShowBookingForm(true);
     setShowBookingTimes(false);
-    
+
     let newTime = parseInt(time.split(':')[0], 10);
 
     setBookingForm({
@@ -165,7 +153,6 @@ function BookingPageMainContainer() {
     <main role='main' className='grid w-full py-12'>
       {/* Booking section */}
       <section className='grid w-full'>
-
         {/* Calendar container */}
         <div className='grid gap-y-12 w-full px-8 lg:container lg:mx-auto'>
           <div className='grid w-fit mx-auto'>
@@ -191,7 +178,7 @@ function BookingPageMainContainer() {
                   <LoadingSpinner lg={true} />
                 </div>
               )}
-              
+
               <CalenderGrid
                 showBookingTimes={showBookingTimes}
                 selectedDay={selectedDay}
