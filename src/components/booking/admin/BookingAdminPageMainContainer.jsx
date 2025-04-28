@@ -13,6 +13,7 @@ import {
 import { filteredBookings } from '../../../utils/functions/BookingFunctions';
 // Components
 import LoadingSpinner from '../../utils/LoadingSpinner';
+import BookingOpeningTimes from './BookingOpeningTimes';
 
 function BookingAdminPageMainContainer() {
   const [bookings, setBookings] = useState([]);
@@ -186,7 +187,11 @@ function BookingAdminPageMainContainer() {
   };
 
   return (
-    <main role='main' className='grid h-full w-full'>
+    <main role='main' className='grid gap-y-16 h-full w-full'>
+      {/* Times */}
+      <BookingOpeningTimes />
+
+      {/* Requests */}
       <section className='grid w-full'>
         <div className='grid grid-rows-reg gap-y-4 w-full px-8 lg:container lg:mx-auto bg-colour5 py-2'>
           <section className='grid grid-flow-col justify-between items-center py-4 px-4 bg-colour3 h-fit'>

@@ -19,6 +19,7 @@ const BookingProvider = ({ children }) => {
   const [isSettingDayOpen, setIsSettingDayOpen] = useState([]);
 
   console.log('closedDays', closedDays);
+  console.log('openingTimes', openingTimes);
 
   useEffect(() => {
     client

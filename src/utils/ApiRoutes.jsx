@@ -34,6 +34,7 @@ export const CREATE_NEW_BOOKING_API = '/bookings/create-new-booking';
 export const CONFIRM_BOOKING_API = '/bookings/confirm-booking';
 export const SET_BOOKING_DAY_CLOSED_API = '/bookings/set-day-closed';
 export const SET_BOOKING_DAY_OPEN_API = '/bookings/remove-day-closed';
+export const EDIT_OPENING_TIMES_API = '/bookings/edit-opening-times';
 export const DENY_BOOKING_API = '/bookings/deny-booking';
 export const CANCEL_BOOKING_API = '/bookings/cancel-booking';
 export const EDIT_BOOKING_API = '/bookings/edit-booking';
