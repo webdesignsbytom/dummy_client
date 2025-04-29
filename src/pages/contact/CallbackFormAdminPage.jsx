@@ -7,7 +7,7 @@ function CallbackFormAdminPage() {
   return (
     <>
       {/* Page */}
-      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
+      <div className='grid min-h-screen bg-colour1 text-colour2 font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
