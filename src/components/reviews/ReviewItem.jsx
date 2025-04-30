@@ -1,8 +1,11 @@
 import React from 'react';
 // Icons
 import { IoIosCloseCircleOutline } from 'react-icons/io';
+// Hooks
+import { useUser } from '../../context/UserContext';
 
 function ReviewItem({ review, handleDelete }) {
+  const { user } = useUser();
   return (
     <article
       className='grid grid-cols-rev bg-colour1 text-colour2 border px-4 py-4 h-fit rounded shadow'
@@ -15,9 +18,7 @@ function ReviewItem({ review, handleDelete }) {
           <strong>Name:</strong> {review.firstName} {review.lastName}
         </p>
         <p>
-          <strong>Rating:</strong>{' '}
-          {'★'.repeat(review.rating)}{' '}
-          {review.rating}/5
+          <strong>Rating:</strong> {'★'.repeat(review.rating)} {review.rating}/5
         </p>
         <p>
           <strong>Message:</strong> {review.message}
@@ -29,16 +30,18 @@ function ReviewItem({ review, handleDelete }) {
       </section>
 
       {/* Delete Button */}
-      <section>
-        <button
-          onClick={() => handleDelete(review.id)}
-          className='text-red-600 hover:text-red-800'
-          title='Delete Review'
-          aria-label={`Delete review from ${review.firstName} ${review.lastName}`}
-        >
-          <IoIosCloseCircleOutline size={35} />
-        </button>
-      </section>
+      {(user?.role === 'ADMIN' || user?.role === 'DEVELOPER') && (
+        <section>
+          <button
+            onClick={() => handleDelete(review.id)}
+            className='text-red-600 hover:text-red-800'
+            title='Delete Review'
+            aria-label={`Delete review from ${review.firstName} ${review.lastName}`}
+          >
+            <IoIosCloseCircleOutline size={35} />
+          </button>
+        </section>
+      )}
     </article>
   );
 }
