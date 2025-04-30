@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import client from '../../api/client';
 // Constants
 import { DELETE_REVIEW_API, GET_REVIEWS_API } from '../../utils/ApiRoutes';
+import { CompanyName } from '../../utils/Constants';
 // Components
 import ReviewItem from './ReviewItem';
 import ConfirmModal from '../modals/ConfirmModal';
@@ -64,17 +65,23 @@ function ReviewsPageMainContainer() {
     <main role='main' className='grid w-full h-full overflow-hidden'>
       <section className='grid w-full'>
         <div className='grid grid-rows-reg gap-y-4 w-full px-8 py-8 lg:container lg:mx-auto'>
-          ReviewsPageMainContainer
-          <section>
-            {reviews.map((review, index) => {
-              return (
-                <ReviewItem
-                  key={index}
-                  review={review}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
+          <section
+            className='grid w-full p-1'
+            aria-label={`List of submitted reviews for ${CompanyName}`}
+          >
+            <ul className='grid gap-y-2'>
+              {reviews.map((review, index) => {
+                return (
+                  <li key={review.id}>
+                    <ReviewItem
+                      key={index}
+                      review={review}
+                      handleDelete={handleDelete}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
           </section>
         </div>
       </section>

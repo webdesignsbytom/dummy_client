@@ -7,6 +7,7 @@ import {
   DELETE_CONTACT_FORM_API,
   DELETE_ALL_CONTACT_FORM_API,
 } from '../../../utils/ApiRoutes';
+import { CompanyName } from '../../../utils/Constants';
 // Components
 import ConfirmModal from '../../modals/ConfirmModal';
 import ContactFormItem from './ContactFormItem';
@@ -114,7 +115,7 @@ function ContactFormAdminPageMainContainer() {
           </section>
 
           {/* Contact forms */}
-          <section className='grid w-full p-1' aria-label='List of submitted contact forms'>
+          <section className='grid w-full p-1'  aria-label={`List of submitted contact forms for ${CompanyName}`}>
             {contactForms.length === 0 ? (
               <section
                 className='grid items-center justify-center h-full w-full'

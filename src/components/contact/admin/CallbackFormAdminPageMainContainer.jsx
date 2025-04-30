@@ -7,6 +7,7 @@ import {
   DELETE_CALLBACK_FORM_API,
   DELETE_ALL_CALLBACK_FORM_API,
 } from '../../../utils/ApiRoutes';
+import { CompanyName } from '../../../utils/Constants';
 // Components
 import ConfirmModal from '../../modals/ConfirmModal';
 import CallbackFormItem from './CallbackFormItem';
@@ -114,7 +115,7 @@ function CallbackFormAdminPageMainContainer() {
           </section>
 
           {/* Callback forms */}
-          <section className='grid w-full p-1' aria-label='List of submitted callback forms'>
+          <section className='grid w-full p-1' aria-label={`List of submitted callback forms for ${CompanyName}`}>
             {callbackForms.length === 0 ? (
               <section
                 className='grid items-center justify-center h-full w-full'
