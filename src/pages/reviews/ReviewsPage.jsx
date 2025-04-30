@@ -30,7 +30,7 @@ function ReviewsPage() {
           <Navbar />
           
           {/* Header */}
-          <header className='grid px-6 text-center'>
+          <header className='grid px-6 py-6 text-center'>
             <h1 className='text-xl md:text-2xl lg:text-3xl font-titleFont font-bold'>
               Reviews
             </h1>
