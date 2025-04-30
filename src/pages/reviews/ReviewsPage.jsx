@@ -24,15 +24,15 @@ function ReviewsPage() {
       />
 
       {/* Page */}
-      <div className='grid min-h-screen bg-colour1 dark:bg-colour2 text-colour1 dark:text-colour2 font-poppins'>
+      <div className='grid min-h-screen overflow-hidden bg-colour1 dark:bg-colour2 text-colour2 dark:text-colour1 font-poppins'>
         <div className='grid h-fit'>
           {/* Navigation */}
           <Navbar />
           
           {/* Header */}
           <header className='grid px-6 text-center'>
-            <h1 className='text-xl md:text-2xl lg:text-3xl font-titleFont font-bold text-colour7'>
-              Contact Us
+            <h1 className='text-xl md:text-2xl lg:text-3xl font-titleFont font-bold'>
+              Reviews
             </h1>
           </header>
         </div>

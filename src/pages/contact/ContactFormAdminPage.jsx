@@ -8,7 +8,7 @@ function ContactFormAdminPage() {
     <>
       {/* Document-level semantic wrapper */}
       <div
-        className='grid min-h-screen overflow-hidden bg-colour1 text-colour2 font-poppins'
+        className='grid min-h-screen overflow-hidden bg-colour1 dark:bg-colour2 text-colour2 dark:text-colour1 font-poppins'
         role='document'
         aria-label='Admin Contact Form Page'
       >

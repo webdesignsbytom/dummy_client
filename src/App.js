@@ -103,7 +103,7 @@ function App() {
         <Routes>
           {/* Main page routes */}
           <Route path={HOME_PAGE_URL} index element={<HomePage />} />
-          <Route path={REVIEWS_PAGE_URL} index element={<ReviewsPage />} />
+          <Route path={REVIEWS_PAGE_URL} element={<ReviewsPage />} />
 
           {/* Blog routes */}
           <Route path={BLOG_PAGE_URL} element={<BlogPage />} />
