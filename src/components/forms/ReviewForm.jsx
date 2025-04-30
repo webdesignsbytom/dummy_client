@@ -6,13 +6,12 @@ import { CREATE_NEW_REVIEW_API } from '../../utils/ApiRoutes';
 // Icons
 import { FaHeart } from 'react-icons/fa';
 
-function ReviewForm() {
+function ReviewForm({ setReviews }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
     message: '',
     rating: 0,
   });
@@ -33,7 +32,22 @@ function ReviewForm() {
       .post(CREATE_NEW_REVIEW_API, formData, false)
       .then((res) => {
         setIsSubmitting(false);
-        console.log('XXX');
+        const newReview = {
+          ...formData,
+          createdAt: new Date().toISOString(), // Optional: add timestamp
+          id: Date.now(), // Optional: temporary unique ID
+        };
+
+        setReviews((prevReviews) => [newReview, ...prevReviews]);
+
+        // Clear the form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          message: '',
+          rating: 0,
+        });
       })
       .catch((err) => {
         console.error('Unable to create new booking', err);
@@ -46,7 +60,10 @@ function ReviewForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='grid h-fit gap-y-4 max-w-2xl mx-auto'>
+    <form
+      onSubmit={handleSubmit}
+      className='grid h-fit gap-y-4 max-w-2xl mx-auto'
+    >
       {/* First Name */}
       <label className='block'>
         <span className='text-colour6 dark:text-colour6'>First Name</span>
@@ -86,19 +103,6 @@ function ReviewForm() {
           required
           className='w-full p-2 mt-1 bg-colour7 dark:bg-colour7 rounded'
           placeholder='Your email'
-        />
-      </label>
-
-      {/* Phone (Optional) */}
-      <label className='block'>
-        <span className='text-colour6 dark:text-colour6'>Phone (Optional)</span>
-        <input
-          type='tel'
-          name='phone'
-          value={formData.phone}
-          onChange={handleChange}
-          className='w-full p-2 mt-1 bg-colour7 dark:bg-colour7 rounded'
-          placeholder='Your phone number (optional)'
         />
       </label>
 

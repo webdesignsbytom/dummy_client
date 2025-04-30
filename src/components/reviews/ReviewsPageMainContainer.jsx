@@ -7,6 +7,7 @@ import { CompanyName } from '../../utils/Constants';
 // Components
 import ReviewItem from './ReviewItem';
 import ConfirmModal from '../modals/ConfirmModal';
+import ReviewForm from '../forms/ReviewForm';
 
 function ReviewsPageMainContainer() {
   const [reviews, setReviews] = useState([]);
@@ -95,6 +96,12 @@ function ReviewsPageMainContainer() {
           message={modalContent.message}
         />
       )}
+
+      <section className='grid w-full'>
+        <div className='grid grid-rows-reg gap-y-4 w-full px-8 py-8 lg:container lg:mx-auto'>
+          <ReviewForm setReviews={setReviews} />
+        </div>
+      </section>
     </main>
   );
 }
