@@ -1,18 +1,22 @@
 import React from 'react';
 // Components
 import Navbar from '../../components/nav/Navbar';
-import ContactFormAdminPageMainContainer from '../../components/contact/admin/ContactFormAdminPageMainContainer'
+import ContactFormAdminPageMainContainer from '../../components/contact/admin/ContactFormAdminPageMainContainer';
 
 function ContactFormAdminPage() {
   return (
     <>
-      {/* Page */}
-      <div className='grid min-h-screen bg-colour1 text-colour2 font-poppins'>
+      {/* Document-level semantic wrapper */}
+      <div
+        className='grid min-h-screen overflow-hidden bg-colour1 text-colour2 font-poppins'
+        role='document'
+        aria-label='Admin Contact Form Page'
+      >
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
 
-          {/* Main page content */}
+          {/* Main content */}
           <ContactFormAdminPageMainContainer />
         </div>
       </div>

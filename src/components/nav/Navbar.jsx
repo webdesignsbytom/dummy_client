@@ -7,12 +7,8 @@ import MainLogoImage from '../../assets/images/logos/byte-toast-studio-logo-web-
 // Context
 import { useUser } from '../../context/UserContext';
 // Constants
-import {
-  HOME_PAGE_URL,
-} from '../../utils/Routes';
-import {
-  CompanyName,
-} from '../../utils/Constants';
+import { HOME_PAGE_URL } from '../../utils/Routes';
+import { CompanyName } from '../../utils/Constants';
 // Hooks
 import useNavigateToPage from '../../hooks/useNavigateToPage';
 // Nav data
@@ -84,7 +80,7 @@ function Navbar() {
 
       {/* Phone navbar */}
       <section
-        className={`phone-nav absolute top-full left-0 w-full bg-nav-background transition-transform duration-300 ${
+        className={`phone-nav absolute top-full bg-colour2 left-0 w-full bg-nav-background transition-transform duration-300 ${
           isPhoneNavOpen
             ? 'translate-y-0 opacity-100'
             : '-translate-y-full opacity-0'

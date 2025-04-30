@@ -13,10 +13,10 @@ export const DELETE_CONTACT_FORM_API = '/contact/delete-contact-form';
 export const DELETE_ALL_CONTACT_FORM_API = '/contact/delete-all-contact-forms'; 
 
 // Callback forms API
-export const SUBMIT_CALLBACK_FORM_API = '/callback/create-new-callback-form'; 
-export const GET_ALL_CALLBACK_FROMS_API = '/callback/get-all-callback-forms'; 
-export const DELETE_CALLBACK_FORM_API = '/callback/delete-callback-form'; 
-export const DELETE_ALL_CALLBACK_FORM_API = '/callback/delete-all-callback-forms'; 
+export const SUBMIT_CALLBACK_FORM_API = '/contact/create-new-callback-form'; 
+export const GET_ALL_CALLBACK_FROMS_API = '/contact/get-all-callback-forms'; 
+export const DELETE_CALLBACK_FORM_API = '/contact/delete-callback-form'; 
+export const DELETE_ALL_CALLBACK_FORM_API = '/contact/delete-all-callback-forms'; 
 
 // Review API routes
 export const GET_REVIEWS_API = '/reviews/get-all-reviews';

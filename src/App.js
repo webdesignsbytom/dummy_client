@@ -136,11 +136,11 @@ function App() {
             }
           />
           <Route
-            path={ADMIN_CALLBACK_FORM_PAGE_URL}
+            path={`${ADMIN_CALLBACK_FORM_PAGE_URL}/:password`}
             element={
-              <AuthenticateAdmin>
+              <LoginAuth>
                 <CallbackFormAdminPage />
-              </AuthenticateAdmin>
+              </LoginAuth>
             }
           />
 
