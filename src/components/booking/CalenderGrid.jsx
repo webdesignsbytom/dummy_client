@@ -127,7 +127,7 @@ function CalenderGrid({
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
           <div
             key={d}
-            className='text-center font-semibold p-2 border-b border-r bg-gray-100'
+            className='text-center text-sm md:text-base font-semibold p-2 border-b border-r bg-gray-100'
             role='columnheader'
           >
             {d}
@@ -165,7 +165,8 @@ function CalenderGrid({
               user?.role !== 'ADMIN' &&
               user?.role !== 'DEVELOPER');
           const isDevOnClosedDay =
-            isManuallyClosed && (user?.role === 'DEVELOPER' || user?.role === 'ADMIN');
+            isManuallyClosed &&
+            (user?.role === 'DEVELOPER' || user?.role === 'ADMIN');
           const isSelected = selectedDay === day;
 
           return (
