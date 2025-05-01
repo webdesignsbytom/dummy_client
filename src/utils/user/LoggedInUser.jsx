@@ -1,8 +1,8 @@
 import { jwtDecode } from "jwt-decode";
+import { getToken } from '../token';
 
 export default function LoggedInUser() {
-  const loadedToken = localStorage.getItem('token');
-
+  const loadedToken = getToken();
   // Check if the token exists
   if (!loadedToken) {
     return null; // Return null if the token is not present

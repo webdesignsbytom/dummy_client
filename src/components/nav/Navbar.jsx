@@ -13,6 +13,7 @@ import { CompanyName } from '../../utils/Constants';
 import useNavigateToPage from '../../hooks/useNavigateToPage';
 // Nav data
 import { getNavLinkItemsArray } from '../../utils/data/NavData';
+import { removeToken } from '../../utils/token';
 
 function Navbar() {
   const { user, setUser } = useUser();
@@ -28,7 +29,7 @@ function Navbar() {
   const handleLogout = (event) => {
     event.preventDefault();
     setUser({});
-    localStorage.removeItem(process.env.REACT_APP_USER_TOKEN);
+    removeToken();
     navigateToPage(HOME_PAGE_URL, { replace: true });
   };
 
