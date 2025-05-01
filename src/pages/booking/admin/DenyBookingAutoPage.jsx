@@ -1,53 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 // Api
-import client from '../../api/client';
+import client from '../../../api/client';
 // Constants
-import { CONFIRM_BOOKING_API } from '../../utils/ApiRoutes';
+import { DENY_BOOKING_API } from '../../../utils/ApiRoutes';
 // Components
-import { HelmetItem } from '../../components/utils/HelmetItem';
-import Navbar from '../../components/nav/Navbar';
+import { HelmetItem } from '../../../components/utils/HelmetItem';
+import Navbar from '../../../components/nav/Navbar';
 
-function ConfirmBookingPage() {
-  const { bookingId } = useParams();
+function DenyBookingAutoPage() {
+  const { bookingId } = useParams(); // Get bookingId from URL params
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingStatus, setBookingStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // Simulating booking confirmation through a useEffect hook (ideally you'd get the bookingId from URL params)
+  // Handle the denial of booking on mount
   useEffect(() => {
-    const confirmBookingHandler = async () => {
+    const denyBookingHandler = async () => {
       setIsSubmitting(true);
       setErrorMessage(null); // Reset any previous error message
 
       client
-        .patch(`${CONFIRM_BOOKING_API}/${bookingId}`, null, false)
+        .patch(`${DENY_BOOKING_API}/${bookingId}`, null, false)
         .then((res) => {
           console.log(res.data.message);
-          setBookingStatus('complete');
+          setBookingStatus('denied');
           setIsSubmitting(false);
         })
         .catch((err) => {
-          console.error('Unable to retrieve booking data', err);
+          console.error('Unable to deny booking data', err);
           setBookingStatus('failed');
-          setErrorMessage(
-            'Booking confirmation failed. Please try again later.'
-          );
+          setErrorMessage('Booking denial failed. Please try again later.');
           setIsSubmitting(false);
         });
     };
 
-    confirmBookingHandler();
-  }, []);
+    denyBookingHandler();
+  }, [bookingId]);
 
   return (
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName='Confirm Booking'
-        desc={`Confirm your booking with Mistress Victoria.`}
-        keywords={`booking, confirmation, kink, BDSM`}
+        PageName='Deny Booking'
+        desc='Deny your booking with Mistress Victoria.'
+        keywords='booking, denial, kink, BDSM'
         additionalMeta={[]}
         structuredData={[]}
       />
@@ -58,7 +56,7 @@ function ConfirmBookingPage() {
           <Navbar />
           <header className='grid w-full'>
             <div className='grid w-full px-8 text-center lg:container lg:mx-auto py-6'>
-              <h1 className='text-xl font-semibold'>Confirm Your Booking</h1>
+              <h1 className='text-xl font-semibold'>Deny Your Booking</h1>
             </div>
           </header>
         </div>
@@ -67,21 +65,21 @@ function ConfirmBookingPage() {
         <div className='px-8 text-center py-6'>
           {isSubmitting ? (
             <div className='text-lg font-medium text-gray-500'>
-              Confirming your booking...
+              Denying your booking...
             </div>
-          ) : bookingStatus === 'complete' ? (
+          ) : bookingStatus === 'denied' ? (
             <div className='text-lg font-medium text-green-500'>
-              Your booking has been successfully confirmed! We look forward to
-              seeing you.
+              Your booking has been successfully denied. If you need assistance,
+              feel free to reach out.
             </div>
           ) : bookingStatus === 'failed' ? (
-            <div className='text-lg font-medium text-red-500'>
+            <div className='text-lg font-medium text-green-500'>
               {errorMessage ||
-                'There was an issue confirming your booking. Please try again.'}
+                'There was an issue denying your booking. Please try again.'}
             </div>
           ) : (
             <div className='text-lg font-medium text-gray-500'>
-              Waiting to confirm your booking...
+              Waiting to deny your booking...
             </div>
           )}
         </div>
@@ -90,4 +88,4 @@ function ConfirmBookingPage() {
   );
 }
 
-export default ConfirmBookingPage;
+export default DenyBookingAutoPage;

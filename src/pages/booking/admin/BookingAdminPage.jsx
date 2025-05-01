@@ -1,9 +1,9 @@
 import React from 'react';
 // Constants
-import { CompanyName } from '../../utils/Constants';
+import { CompanyName } from '../../../utils/Constants';
 // Components
-import BookingAdminPageMainContainer from '../../components/booking/admin/BookingAdminPageMainContainer';
-import Navbar from '../../components/nav/Navbar';
+import BookingAdminPageMainContainer from '../../../components/booking/admin/BookingAdminPageMainContainer';
+import Navbar from '../../../components/nav/Navbar';
 
 function BookingAdminPage() {
   return (
