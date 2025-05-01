@@ -58,7 +58,7 @@ function CookieConsentModal({ setHasAgreedToCookies }) {
           aria-modal='true'
           className='grid fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-max w-full justify-center px-6 md:px-0'
         >
-          <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-fit w-full bg-main-background border-solid border-2 border-colour2 max-w-md'>
+          <div className='grid rounded-xl px-4 pt-6 pb-4 shadow-xl h-fit w-full bg-colour1 border-solid border-2 border-colour2 max-w-md'>
             <article className='grid gap-8 h-full w-full grid-rows-rev'>
               <div className='grid gap-4 w-full h-full'>
                 <section className='mx-auto py-2'>
