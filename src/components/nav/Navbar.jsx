@@ -67,7 +67,7 @@ function Navbar() {
             {user?.email && (
               <li>
                 <button
-                  className='hover:text-colour2 active:scale-95'
+                  className='text-xl md:text-lg text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
                   onClick={handleLogout}
                 >
                   Logout
@@ -93,7 +93,7 @@ function Navbar() {
           {user?.email && (
             <li>
               <button
-                className='w-full no__highlights nav__bg hover:bg-blue-500 active:scale-95 grid py-2 outline-2 outline outline-black bg-yellow-500 text-gray-800 font-semibold'
+                className='text-xl md:text-lg text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
                 onClick={handleLogout}
               >
                 Logout
@@ -112,7 +112,7 @@ const NavItem = ({ url, title }) => {
       <NavLink
         to={url}
         aria-label={`${title} page navigation tab`}
-        className='text-xl md:text-lg text-colour1 font-semibold font-poppins hover:brightness-90 duration-200 active:scale-75'
+        className='text-xl md:text-lg text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
         aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
         style={({ isActive }) => {
           return isActive ? { color: '#f8fafc' } : {};

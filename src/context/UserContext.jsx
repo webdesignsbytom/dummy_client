@@ -5,6 +5,7 @@ import client from '../api/client';
 import { GET_LOGGED_IN_USER_API } from '../utils/ApiRoutes';
 // Utils
 import LoggedInUser from '../utils/user/LoggedInUser';
+import { getToken } from '../utils/token';
 
 // Create the context
 export const UserContext = createContext();
@@ -15,9 +16,7 @@ const UserProvider = ({ children }) => {
     id: null,
   });
 
-  const [token, setToken] = useState(
-    localStorage.getItem(process.env.REACT_APP_USER_TOKEN) || ''
-  );
+  const [token, setToken] = useState(getToken());
 
   useEffect(() => {
     const decodedUserData = LoggedInUser();
