@@ -9,7 +9,7 @@ import { HelmetItem } from '../../../components/utils/HelmetItem';
 import Navbar from '../../../components/nav/Navbar';
 
 function DenyBookingAutoPage() {
-  const { bookingId } = useParams(); // Get bookingId from URL params
+  const { bookingId, uniqueString } = useParams();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingStatus, setBookingStatus] = useState(null);
@@ -21,8 +21,12 @@ function DenyBookingAutoPage() {
       setIsSubmitting(true);
       setErrorMessage(null); // Reset any previous error message
 
+      if (!uniqueString) {
+        return
+      }
+
       client
-        .patch(`${DENY_BOOKING_API}/${bookingId}`, null, false)
+        .patch(`${DENY_BOOKING_API}/${bookingId}`, { uniqueString }, false)
         .then((res) => {
           console.log(res.data.message);
           setBookingStatus('denied');

@@ -21,6 +21,10 @@ function ConfirmBookingAutoPage() {
       setIsSubmitting(true);
       setErrorMessage(null); // Reset any previous error message
 
+      if (!uniqueString) {
+        return;
+      }
+
       client
         .patch(`${CONFIRM_BOOKING_API}/${bookingId}`, { uniqueString }, false)
         .then((res) => {
