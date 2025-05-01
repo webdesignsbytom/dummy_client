@@ -125,8 +125,8 @@ function App() {
           {/* Booking routes */}
           <Route path={BOOKING_PAGE_URL} element={<BookingPage />} />
           <Route path={BOOKING_ADMIN_PAGE_URL} element={<BookingAdminPage />} />
-          <Route path={`/bookings/confirm-booking/:bookingId`} element={<ConfirmBookingAutoPage />} />
-          <Route path={`/bookings/deny-booking/:bookingId`} element={<DenyBookingAutoPage />} />
+          <Route path={`/bookings/confirm-booking/:uniqueString/:bookingId`} element={<ConfirmBookingAutoPage />} />
+          <Route path={`/bookings/deny-booking/:uniqueString/:bookingId`} element={<DenyBookingAutoPage />} />
 
           {/* Contact routes */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />

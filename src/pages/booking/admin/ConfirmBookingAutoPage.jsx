@@ -9,7 +9,7 @@ import { HelmetItem } from '../../../components/utils/HelmetItem';
 import Navbar from '../../../components/nav/Navbar';
 
 function ConfirmBookingAutoPage() {
-  const { bookingId } = useParams();
+  const { bookingId, uniqueString } = useParams();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingStatus, setBookingStatus] = useState(null);
@@ -22,7 +22,7 @@ function ConfirmBookingAutoPage() {
       setErrorMessage(null); // Reset any previous error message
 
       client
-        .patch(`${CONFIRM_BOOKING_API}/${bookingId}`, null, false)
+        .patch(`${CONFIRM_BOOKING_API}/${bookingId}`, { uniqueString }, false)
         .then((res) => {
           console.log(res.data.message);
           setBookingStatus('complete');
