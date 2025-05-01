@@ -24,7 +24,7 @@ function BookingAdminPageMainContainer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef();
-
+  console.log('bookings', bookings);
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   // Confirm states
@@ -33,7 +33,6 @@ function BookingAdminPageMainContainer() {
   const [isCancellingBooking, setIsCancellingBooking] = useState(false);
   const [isEditingBooking, setIsEditingBooking] = useState(false);
   const [isDeletingBooking, setIsDeletingBooking] = useState(false);
-
 
   useEffect(() => {
     client

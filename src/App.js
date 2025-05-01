@@ -56,6 +56,8 @@ import MaintenancePage from './pages/maintenance/MaintenancePage';
 // Error
 import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
+import ConfirmBookingPage from './pages/booking/ConfirmBookingPage';
+import DenyBookingPage from './pages/booking/DenyBookingPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -123,6 +125,8 @@ function App() {
           {/* Booking routes */}
           <Route path={BOOKING_PAGE_URL} element={<BookingPage />} />
           <Route path={BOOKING_ADMIN_PAGE_URL} element={<BookingAdminPage />} />
+          <Route path={`/bookings/confirm-booking/:bookingId`} element={<ConfirmBookingPage />} />
+          <Route path={`/bookings/deny-booking/:bookingId`} element={<DenyBookingPage />} />
 
           {/* Contact routes */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />
