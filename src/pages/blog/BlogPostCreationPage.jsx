@@ -4,7 +4,7 @@ import { CompanyName } from '../../utils/Constants';
 // Components
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import Navbar from '../../components/nav/Navbar';
-import BlogPostCreationPageMainContainer from '../../components/blog/createBlogPage/BlogPostCreationPageMainContainer';
+import BlogPostCreationPageMainContainer from '../../components/blog/admin/createBlogPage/BlogPostCreationPageMainContainer';
 
 function BlogPostCreationPage() {
   return (
