@@ -243,12 +243,12 @@ function ContactForm() {
       </div>
 
       {submitState === submitStates[2] && ( // "failed"
-        <div role='alert' aria-live='assertive' className='text-error-red mt-4 text-center'>
+        <div role='alert' aria-live='assertive' className='text-error-red mt-3 text-center'>
           Unable to submit the form. Please try again.
         </div>
       )}
       {submitState === submitStates[3] && ( // "success"
-        <div role='alert' aria-live='polite' className='text-green-500 mt-4 text-center'>
+        <div role='alert' aria-live='polite' className='text-green-500 mt-3 text-center'>
           Form submitted successfully!
         </div>
       )}
