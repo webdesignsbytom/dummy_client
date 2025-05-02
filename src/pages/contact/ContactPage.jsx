@@ -24,15 +24,17 @@ function ContactPage() {
       />
 
       {/* Page */}
-      <div className='grid min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden bg-main-background font-poppins'>
+      <div className='grid min-h-screen overflow-hidden bg-colour1 text-colour2 dark:bg-colour2 dark:text-colour1 font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
           {/* Header */}
-          <header className='grid px-6 text-center lg:px-10'>
-            <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
-              Contact Us
-            </h1>
+          <header className='grid w-full'>
+            <div className='grid w-full px-6 lg:container lg:mx-auto text-center py-6'>
+              <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
+                Contact Us
+              </h1>
+            </div>
           </header>
         </div>
 

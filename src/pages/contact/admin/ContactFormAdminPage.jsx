@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
-import Navbar from '../../components/nav/Navbar';
-import ContactFormAdminPageMainContainer from '../../components/contact/admin/ContactFormAdminPageMainContainer';
+import Navbar from '../../../components/nav/Navbar';
+import ContactFormAdminPageMainContainer from '../../../components/contact/admin/ContactFormAdminPageMainContainer';
 
 function ContactFormAdminPage() {
   return (

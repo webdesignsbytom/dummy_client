@@ -228,12 +228,14 @@ function ContactForm() {
       <div className='grid items-center'>
         <button
           type='submit'
-          className={``}
+          className='w-full bg-blue-500 hover:bg-blue-600 active:bg-green-500 text-white py-2 rounded transition'
           aria-label='Submit your form'
           disabled={submitState === submitStates[1]} // "inprogress"
         >
           {submitState === submitStates[1] ? (
-            <LoadingSpinner sm={true} />
+            <div className='mx-auto'>
+              <LoadingSpinner sm={true} />
+            </div>
           ) : (
             <span>Submit</span>
           )}
@@ -241,12 +243,12 @@ function ContactForm() {
       </div>
 
       {submitState === submitStates[2] && ( // "failed"
-        <div role='alert' aria-live='assertive' className='text-error-red mt-4'>
+        <div role='alert' aria-live='assertive' className='text-error-red mt-4 text-center'>
           Unable to submit the form. Please try again.
         </div>
       )}
       {submitState === submitStates[3] && ( // "success"
-        <div role='alert' aria-live='polite' className='text-green-500 mt-4'>
+        <div role='alert' aria-live='polite' className='text-green-500 mt-4 text-center'>
           Form submitted successfully!
         </div>
       )}

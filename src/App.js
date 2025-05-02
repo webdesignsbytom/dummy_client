@@ -49,8 +49,8 @@ import ForgettenPasswordPage from './users/password/ForgettenPasswordPage';
 import VerifyEmailPage from './users/verify/VerifyEmailPage';
 // Admin
 import AdminPage from './pages/admin/AdminPage';
-import ContactFormAdminPage from './pages/contact/ContactFormAdminPage';
-import CallbackFormAdminPage from './pages/contact/CallbackFormAdminPage';
+import ContactFormAdminPage from './pages/contact/admin/ContactFormAdminPage';
+import CallbackFormAdminPage from './pages/contact/admin/CallbackFormAdminPage';
 // Terms and conditions
 import TermAndPoliciesPage from './pages/policies/TermAndPoliciesPage';
 // Maintainance

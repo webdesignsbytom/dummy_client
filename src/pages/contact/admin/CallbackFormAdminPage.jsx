@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
-import Navbar from '../../components/nav/Navbar';
-import CallbackFormAdminPageMainContainer from '../../components/contact/admin/CallbackFormAdminPageMainContainer';
+import Navbar from '../../../components/nav/Navbar';
+import CallbackFormAdminPageMainContainer from '../../../components/contact/admin/CallbackFormAdminPageMainContainer';
 
 function CallbackFormAdminPage() {
   return (
