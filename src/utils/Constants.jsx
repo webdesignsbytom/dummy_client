@@ -19,7 +19,7 @@ export const MainTitle = 'Professional TS Dominatrix';
 export const SubtitleMain = 'Bringing pleasure to submissives!';
 export const SubtitleSecondary = `How can ${CompanyName} help you? `;
 
-export const KeyowrdsPages =
+export const KeywordsPages =
   'Mistress Sammi Smith, Dominatrix, BDSM, Femdom, professional dominatrix, dungeon, fetish, submission, Mistress sessions, findom, wrexham dominatrix, latex dominatrix, pegging';
 
 // Cookie data
