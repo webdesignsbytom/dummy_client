@@ -119,7 +119,8 @@ function ContactForm() {
           )}
         </div>
       </section>
-      <div className=''>
+      {/* 2nd row */}
+      <section className=''>
         <label className='block text-colour7 text-sm font-bold' htmlFor='email'>
           Email <span className='text-error-red'>*</span>
         </label>
@@ -143,7 +144,8 @@ function ContactForm() {
             {errors.email}
           </p>
         )}
-      </div>
+      </section>
+      {/* 3rd row */}
       <section className='lg:grid lg:grid-cols-2 gap-2'>
         <div className=''>
           <label
@@ -196,7 +198,7 @@ function ContactForm() {
           />
         </div>
       </section>
-      <div className='mb-6'>
+      <div className=''>
         <label
           className='block text-colour7 text-sm font-bold'
           htmlFor='message'

@@ -25,6 +25,7 @@ import {
   VERIFY_EMAIL_PAGE_URL,
   REVIEWS_PAGE_URL,
   ADMIN_CALLBACK_FORM_PAGE_URL,
+  NEWSLETTER_PAGE_URL,
 } from './utils/Routes';
 import { COOKIE_TIMER, CookiePolicyName } from './utils/Constants';
 // Pages
@@ -58,6 +59,7 @@ import MaintenancePage from './pages/maintenance/MaintenancePage';
 // Error
 import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
+import NewsletterSignUpPage from './pages/newsletter/NewsletterSignUpPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -122,11 +124,23 @@ function App() {
             element={<BlogPostEditPage />}
           />
 
+          {/* Newsletter routes */}
+          <Route
+            path={NEWSLETTER_PAGE_URL}
+            element={<NewsletterSignUpPage />}
+          />
+
           {/* Booking routes */}
           <Route path={BOOKING_PAGE_URL} element={<BookingPage />} />
           <Route path={BOOKING_ADMIN_PAGE_URL} element={<BookingAdminPage />} />
-          <Route path={`/bookings/confirm-booking/:uniqueString/:bookingId`} element={<ConfirmBookingAutoPage />} />
-          <Route path={`/bookings/deny-booking/:uniqueString/:bookingId`} element={<DenyBookingAutoPage />} />
+          <Route
+            path={`/bookings/confirm-booking/:uniqueString/:bookingId`}
+            element={<ConfirmBookingAutoPage />}
+          />
+          <Route
+            path={`/bookings/deny-booking/:uniqueString/:bookingId`}
+            element={<DenyBookingAutoPage />}
+          />
 
           {/* Contact routes */}
           <Route path={CONTACT_PAGE_URL} element={<ContactPage />} />

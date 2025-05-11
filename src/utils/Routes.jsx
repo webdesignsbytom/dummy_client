@@ -32,3 +32,7 @@ export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
 // Booking routes
 export const BOOKING_PAGE_URL = '/booking';
 export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
+
+// Newsletter routes
+export const NEWSLETTER_PAGE_URL = '/newsletter';
+export const NEWSLETTER_ADMIN_PAGE_URL = '/newsletter-admin';

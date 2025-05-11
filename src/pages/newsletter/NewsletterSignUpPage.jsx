@@ -29,7 +29,7 @@ function NewsletterSignUpPage() {
           <Navbar />
           <header className='grid w-full'>
             <div className='grid w-full px-8 text-center lg:container lg:mx-auto py-6'>
-              <h1 className='text-xl font-semibold'>Book Now</h1>
+              <h1 className='text-xl font-semibold'>Newsletter Sign Up</h1>
             </div>
           </header>
         </div>
