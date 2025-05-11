@@ -24,8 +24,10 @@ export const CREATE_NEW_REVIEW_API = '/reviews/create-new-review';
 export const DELETE_REVIEW_API = '/reviews/delete-review'; // /:reviewId
 
 // Newsletter API routes
-export const SUBSCRIBE_TO_NEWSLETTER_API = '/newsletter/subscribe';
-export const GET_ALL_NEWSLETTER_SUBSCRIBERS = '/newsletter/get-subscriber-list';
+export const SUBSCRIBE_TO_NEWSLETTER_API = '/newsletter/subscribe-to-newsletter';
+export const GET_ALL_NEWSLETTER_SUBSCRIBERS_API = '/newsletter/get-subscriber-list';
+export const DELETE_SUBSCRIBER_BY_ID_API = '/newsletter/delete-subscriber-by-id';
+export const DELETE_SUBSCRIBER_BY_EMAIL_API = '/newsletter/delete-subscriber-by-email';
 
 // Blog API routes
 export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
