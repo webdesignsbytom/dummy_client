@@ -63,7 +63,7 @@ function ContactForm() {
       <section className='lg:grid lg:grid-cols-2 gap-2'>
         <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold'
+            className='block text-colour7 text-sm font-bold'
             htmlFor='firstName'
           >
             First Name <span className='text-error-red'>*</span>
@@ -75,7 +75,7 @@ function ContactForm() {
             value={formData.firstName}
             onChange={handleChange}
             autoComplete='on'
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            className={`shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline ${
               errors.firstName ? 'border-error-red' : ''
             }`}
             required
@@ -91,7 +91,7 @@ function ContactForm() {
         </div>
         <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold'
+            className='block text-colour7 text-sm font-bold'
             htmlFor='lastName'
           >
             Last Name <span className='text-error-red'>*</span>
@@ -103,7 +103,7 @@ function ContactForm() {
             value={formData.lastName}
             onChange={handleChange}
             autoComplete='on'
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            className={`shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline ${
               errors.lastName ? 'border-error-red' : ''
             }`}
             required
@@ -120,7 +120,7 @@ function ContactForm() {
       </section>
       <div className=''>
         <label
-          className='block text-gray-700 text-sm font-bold'
+          className='block text-colour7 text-sm font-bold'
           htmlFor='email'
         >
           Email <span className='text-error-red'>*</span>
@@ -132,7 +132,7 @@ function ContactForm() {
           value={formData.email}
           onChange={handleChange}
           autoComplete='on'
-          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline ${
             errors.email ? 'border-error-red' : ''
           }`}
           required
@@ -149,7 +149,7 @@ function ContactForm() {
       <section className='lg:grid lg:grid-cols-2 gap-2'>
         <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold'
+            className='block text-colour7 text-sm font-bold'
             htmlFor='businessName'
           >
             Business Name (optional)
@@ -160,14 +160,14 @@ function ContactForm() {
             name='businessName'
             value={formData.businessName}
             onChange={handleChange}
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline'
           />
         </div>
       </section>
       <section className='lg:grid lg:grid-cols-2 gap-2'>
         <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold'
+            className='block text-colour7 text-sm font-bold'
             htmlFor='phoneNumber'
           >
             Phone Number (optional)
@@ -178,12 +178,12 @@ function ContactForm() {
             name='phoneNumber'
             value={formData.phoneNumber}
             onChange={handleChange}
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline'
           />
         </div>
         <div className=''>
           <label
-            className='block text-gray-700 text-sm font-bold'
+            className='block text-colour7 text-sm font-bold'
             htmlFor='location'
           >
             Location (optional)
@@ -194,13 +194,13 @@ function ContactForm() {
             name='location'
             value={formData.location}
             onChange={handleChange}
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline'
           />
         </div>
       </section>
       <div className='mb-6'>
         <label
-          className='block text-gray-700 text-sm font-bold'
+          className='block text-colour7 text-sm font-bold'
           htmlFor='message'
         >
           Message <span className='text-error-red'>*</span>
@@ -211,7 +211,7 @@ function ContactForm() {
           value={formData.message}
           rows={6}
           onChange={handleChange}
-          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-colour7 leading-tight focus:outline-none focus:shadow-outline ${
             errors.message ? 'border-error-red' : ''
           }`}
           required
@@ -228,7 +228,7 @@ function ContactForm() {
       <div className='grid items-center'>
         <button
           type='submit'
-          className='w-full bg-blue-500 hover:bg-blue-600 active:bg-green-500 text-white py-2 rounded transition'
+          className='w-full bg-colour5 hover:bg-blue-600 active:bg-green-500 text-white py-2 rounded transition'
           aria-label='Submit your form'
           disabled={submitState === submitStates[1]} // "inprogress"
         >
