@@ -99,7 +99,7 @@ function LoginForm() {
   };
 
   return (
-    <form className='space-y-4 md:space-y-6' onSubmit={handleLogin}>
+    <form className='grid gap-y-4 md:gap-y-6' onSubmit={handleLogin}>
       <div>
         <label
           htmlFor='email'

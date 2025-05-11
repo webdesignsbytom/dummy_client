@@ -62,7 +62,7 @@ function ReviewForm({ setReviews }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className='grid h-fit gap-y-4 max-w-2xl mx-auto'
+      className='grid h-fit gap-y-4 md:gap-y-6 max-w-2xl mx-auto'
     >
       {/* First Name */}
       <label className='block'>

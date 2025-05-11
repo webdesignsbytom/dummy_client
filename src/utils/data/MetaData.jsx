@@ -51,6 +51,55 @@ export const homePageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
+// Newsletter Sign-Up page
+export const newsletterPageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: `${CompanyName} Newsletter Sign-Up`,
+  url: `${FULL_BUSINESS_URL}/newsletter`,
+  description: `Subscribe to the ${CompanyName} newsletter for updates, insights, and exclusive offers on web and circuit design services.`,
+  sameAs: [
+    `${FACEBOOK_URL}`,
+    `${INSTAGRAM_URL}`,
+    `${LINKEDIN_URL}`,
+  ],
+  publisher: {
+    '@type': 'Organization',
+    name: CompanyName,
+    url: FULL_BUSINESS_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${FULL_BUSINESS_URL}/brand/logo.png`,
+    },
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: `${CompanyPhoneNumber}`,
+    contactType: 'Customer Service',
+    areaServed: 'GB',
+    availableLanguage: ['English'],
+  },
+};
+
+export const newsletterPageAdditionalMeta = [
+  { property: 'og:title', content: `Subscribe to ${CompanyName} Newsletter` },
+  {
+    property: 'og:description',
+    content:
+      'Get exclusive updates, offers, and design insights delivered to your inbox.',
+  },
+  { property: 'og:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+  { property: 'og:url', content: `${FULL_BUSINESS_URL}/newsletter` },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:title', content: `Subscribe to ${CompanyName} Newsletter` },
+  {
+    name: 'twitter:description',
+    content: 'Join our mailing list for news, tips, and special promotions.',
+  },
+  { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
+];
+
+
 // Reviews //
 // Reviews page
 export const reviewsPageStructuredData = {

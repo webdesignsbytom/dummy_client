@@ -59,7 +59,8 @@ function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
+    <form onSubmit={handleSubmit} className='grid gap-y-4 md:gap-y-6'>
+      {/* 1st row */}
       <section className='lg:grid lg:grid-cols-2 gap-2'>
         <div className=''>
           <label
@@ -119,10 +120,7 @@ function ContactForm() {
         </div>
       </section>
       <div className=''>
-        <label
-          className='block text-colour7 text-sm font-bold'
-          htmlFor='email'
-        >
+        <label className='block text-colour7 text-sm font-bold' htmlFor='email'>
           Email <span className='text-error-red'>*</span>
         </label>
         <input
@@ -243,12 +241,20 @@ function ContactForm() {
       </div>
 
       {submitState === submitStates[2] && ( // "failed"
-        <div role='alert' aria-live='assertive' className='text-error-red mt-3 text-center'>
+        <div
+          role='alert'
+          aria-live='assertive'
+          className='text-error-red mt-3 text-center'
+        >
           Unable to submit the form. Please try again.
         </div>
       )}
       {submitState === submitStates[3] && ( // "success"
-        <div role='alert' aria-live='polite' className='text-green-500 mt-3 text-center'>
+        <div
+          role='alert'
+          aria-live='polite'
+          className='text-green-500 mt-3 text-center'
+        >
           Form submitted successfully!
         </div>
       )}

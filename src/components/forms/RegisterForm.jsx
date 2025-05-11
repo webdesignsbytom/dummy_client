@@ -100,7 +100,7 @@ function RegisterForm() {
 
   return (
     <form
-      className='grid gap-4'
+      className='grid gap-y-4 md:gap-y-6'
       onSubmit={handleSubmitRegisterForm}
       aria-busy={registrationInProgress}
     >
