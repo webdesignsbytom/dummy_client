@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { getToken } from '../token';
+import { getToken } from './token';
 
 export default function LoggedInUser() {
   const loadedToken = getToken();

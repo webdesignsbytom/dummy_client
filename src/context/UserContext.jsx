@@ -5,7 +5,7 @@ import client from '../api/client';
 import { GET_LOGGED_IN_USER_API } from '../utils/ApiRoutes';
 // Utils
 import LoggedInUser from '../utils/user/LoggedInUser';
-import { getToken } from '../utils/token';
+import { getToken } from '../utils/user/token';
 
 // Create the context
 export const UserContext = createContext();
