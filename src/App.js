@@ -26,6 +26,7 @@ import {
   REVIEWS_PAGE_URL,
   ADMIN_CALLBACK_FORM_PAGE_URL,
   NEWSLETTER_PAGE_URL,
+  NEWSLETTER_ADMIN_PAGE_URL,
 } from './utils/Routes';
 import { COOKIE_TIMER, CookiePolicyName } from './utils/Constants';
 // Pages
@@ -60,6 +61,7 @@ import MaintenancePage from './pages/maintenance/MaintenancePage';
 import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
 import NewsletterSignUpPage from './pages/newsletter/NewsletterSignUpPage';
+import NewsletterAdminPage from './pages/newsletter/admin/NewsletterAdminPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -128,6 +130,10 @@ function App() {
           <Route
             path={NEWSLETTER_PAGE_URL}
             element={<NewsletterSignUpPage />}
+          />
+          <Route
+            path={NEWSLETTER_ADMIN_PAGE_URL}
+            element={<NewsletterAdminPage />}
           />
 
           {/* Booking routes */}

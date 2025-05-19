@@ -28,6 +28,7 @@ export const SUBSCRIBE_TO_NEWSLETTER_API = '/newsletter/subscribe-to-newsletter'
 export const GET_ALL_NEWSLETTER_SUBSCRIBERS_API = '/newsletter/get-subscriber-list';
 export const DELETE_SUBSCRIBER_BY_ID_API = '/newsletter/delete-subscriber-by-id';
 export const DELETE_SUBSCRIBER_BY_EMAIL_API = '/newsletter/delete-subscriber-by-email';
+export const DELETE_ALL_SUBSCRIBERS = '/newsletter/delete-all-subscribers';
 
 // Blog API routes
 export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';

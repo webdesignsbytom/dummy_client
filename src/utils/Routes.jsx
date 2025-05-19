@@ -35,4 +35,4 @@ export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
 
 // Newsletter routes
 export const NEWSLETTER_PAGE_URL = '/newsletter';
-export const NEWSLETTER_ADMIN_PAGE_URL = '/newsletter-admin';
+export const NEWSLETTER_ADMIN_PAGE_URL = '/admin/newsletter';

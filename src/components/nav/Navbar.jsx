@@ -13,7 +13,7 @@ import { CompanyName } from '../../utils/Constants';
 import useNavigateToPage from '../../hooks/useNavigateToPage';
 // Nav data
 import { getNavLinkItemsArray } from '../../utils/data/NavData';
-import { removeToken } from '../../utils/token';
+import { removeToken } from '../../utils/user/token';
 
 function Navbar() {
   const { user, setUser } = useUser();

@@ -42,7 +42,7 @@ function NewsletterForm() {
           htmlFor='email'
           className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
         >
-          Subscribe to our newsletter
+          Enter your email
         </label>
         <input
           type='email'
@@ -73,13 +73,13 @@ function NewsletterForm() {
       </div>
 
       {submitSuccess && (
-        <div className='text-green-600' role='status'>
+        <div className='text-green-600 text-center' role='status'>
           Thank you for subscribing!
         </div>
       )}
 
       {submitError && (
-        <div className='text-error-red' role='alert' aria-live='assertive'>
+        <div className='text-error-red text-center' role='alert' aria-live='assertive'>
           {submitError}
         </div>
       )}

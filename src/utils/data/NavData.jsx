@@ -6,11 +6,13 @@ import {
   BOOKING_PAGE_URL,
   BOOKING_ADMIN_PAGE_URL,
   CONTACT_PAGE_URL,
+  NEWSLETTER_PAGE_URL,
 } from '../Routes';
 
 export const getNavLinkItemsArray = (user) => [
   { path: HOME_PAGE_URL, label: 'Home' },
   { path: BOOKING_PAGE_URL, label: 'Booking' },
+  { path: NEWSLETTER_PAGE_URL, label: 'Newsletter' },
   { path: CONTACT_PAGE_URL, label: 'Contact' },
   ...(user?.email
     ? user.role === 'ADMIN' || user.role === 'DEVELOPER'
