@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // Api
 import client from '../../api/client';
 // Constants
-import { CREATE_NEW_NEWSLETTER_API } from '../../utils/ApiRoutes';
+import { CREATE_NEW_NEWSLETTER_API, SAVE_NEWSLETTER_API } from '../../utils/ApiRoutes';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 function NewsletterCreationForm() {
@@ -24,13 +24,24 @@ function NewsletterCreationForm() {
   };
 
   const handleSave = (e) => {
-    console.log('save');
     e.preventDefault();
     setIsSavingDraft(true);
+
+    client
+      .post(SAVE_NEWSLETTER_API, newsletterData, false)
+      .then(() => {
+        setSubmitSuccess(true);
+        setIsSubmitting(false);
+        setNewsletterData({ subject: '', body: '' });
+      })
+      .catch((err) => {
+        console.error('Unable to create new newsletter', err);
+        setSubmitError('Failed to send newsletter.');
+        setIsSubmitting(false);
+      });
   };
 
   const handleSubmit = (e) => {
-    console.log('suss');
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitSuccess(false);
