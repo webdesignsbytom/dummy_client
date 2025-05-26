@@ -11,6 +11,7 @@ function NewsletterCreationForm() {
     body: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
@@ -22,7 +23,14 @@ function NewsletterCreationForm() {
     }));
   };
 
+  const handleSave = (e) => {
+    console.log('save');
+    e.preventDefault();
+    setIsSavingDraft(true);
+  };
+
   const handleSubmit = (e) => {
+    console.log('suss');
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitSuccess(false);
@@ -51,7 +59,7 @@ function NewsletterCreationForm() {
         value={newsletterData.subject}
         onChange={handleChange}
         required
-        className='border p-2 rounded'
+        className='bg-colour9 w-full rounded-md py-1 px-1'
       />
       <textarea
         name='body'
@@ -60,9 +68,26 @@ function NewsletterCreationForm() {
         onChange={handleChange}
         rows={10}
         required
-        className='border p-2 rounded'
+        className='bg-colour9 w-full rounded-md py-1 px-1'
       />
-      
+
+      <div className='grid h-fit w-full'>
+        <button
+          onClick={handleSave}
+          className='bg-colour5 text-colour1 py-1 rounded-md hover:brightness-110 active:scale-95 active:brightness-90'
+          aria-label='Send newsletter'
+          disabled={isSavingDraft}
+        >
+          {isSavingDraft ? (
+            <div className='flex justify-center'>
+              <LoadingSpinner xs={true} />
+            </div>
+          ) : (
+            <span className='mx-auto'>Save</span>
+          )}
+        </button>
+      </div>
+
       <div className='grid h-fit w-full'>
         <button
           type='submit'
@@ -71,7 +96,9 @@ function NewsletterCreationForm() {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <LoadingSpinner sm={true} />
+            <div className='flex justify-center'>
+              <LoadingSpinner xs={true} />
+            </div>
           ) : (
             <span>Send Newsletter</span>
           )}

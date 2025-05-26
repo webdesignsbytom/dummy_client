@@ -233,8 +233,8 @@ function ContactForm() {
           disabled={submitState === submitStates[1]} // "inprogress"
         >
           {submitState === submitStates[1] ? (
-            <div className='mx-auto'>
-              <LoadingSpinner sm={true} />
+            <div className='flex justify-center'>
+              <LoadingSpinner xs={true} />
             </div>
           ) : (
             <span>Submit</span>

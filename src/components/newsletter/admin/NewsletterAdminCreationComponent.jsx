@@ -4,14 +4,14 @@ import NewsletterCreationForm from '../../forms/NewsletterCreationForm';
 function NewsletterAdminCreationComponent() {
   return (
     <section className='grid w-full'>
-      <div className='grid w-full'>
-        <h2 className='text-2xl font-semibold mb-4'>Send Newsletter</h2>
+      <div className='grid w-full px-6'>
+        <div>
+          <h2 className='text-2xl font-semibold mb-4'>Send Newsletter</h2>
+        </div>
 
         {/* Form */}
         <section>
-          <div>
-            <NewsletterCreationForm />
-          </div>
+          <NewsletterCreationForm />
         </section>
       </div>
     </section>
