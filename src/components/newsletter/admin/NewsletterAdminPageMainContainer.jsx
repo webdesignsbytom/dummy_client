@@ -12,6 +12,7 @@ import { CompanyName } from '../../../utils/Constants';
 import ConfirmModal from '../../modals/ConfirmModal';
 import NewsletterSubscriberItem from './NewsletterSubscriberItem';
 import NewsletterAdminSubscriberSection from './NewsletterAdminSubscriberSection';
+import NewsletterAdminCreationComponent from './NewsletterAdminCreationComponent';
 
 function NewsletterAdminPageMainContainer() {
   const [newsletterSubscribers, setNewsletterSubscribers] = useState([]);
@@ -36,6 +37,8 @@ function NewsletterAdminPageMainContainer() {
       className='grid w-full h-full'
       aria-label='Admin newsletter main contaiber'
     >
+      <NewsletterAdminCreationComponent />
+
       <NewsletterAdminSubscriberSection
         newsletterSubscribers={newsletterSubscribers}
         setNewsletterSubscribers={setNewsletterSubscribers}
