@@ -40,6 +40,7 @@ export const GITHUB_URL = 'https://github.com/';
 export const APPLE_URL = 'https://apple.com/';
 export const LINKEDIN_URL = 'https://apple.com/';
 export const X_URL = 'https://x.com/';
+export const TWITTER_URL = 'https://twitter.com/';
 
 // Maps
 export const GoogleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=YOUR-EMBEDDED-MAP-URL";
