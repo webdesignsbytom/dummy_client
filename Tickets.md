@@ -8,6 +8,10 @@
 1. Save blog data to localhost in case of loss
 2. Multiple paginations bars
 
-# Newsletter
+## Newsletter
 
-1. Admin button 'Create new +' which then calls the api to create a blank, from then on save the file
+## Reviews
+
+## Shop
+
+## Contact forms
