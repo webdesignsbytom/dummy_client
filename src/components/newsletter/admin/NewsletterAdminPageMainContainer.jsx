@@ -34,7 +34,7 @@ function NewsletterAdminPageMainContainer() {
   return (
     <main
       role='main'
-      className='grid w-full h-full'
+      className='grid w-full h-full pt-6'
       aria-label='Admin newsletter main contaiber'
     >
       <NewsletterAdminCreationComponent />

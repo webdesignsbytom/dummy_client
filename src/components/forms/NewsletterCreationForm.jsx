@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // Api
 import client from '../../api/client';
 // Constants
-import { CREATE_NEW_NEWSLETTER_API, SAVE_NEWSLETTER_API } from '../../utils/ApiRoutes';
+import {
+  CREATE_NEW_NEWSLETTER_API,
+  SAVE_NEWSLETTER_API,
+} from '../../utils/ApiRoutes';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
-function NewsletterCreationForm() {
-  const [newsletterData, setNewsletterData] = useState({
-    subject: '',
-    body: '',
-  });
+function NewsletterCreationForm({ newsletterData, setNewsletterData }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+
+  useEffect(() => {
+    client
+      .post(CREATE_NEW_NEWSLETTER_API, null, false)
+      .then(() => {
+        console.log('Created new newsletter');
+      })
+      .catch((err) => {
+        console.error('Unable to create new newsletter', err);
+      });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,19 +56,6 @@ function NewsletterCreationForm() {
     setIsSubmitting(true);
     setSubmitSuccess(false);
     setSubmitError(null);
-
-    client
-      .post(CREATE_NEW_NEWSLETTER_API, newsletterData, false)
-      .then(() => {
-        setSubmitSuccess(true);
-        setIsSubmitting(false);
-        setNewsletterData({ subject: '', body: '' });
-      })
-      .catch((err) => {
-        console.error('Unable to create new newsletter', err);
-        setSubmitError('Failed to send newsletter.');
-        setIsSubmitting(false);
-      });
   };
 
   return (
