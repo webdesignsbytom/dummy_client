@@ -27,6 +27,7 @@ import {
   ADMIN_CALLBACK_FORM_PAGE_URL,
   NEWSLETTER_PAGE_URL,
   NEWSLETTER_ADMIN_PAGE_URL,
+  NEWSLETTER_CONFIRM_EMAIL_PAGE_URL,
 } from './utils/Routes';
 import { COOKIE_TIMER, CookiePolicyName } from './utils/Constants';
 // Pages
@@ -133,6 +134,10 @@ function App() {
           />
           <Route
             path={NEWSLETTER_ADMIN_PAGE_URL}
+            element={<NewsletterAdminPage />}
+          />
+          <Route
+            path={NEWSLETTER_CONFIRM_EMAIL_PAGE_URL}
             element={<NewsletterAdminPage />}
           />
 
