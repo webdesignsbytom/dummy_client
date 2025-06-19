@@ -7,3 +7,11 @@
 
 1. Save blog data to localhost in case of loss
 2. Multiple paginations bars
+
+## Newsletter
+
+## Reviews
+
+## Shop
+
+## Contact forms

@@ -8,9 +8,7 @@ import {
   RESET_PASS_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from '../../utils/Routes';
-import {
-  LOGIN_API,
-} from '../../utils/ApiRoutes';
+import { LOGIN_API } from '../../utils/ApiRoutes';
 // Components
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Context
@@ -175,7 +173,9 @@ function LoginForm() {
           disabled={loginInProgress}
         >
           {loginInProgress ? (
-            <LoadingSpinner sm={true} />
+            <div className='flex justify-center'>
+              <LoadingSpinner xs={true} />
+            </div>
           ) : (
             <span>Sign in</span>
           )}

@@ -45,6 +45,9 @@ import BookingPage from './pages/booking/BookingPage';
 import BookingAdminPage from './pages/booking/admin/BookingAdminPage';
 import ConfirmBookingAutoPage from './pages/booking/admin/ConfirmBookingAutoPage';
 import DenyBookingAutoPage from './pages/booking/admin/DenyBookingAutoPage';
+// Newsletter
+import NewsletterSignUpPage from './pages/newsletter/NewsletterSignUpPage';
+import NewsletterAdminPage from './pages/newsletter/admin/NewsletterAdminPage';
 // User pages
 import RegisterPage from './users/register/RegisterPage';
 import LoginPage from './users/login/LoginPage';
@@ -61,8 +64,6 @@ import MaintenancePage from './pages/maintenance/MaintenancePage';
 // Error
 import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
-import NewsletterSignUpPage from './pages/newsletter/NewsletterSignUpPage';
-import NewsletterAdminPage from './pages/newsletter/admin/NewsletterAdminPage';
 
 // Components
 const CookieConsentModal = lazy(() =>

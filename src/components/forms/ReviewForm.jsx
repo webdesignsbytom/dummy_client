@@ -5,6 +5,7 @@ import client from '../../api/client';
 import { CREATE_NEW_REVIEW_API } from '../../utils/ApiRoutes';
 // Icons
 import { FaHeart } from 'react-icons/fa';
+import LoadingSpinner from '../utils/LoadingSpinner';
 
 function ReviewForm({ setReviews }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,14 +141,22 @@ function ReviewForm({ setReviews }) {
       </div>
 
       {/* Submit Button */}
-      <section className='grid'>
+      <div className='grid h-fit w-full'>
         <button
           type='submit'
-          className='bg-colour5 border-2 border-solid border-colour2 py-2 text-colour1 hover:bg-colour6 transition rounded-full shadow-cardShadowBold shadow-colour6/60 lg:max-w-fit lg:mx-auto lg:px-24'
+          className='bg-colour5 text-colour1 py-1 rounded-md hover:brightness-110 active:scale-95 active:brightness-90'
+          aria-label='Submit Review'
+          disabled={isSubmitting}
         >
-          Submit Review
+          {isSubmitting ? (
+            <div className='flex justify-center'>
+              <LoadingSpinner xs={true} />
+            </div>
+          ) : (
+            <span>Submit Review</span>
+          )}
         </button>
-      </section>
+      </div>
     </form>
   );
 }

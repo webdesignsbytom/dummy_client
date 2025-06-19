@@ -5,12 +5,8 @@ import client from '../../api/client';
 // Components
 import LoadingSpinner from '../utils/LoadingSpinner';
 // Constants
-import {
-  RESET_PASSWORD_API,
-} from '../../utils/ApiRoutes';
-import {
-  SIGN_UP_PAGE_URL,
-} from '../../utils/Routes';
+import { RESET_PASSWORD_API } from '../../utils/ApiRoutes';
+import { SIGN_UP_PAGE_URL } from '../../utils/Routes';
 
 function ForgotPasswordForm() {
   const [resetRequestInProgress, setResetRequestInProgress] = useState(false);
@@ -80,7 +76,9 @@ function ForgotPasswordForm() {
           disabled={resetRequestInProgress}
         >
           {resetRequestInProgress ? (
-            <LoadingSpinner sm={true} />
+            <div className='flex justify-center'>
+              <LoadingSpinner xs={true} />
+            </div>
           ) : (
             <span>Reset Password</span>
           )}
