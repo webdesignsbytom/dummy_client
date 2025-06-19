@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 // Api
 import client from '../../api/client';
 // Constants
@@ -10,26 +10,23 @@ import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 
 function NewsletterValidationPage() {
-  const [searchParams] = useSearchParams();
+  const { userId, verificationTokenId, uniqueString } = useParams();
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
 
-  const userId = searchParams.get('userId');
-  const verificationId = searchParams.get('tokenId');
-  const uniqueString = searchParams.get('uniqueString');
   console.log('userId', userId);
-  console.log('verificationId', verificationId);
+  console.log('verificationTokenId', verificationTokenId);
   console.log('uniqueString', uniqueString);
-  
+
   useEffect(() => {
     const verifyEmail = async () => {
-      if (!userId || !verificationId || !uniqueString) {
+      if (!userId || !verificationTokenId || !uniqueString) {
         setStatus('error');
         return;
       }
 
       client
         .patch(
-          `${NEWSLETTER_VALIDATE_EMAIL_API}/${userId}/${verificationId}/${uniqueString}`,
+          `${NEWSLETTER_VALIDATE_EMAIL_API}/${userId}/${verificationTokenId}/${uniqueString}`,
           null,
           false
         )
@@ -47,7 +44,7 @@ function NewsletterValidationPage() {
     };
 
     verifyEmail();
-  }, [userId, verificationId, uniqueString]);
+  }, [userId, verificationTokenId, uniqueString]);
 
   return (
     <>

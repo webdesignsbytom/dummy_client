@@ -139,7 +139,7 @@ function App() {
             element={<NewsletterAdminPage />}
           />
           <Route
-            path={`${NEWSLETTER_CONFIRM_EMAIL_PAGE_URL}/:userId/:tokenId/:uniqueString`}
+            path={`${NEWSLETTER_CONFIRM_EMAIL_PAGE_URL}/:userId/:uniqueString/:verificationTokenId`}
             element={<NewsletterValidationPage />}
           />
 
