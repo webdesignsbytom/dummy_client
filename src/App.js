@@ -64,6 +64,7 @@ import MaintenancePage from './pages/maintenance/MaintenancePage';
 // Error
 import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
+import NewsletterValidationPage from './pages/newsletter/NewsletterValidationPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -138,8 +139,8 @@ function App() {
             element={<NewsletterAdminPage />}
           />
           <Route
-            path={NEWSLETTER_CONFIRM_EMAIL_PAGE_URL}
-            element={<NewsletterAdminPage />}
+            path={`${NEWSLETTER_CONFIRM_EMAIL_PAGE_URL}/:userId/:tokenId/:uniqueString`}
+            element={<NewsletterValidationPage />}
           />
 
           {/* Booking routes */}

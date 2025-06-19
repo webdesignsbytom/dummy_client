@@ -37,6 +37,7 @@ export const DELETE_ALL_SUBSCRIBERS_API = '/newsletter/delete-all-subscribers';
 export const CREATE_NEW_NEWSLETTER_API = '/newsletter/create-new';
 export const SAVE_NEWSLETTER_API = '/newsletter/save-draft';
 export const PUBLISH_NEWSLETTER_API = '/newsletter/publish';
+export const NEWSLETTER_VALIDATE_EMAIL_API = '/newsletter/confirm-email';
 
 // Blog API routes
 export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';

@@ -36,5 +36,4 @@ export const BOOKING_ADMIN_PAGE_URL = '/booking-admin';
 // Newsletter routes
 export const NEWSLETTER_PAGE_URL = '/newsletter';
 export const NEWSLETTER_ADMIN_PAGE_URL = '/admin/newsletter';
-export const NEWSLETTER_CONFIRM_EMAIL_PAGE_URL = '/admin/newsletter';
-http://localhost:3000/newsletter/subscribe?userId=1dbc0b92-8794-41fd-8242-e5893956a749$uniqueString=4c3c4ef1-8c4c-4ad0-8f42-8e71a469a531&tokenId=1a2bf0af-a07a-4622-b0d1-01d5b3263292
+export const NEWSLETTER_CONFIRM_EMAIL_PAGE_URL = '/newsletter/subscribe';
