@@ -8,6 +8,7 @@ import { NEWSLETTER_VALIDATE_EMAIL_API } from '../../utils/ApiRoutes';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
+import LoadingSpinner from '../../components/utils/LoadingSpinner';
 
 function NewsletterValidationPage() {
   const { userId, verificationTokenId, uniqueString } = useParams();
@@ -31,10 +32,11 @@ function NewsletterValidationPage() {
           false
         )
         .then((res) => {
-          if (res.status === 200) {
+          console.log('res', res);
+          console.log('res.message', res.data.message);
+          console.log('res.message.message', res.message.message);
+          if (res.data.status === 200) {
             setStatus('success');
-          } else {
-            setStatus('error');
           }
         })
         .catch((err) => {
@@ -44,7 +46,7 @@ function NewsletterValidationPage() {
     };
 
     verifyEmail();
-  }, [userId, verificationTokenId, uniqueString]);
+  }, []);
 
   return (
     <>
@@ -65,7 +67,12 @@ function NewsletterValidationPage() {
         </div>
 
         <main className='grid place-items-center px-4 py-12'>
-          {status === 'loading' && <p>Validating your email...</p>}
+          {status === 'loading' && (
+            <div className='grid justify-center'>
+              <p>Validating your email...</p>
+              <div className=''><LoadingSpinner lg={true} /></div>
+            </div>
+          )}
           {status === 'success' && (
             <p className='text-green-600'>
               ✅ Your email has been successfully confirmed. Thank you!
