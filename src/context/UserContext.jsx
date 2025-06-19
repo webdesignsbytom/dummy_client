@@ -21,18 +21,18 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const decodedUserData = LoggedInUser();
 
-    if (decodedUserData !== null) {
-      const userId = decodedUserData.id;
+    // if (decodedUserData !== null) {
+    //   const userId = decodedUserData.id;
 
-      client
-        .get(`${GET_LOGGED_IN_USER_API}/${userId}`)
-        .then((res) => {
-          setUser(res.data.user); // Set user state based on API response
-        })
-        .catch((err) => {
-          console.error('Unable to retrieve user data', err);
-        });
-    }
+    //   client
+    //     .get(`${GET_LOGGED_IN_USER_API}/${userId}`)
+    //     .then((res) => {
+    //       setUser(res.data.user); // Set user state based on API response
+    //     })
+    //     .catch((err) => {
+    //       console.error('Unable to retrieve user data', err);
+    //     });
+    // }
   }, []);
 
   return (

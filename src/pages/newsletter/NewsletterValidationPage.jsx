@@ -33,11 +33,9 @@ function NewsletterValidationPage() {
         )
         .then((res) => {
           console.log('res', res);
-          console.log('res.message', res.data.message);
-          console.log('res.message.message', res.message.message);
-          if (res.data.status === 200) {
-            setStatus('success');
-          }
+          console.log('res.data', res.data);
+          console.log('res.data.status', res.status);
+          setStatus(res.status === 'success' ? 'success' : 'error');
         })
         .catch((err) => {
           console.error('Email verification failed:', err);
@@ -70,7 +68,9 @@ function NewsletterValidationPage() {
           {status === 'loading' && (
             <div className='grid justify-center'>
               <p>Validating your email...</p>
-              <div className=''><LoadingSpinner lg={true} /></div>
+              <div className=''>
+                <LoadingSpinner lg={true} />
+              </div>
             </div>
           )}
           {status === 'success' && (
