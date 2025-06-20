@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // Api
 import client from '../../api/client';
 // Constants
 import { CompanyName } from '../../utils/Constants';
-import { NEWSLETTER_VALIDATE_EMAIL_API } from '../../utils/ApiRoutes';
+import {
+  NEWSLETTER_RESEND_VALIDATE_EMAIL_API,
+  NEWSLETTER_VALIDATE_EMAIL_API,
+} from '../../utils/ApiRoutes';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
@@ -13,10 +16,7 @@ import LoadingSpinner from '../../components/utils/LoadingSpinner';
 function NewsletterValidationPage() {
   const { userId, verificationTokenId, uniqueString } = useParams();
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
-
-  console.log('userId', userId);
-  console.log('verificationTokenId', verificationTokenId);
-  console.log('uniqueString', uniqueString);
+  const [resendStatus, setResendStatus] = useState(null); // null, 'loading', 'success', 'error'
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -32,9 +32,6 @@ function NewsletterValidationPage() {
           false
         )
         .then((res) => {
-          console.log('res', res);
-          console.log('res.data', res.data);
-          console.log('res.data.status', res.status);
           setStatus(res.status === 'success' ? 'success' : 'error');
         })
         .catch((err) => {
@@ -45,6 +42,20 @@ function NewsletterValidationPage() {
 
     verifyEmail();
   }, []);
+
+  const handleResendVerification = async () => {
+    setResendStatus('loading');
+
+    client
+      .post(`${NEWSLETTER_RESEND_VALIDATE_EMAIL_API}/${userId}`, null, false)
+      .then(() => {
+        setResendStatus('success');
+      })
+      .catch((err) => {
+        console.error('Failed to resend verification:', err);
+        setResendStatus('error');
+      });
+  };
 
   return (
     <>
@@ -68,20 +79,47 @@ function NewsletterValidationPage() {
           {status === 'loading' && (
             <div className='grid justify-center'>
               <p>Validating your email...</p>
-              <div className=''>
+              <div className='flex justify-center mx-auto'>
                 <LoadingSpinner lg={true} />
               </div>
             </div>
           )}
+
           {status === 'success' && (
             <p className='text-green-600'>
               ✅ Your email has been successfully confirmed. Thank you!
             </p>
           )}
+
           {status === 'error' && (
-            <p className='text-red-600'>
-              ❌ This verification link is invalid or has expired.
-            </p>
+            <div className='grid gap-3 text-center'>
+              <p className='text-red-600'>
+                ❌ This verification link is invalid or has expired.
+              </p>
+              <button
+                onClick={handleResendVerification}
+                disabled={resendStatus === 'loading'}
+                className='text-sm text-blue-600 underline hover:text-blue-800 disabled:opacity-50'
+              >
+                {resendStatus === 'loading' ? (
+                  <div className='flex justify-center mx-auto'>
+                    <LoadingSpinner xs={true} />
+                  </div>
+                ) : (
+                  'Resend verification email'
+                )}
+              </button>
+              {resendStatus === 'success' && (
+                <p className='text-green-600 text-sm'>
+                  ✅ A new verification email has been sent.
+                </p>
+              )}
+              {resendStatus === 'error' && (
+                <p className='text-red-600 text-sm'>
+                  ❌ Failed to resend. Please try again later.
+                </p>
+              )}
+            </div>
           )}
         </main>
       </div>
