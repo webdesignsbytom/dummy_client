@@ -7,14 +7,14 @@ import { SUBSCRIBE_TO_NEWSLETTER_API } from '../../utils/ApiRoutes';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 function NewsletterForm() {
-  const [formData, setFormData] = useState({ email: '' });
+  const [formData, setFormData] = useState({ name: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const handleChange = (e) => {
     setSubmitError(null);
-    setFormData({ email: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -26,7 +26,8 @@ function NewsletterForm() {
       .post(SUBSCRIBE_TO_NEWSLETTER_API, formData, false)
       .then((res) => {
         setSubmitSuccess(true);
-        setFormData({ email: '' });
+        console.log('res.news', res.data);
+        setFormData({ name: '', email: '' });
         setIsSubmitting(false);
       })
       .catch((err) => {
@@ -37,6 +38,25 @@ function NewsletterForm() {
 
   return (
     <form className='grid gap-y-4 md:gap-y-6' onSubmit={handleSubmit}>
+      <div>
+        <label
+          htmlFor='name'
+          className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+        >
+          Your name
+        </label>
+        <input
+          type='text'
+          name='name'
+          id='name'
+          className='bg-colour9 w-full rounded-md py-1 px-1'
+          placeholder='John Doe'
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
       <div>
         <label
           htmlFor='email'
