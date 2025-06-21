@@ -183,6 +183,174 @@ function NewsletterAdminPublicationsSection({
                     </button>
                   </li>
                 ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
+                {filteredDrafts.map((draft) => (
+                  <li
+                    key={draft.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <p
+                      className='overflow-hidden whitespace-nowrap text-ellipsis'
+                      title={draft.title}
+                    >
+                      <strong>Title:</strong>{' '}
+                      <span className='text-xxs'>{draft?.title}</span>
+                    </p>
+                    <button
+                      onClick={() => editNewsletter(draft)}
+                      className='text-blue-600 min-w-4 hover:text-blue-800 text-sm pl-1'
+                      title='Edit Draft'
+                    >
+                      <FiEdit />
+                    </button>
+                  </li>
+                ))}
               </ul>
             )}
           </section>
@@ -203,6 +371,330 @@ function NewsletterAdminPublicationsSection({
               </p>
             ) : (
               <ul className='grid gap-y-1 h-fit pb-1 overflow-hidden'>
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
+                {filteredPublished.map((pub) => (
+                  <li
+                    key={pub.id}
+                    className='bg-colour1 grid grid-flow-col h-fit gap-x-1 rounded shadow px-2 py-2 text-xs justify-between items-center overflow-hidden'
+                  >
+                    <div className='grid'>
+                      <p
+                        className='overflow-hidden whitespace-nowrap text-ellipsis'
+                        title={pub.title}
+                      >
+                        <strong>Title:</strong>{' '}
+                        <span className='text-xxs'>{pub?.title}</span>
+                      </p>
+                      <p id={`subscriber-${pub?.id}`}>
+                        <strong>Date:</strong>{' '}
+                        <span className='text-xxs'>
+                          {pub?.publishedAt &&
+                            new Date(pub.publishedAt).toLocaleString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => deleteNewsletter(pub.id)}
+                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                      title='Delete Published Newsletter'
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </li>
+                ))}
                 {filteredPublished.map((pub) => (
                   <li
                     key={pub.id}
