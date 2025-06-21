@@ -126,7 +126,7 @@ function NewsletterCreateAndEditComponent({
       </section>
 
       <form
-        className={`grid relative gap-y-4 h-full bg-green-300 w-full pb-1 mx-auto ${
+        className={`grid grid-rows-rev relative gap-y-4 h-full bg-green-300 w-full pb-1 mx-auto ${
           isPublishingNewsletter
             ? 'blur-sm pointer-events-none select-none'
             : ''
@@ -144,7 +144,7 @@ function NewsletterCreateAndEditComponent({
         )}
 
         {/* Inputs */}
-        <section className='grid grid-rows-reg gap-y-4 w-full bg-geen-300'>
+        <section className='grid grid-rows-reg gap-y-4 w-full bg-geen-300 overflow-y-auto'>
           {/* Title */}
           <div>
             <label className='block text-sm font-medium mb-1' htmlFor='title'>
@@ -186,7 +186,7 @@ function NewsletterCreateAndEditComponent({
         </section>
 
         {/* Action Buttons */}
-        <section className='grid items-end h-fit gap-y-1'>
+        <section className='grid items-end h-fit gap-y-1 pb-2'>
           <div className='grid items-end h-fit grid-cols-2 gap-x-1 justify-between'>
             <button
               type='button'
