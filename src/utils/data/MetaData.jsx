@@ -19,11 +19,7 @@ export const homePageStructuredData = {
     target: `${FULL_BUSINESS_URL}/?s={search_term_string}`,
     'query-input': 'required name=search_term_string',
   },
-  sameAs: [
-    `${FACEBOOK_URL}`,
-    `${INSTAGRAM_URL}`,
-    `${LINKEDIN_URL}`,
-  ],
+  sameAs: [`${FACEBOOK_URL}`, `${INSTAGRAM_URL}`, `${LINKEDIN_URL}`],
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: `${CompanyPhoneNumber}`,
@@ -58,11 +54,7 @@ export const newsletterPageStructuredData = {
   name: `${CompanyName} Newsletter Sign-Up`,
   url: `${FULL_BUSINESS_URL}/newsletter`,
   description: `Subscribe to the ${CompanyName} newsletter for updates, insights, and exclusive offers on web and circuit design services.`,
-  sameAs: [
-    `${FACEBOOK_URL}`,
-    `${INSTAGRAM_URL}`,
-    `${LINKEDIN_URL}`,
-  ],
+  sameAs: [`${FACEBOOK_URL}`, `${INSTAGRAM_URL}`, `${LINKEDIN_URL}`],
   publisher: {
     '@type': 'Organization',
     name: CompanyName,
@@ -99,6 +91,39 @@ export const newsletterPageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
+export const newsletterValidationStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Newsletter Email Confirmation',
+  url: `${FULL_BUSINESS_URL}/newsletter/confirm-email`, // Adjust accordingly
+  description: `Confirmation page for newsletter subscription to ${CompanyName}.`,
+  mainEntity: {
+    '@type': 'Organization',
+    name: CompanyName,
+    url: FULL_BUSINESS_URL,
+    // sameAs: [
+    //   FACEBOOK_URL,
+    //   INSTAGRAM_URL,
+    //   LINKEDIN_URL,
+    // ],
+  },
+};
+
+export const newsletterValidationAdditionalMeta = [
+  {
+    property: 'og:title',
+    content: `Confirm your subscription – ${CompanyName}`,
+  },
+  {
+    property: 'og:description',
+    content: `Thanks for subscribing to the ${CompanyName} newsletter. This confirms your email address.`,
+  },
+  {
+    property: 'og:url',
+    content: `${FULL_BUSINESS_URL}/newsletter/confirm-email`,
+  },
+  { name: 'robots', content: 'noindex, follow' }, // Optional, prevents indexing
+];
 
 // Reviews //
 // Reviews page
@@ -108,11 +133,7 @@ export const reviewsPageStructuredData = {
   name: `${CompanyName} Reviews`,
   url: `${FULL_BUSINESS_URL}/reviews`,
   description: `Read customer reviews and testimonials about ${CompanyName}'s web and circuit design services. Discover how we’ve helped businesses thrive with our expertise.`,
-  sameAs: [
-    `${FACEBOOK_URL}`,
-    `${INSTAGRAM_URL}`,
-    `${LINKEDIN_URL}`,
-  ],
+  sameAs: [`${FACEBOOK_URL}`, `${INSTAGRAM_URL}`, `${LINKEDIN_URL}`],
   potentialAction: {
     '@type': 'SearchAction',
     target: `${FULL_BUSINESS_URL}/reviews?s={search_term_string}`,
@@ -137,7 +158,6 @@ export const reviewsPageAdditionalMeta = [
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
 
-
 // Booking //
 // Booking page
 export const bookingPageStructuredData = {
@@ -150,11 +170,7 @@ export const bookingPageStructuredData = {
     name: CompanyName,
     url: FULL_BUSINESS_URL,
     telephone: CompanyPhoneNumber,
-    sameAs: [
-      `${FACEBOOK_URL}`,
-      `${INSTAGRAM_URL}`,
-      `${LINKEDIN_URL}`,
-    ],
+    sameAs: [`${FACEBOOK_URL}`, `${INSTAGRAM_URL}`, `${LINKEDIN_URL}`],
   },
   areaServed: {
     '@type': 'Country',
@@ -172,7 +188,8 @@ export const bookingPageAdditionalMeta = [
   { property: 'og:title', content: `Book with ${CompanyName}` },
   {
     property: 'og:description',
-    content: 'Schedule your web or circuit design service today with our easy online booking.',
+    content:
+      'Schedule your web or circuit design service today with our easy online booking.',
   },
   { property: 'og:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
   { property: 'og:url', content: `${FULL_BUSINESS_URL}/booking` },
@@ -204,11 +221,7 @@ export const blogPageStructuredData = {
     '@type': 'WebPage',
     '@id': `${FULL_BUSINESS_URL}/blog`,
   },
-  sameAs: [
-    `${FACEBOOK_URL}`,
-    `${INSTAGRAM_URL}`,
-    `${LINKEDIN_URL}`,
-  ],
+  sameAs: [`${FACEBOOK_URL}`, `${INSTAGRAM_URL}`, `${LINKEDIN_URL}`],
 };
 
 export const blogPageAdditionalMeta = [
@@ -223,7 +236,8 @@ export const blogPageAdditionalMeta = [
   { name: 'twitter:title', content: `${CompanyName} Blog` },
   {
     name: 'twitter:description',
-    content: 'Read the latest posts on web and circuit design from our experts.',
+    content:
+      'Read the latest posts on web and circuit design from our experts.',
   },
   { name: 'twitter:image', content: `${FULL_BUSINESS_URL}/brand/logo.png` },
 ];
@@ -233,7 +247,9 @@ export const blogPostStructuredData = (post) => ({
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: post.title,
-  description: post.description || `${CompanyName} offers expert web and circuit design insights.`,
+  description:
+    post.description ||
+    `${CompanyName} offers expert web and circuit design insights.`,
   datePublished: post.date || new Date().toISOString(),
   dateModified: post.dateModified || new Date().toISOString(),
   author: {
@@ -259,14 +275,19 @@ export const blogPostAdditionalMeta = (post) => [
   { property: 'og:type', content: 'article' },
   { property: 'og:title', content: post.title },
   { property: 'og:description', content: post.description || '' },
-  { property: 'og:image', content: post.image || `${FULL_BUSINESS_URL}/brand/logo.png` },
+  {
+    property: 'og:image',
+    content: post.image || `${FULL_BUSINESS_URL}/brand/logo.png`,
+  },
   { property: 'og:url', content: `${FULL_BUSINESS_URL}/blog/${post.slug}` },
   { name: 'twitter:card', content: 'summary_large_image' },
   { name: 'twitter:title', content: post.title },
   { name: 'twitter:description', content: post.description || '' },
-  { name: 'twitter:image', content: post.image || `${FULL_BUSINESS_URL}/brand/logo.png` },
+  {
+    name: 'twitter:image',
+    content: post.image || `${FULL_BUSINESS_URL}/brand/logo.png`,
+  },
 ];
-
 
 // Forgot password
 export const forgottenPasswordPageStructuredData = {
@@ -363,7 +384,6 @@ export const registerPageAdditionalMeta = [
     content: `${FULL_BUSINESS_URL}/assets/images/pages/register-preview.jpg`,
   },
 ];
-
 
 // Maintenance
 export const maintenancePageStructuredData = {
@@ -471,7 +491,6 @@ export const errorPageAdditionalMeta = [
   },
 ];
 
-
 // Contact page
 export const contactPageStructuredData = {
   '@context': 'https://schema.org',
@@ -487,11 +506,7 @@ export const contactPageStructuredData = {
       areaServed: 'GB',
       availableLanguage: ['English'],
     },
-    sameAs: [
-      FACEBOOK_URL,
-      INSTAGRAM_URL,
-      LINKEDIN_URL,
-    ],
+    sameAs: [FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL],
     logo: {
       '@type': 'ImageObject',
       url: `${FULL_BUSINESS_URL}/brand/logo.png`,

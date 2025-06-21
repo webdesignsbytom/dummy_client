@@ -8,6 +8,8 @@ import {
   NEWSLETTER_RESEND_VALIDATE_EMAIL_API,
   NEWSLETTER_VALIDATE_EMAIL_API,
 } from '../../utils/ApiRoutes';
+// Data
+import { newsletterValidationAdditionalMeta, newsletterValidationStructuredData } from '../../utils/data/MetaData';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
@@ -60,67 +62,97 @@ function NewsletterValidationPage() {
   return (
     <>
       <HelmetItem
-        PageName='Newsletter Email Validation'
-        desc={`Stay updated with the latest from ${CompanyName}. Subscribe to our newsletter for news, updates, and special offers.`}
-        keywords={`newsletter, subscribe, email confirmation, ${CompanyName}`}
+        PageName='Confirm Your Email - Newsletter'
+        desc={`Verify your email address to complete your subscription to the ${CompanyName} newsletter. Get updates, offers, and exclusive insights.`}
+        keywords={`email verification, ${CompanyName} newsletter, confirm email, subscribe, updates`}
+        additionalMeta={newsletterValidationAdditionalMeta}
+        structuredData={newsletterValidationStructuredData}
       />
 
-      <div className='grid min-h-screen bg-colour1 overflow-hidden font-poppins'>
+      <div className='grid grid-rows-reg min-h-screen bg-colour1 overflow-hidden font-poppins'>
         <div className='grid grid-rows-reg'>
           <Navbar />
-          <header className='grid w-full'>
-            <div className='grid w-full px-8 text-center lg:container lg:mx-auto py-6'>
-              <h1 className='text-xl font-semibold'>Newsletter Validation</h1>
+          <header className='grid w-full' role='banner'>
+            <div className='grid gap-y-4 w-full px-8 text-center lg:container lg:mx-auto py-6'>
+              <h1 className='text-xl font-semibold'>Email Confirmation</h1>
+              <p className='text-sm text-gray-700 mt-2 max-w-2xl mx-auto'>
+                You're nearly done! This page confirms your subscription to the{' '}
+                {CompanyName} newsletter. <br />
+                Once validated, you’ll start receiving updates, offers, and
+                helpful resources right in your inbox.
+              </p>
             </div>
           </header>
         </div>
 
-        <main className='grid place-items-center px-4 py-12'>
-          {status === 'loading' && (
-            <div className='grid justify-center'>
-              <p>Validating your email...</p>
-              <div className='flex justify-center mx-auto'>
-                <LoadingSpinner lg={true} />
-              </div>
-            </div>
-          )}
+        <main className='grid place-items-center px-4' role='main'>
+          <section
+            className='grid gap-3 text-center'
+            role='status'
+            aria-live='polite'
+            aria-busy={status === 'loading' || resendStatus === 'loading'}
+          >
+            {status === 'loading' && (
+              <>
+                <p className='mb-2'>Validating your email, please wait...</p>
+                <div className='flex justify-center mx-auto'>
+                  <LoadingSpinner lg={true} />
+                </div>
+              </>
+            )}
 
-          {status === 'success' && (
-            <p className='text-green-600'>
-              ✅ Your email has been successfully confirmed. Thank you!
-            </p>
-          )}
+            {status === 'success' && (
+              <>
+                <p className='text-green-600 font-medium'>
+                  ✅ Your email has been successfully confirmed!
+                </p>
+                <p className='text-gray-800 text-sm max-w-md'>
+                  You’re now subscribed to the {CompanyName} newsletter. Expect
+                  occasional updates packed with useful content, special offers,
+                  and news.
+                </p>
+                <p className='text-gray-600 text-sm'>
+                  Thanks for confirming — we’re glad to have you on board!
+                </p>
+              </>
+            )}
 
-          {status === 'error' && (
-            <div className='grid gap-3 text-center'>
-              <p className='text-red-600'>
-                ❌ This verification link is invalid or has expired.
-              </p>
-              <button
-                onClick={handleResendVerification}
-                disabled={resendStatus === 'loading'}
-                className='text-sm text-blue-600 underline hover:text-blue-800 disabled:opacity-50'
-              >
-                {resendStatus === 'loading' ? (
-                  <div className='flex justify-center mx-auto'>
-                    <LoadingSpinner xs={true} />
-                  </div>
-                ) : (
-                  'Resend verification email'
+            {status === 'error' && (
+              <>
+                <p className='text-red-600 font-medium'>
+                  ❌ This verification link is invalid or has expired.
+                </p>
+                <p className='text-gray-800 text-sm max-w-md'>
+                  If the link was broken or has timed out, you can request a new
+                  one below.
+                </p>
+                <button
+                  onClick={handleResendVerification}
+                  disabled={resendStatus === 'loading'}
+                  className='text-sm text-blue-600 underline hover:text-blue-800 disabled:opacity-50'
+                  aria-label='Resend newsletter verification email'
+                >
+                  {resendStatus === 'loading' ? (
+                    <div className='flex justify-center mx-auto'>
+                      <LoadingSpinner xs={true} />
+                    </div>
+                  ) : (
+                    'Resend verification email'
+                  )}
+                </button>
+                {resendStatus === 'success' && (
+                  <p className='text-green-600 text-sm'>
+                    ✅ A new verification email has been sent.
+                  </p>
                 )}
-              </button>
-              {resendStatus === 'success' && (
-                <p className='text-green-600 text-sm'>
-                  ✅ A new verification email has been sent.
-                </p>
-              )}
-              {resendStatus === 'error' && (
-                <p className='text-red-600 text-sm'>
-                  ❌ Failed to resend. Please try again later.
-                </p>
-              )}
-            </div>
-          )}
+                {resendStatus === 'error' && (
+                  <p className='text-red-600 text-sm'>
+                    ❌ Failed to resend. Please try again shortly.
+                  </p>
+                )}
+              </>
+            )}
+          </section>
         </main>
       </div>
     </>
