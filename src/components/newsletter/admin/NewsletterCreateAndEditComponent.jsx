@@ -111,6 +111,8 @@ function NewsletterCreateAndEditComponent({
   };
 
   const deleteNewsletter = () => {
+    if (!editingNewsletter) return;
+
     confirmAction({
       header: 'Delete Newsletter',
       message: 'Are you sure you want to delete this newsletter?',
