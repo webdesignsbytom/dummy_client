@@ -10,7 +10,7 @@ function SearchBarComponent({ searchQuery, setSearchQuery, placeholder }) {
   };
 
   return (
-    <section className='grid bg-colour4'>
+    <section className='grid bg-colour9'>
       <div className='grid px-2 py-2'>
         <div className='bg-colour1 grid grid-cols-reg max-w-xl p-1 rounded-lg shadow-xl gap-1'>
           <div className='grid items-center justify-center px-1'>

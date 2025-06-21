@@ -40,10 +40,10 @@ function NewsletterAdminPageMainContainer() {
   return (
     <main
       role='main'
-      className='grid grid-rows-reg w-full h-full bg-slate-400'
+      className='grid grid-rows-reg w-full h-full'
       aria-label='Admin newsletter main contaiber'
     >
-      <section className='grid grid-cols-3 bg-green-300 px-1 py-1 gap-x-1'>
+      <section className='grid grid-cols-3 px-1 py-1 gap-x-1'>
         {layoutOptions.map(({ key, label }) => (
           <button
             key={key}
@@ -57,7 +57,7 @@ function NewsletterAdminPageMainContainer() {
         ))}
       </section>
 
-      <section className='grid'>
+      <section className='grid w-full'>
         {selectedLayout === 'subscribers' && (
           <NewsletterAdminSubscriberSection
             newsletterSubscribers={newsletterSubscribers}
