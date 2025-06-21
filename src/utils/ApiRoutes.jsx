@@ -25,15 +25,14 @@ export const CREATE_NEW_REVIEW_API = '/reviews/create-new-review';
 export const DELETE_REVIEW_API = '/reviews/delete-review'; // /:reviewId
 
 // Newsletter API routes
-export const SUBSCRIBE_TO_NEWSLETTER_API =
-  '/newsletter/subscribe-to-newsletter';
-export const GET_ALL_NEWSLETTER_SUBSCRIBERS_API =
-  '/newsletter/get-subscriber-list';
-export const DELETE_SUBSCRIBER_BY_ID_API =
-  '/newsletter/delete-subscriber-by-id';
-export const DELETE_SUBSCRIBER_BY_EMAIL_API =
-  '/newsletter/delete-subscriber-by-email';
+export const SUBSCRIBE_TO_NEWSLETTER_API = '/newsletter/subscribe-to-newsletter';
+export const GET_ALL_NEWSLETTER_SUBSCRIBERS_API = '/newsletter/get-subscriber-list';
+export const DELETE_SUBSCRIBER_BY_ID_API = '/newsletter/delete-subscriber-by-id';
+export const DELETE_SUBSCRIBER_BY_EMAIL_API = '/newsletter/delete-subscriber-by-email';
 export const DELETE_ALL_SUBSCRIBERS_API = '/newsletter/delete-all-subscribers';
+export const DELETE_NEWSLETTER_BY_ID_API = '/newsletter/delete-newsletter';
+export const GET_ALL_PUBLISHED_NEWSLETTERS_API = '/newsletter/get-all-published-newsletters';
+export const GET_ALL_DRAFT_NEWSLETTERS_API = '/newsletter/get-all-newsletter-drafts';
 export const CREATE_NEW_NEWSLETTER_API = '/newsletter/create-new';
 export const SAVE_NEWSLETTER_API = '/newsletter/save-draft';
 export const PUBLISH_NEWSLETTER_API = '/newsletter/publish';
