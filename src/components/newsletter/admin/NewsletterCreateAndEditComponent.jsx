@@ -7,6 +7,7 @@ import {
 } from '../../../utils/ApiRoutes';
 import client from '../../../api/client';
 import LoadingSpinner from '../../utils/LoadingSpinner';
+import ContentInput from './ContentInput';
 
 function NewsletterCreateAndEditComponent({
   editingNewsletter,
@@ -175,7 +176,7 @@ function NewsletterCreateAndEditComponent({
   };
 
   return (
-    <section className='grid grid-rows-reg w-full px-2'>
+    <section className='grid grid-rows-reg w-full h-full px-2 overflow-hidden'>
       <section className='grid grid-flow-col py-2 px-1'>
         <div>
           <h2 className='lg:text-xl font-semibold text-colour8'>
@@ -201,7 +202,7 @@ function NewsletterCreateAndEditComponent({
       </section>
 
       <form
-        className={`grid grid-rows-rev relative gap-y-4 h-full bg-green-300 w-full pb-1 mx-auto ${
+        className={`grid grid-rows-rev relative gap-y-4 h-full bg-green-300 overflow-hidden w-full pb-1 mx-auto ${
           isPublishingNewsletter || isSavingNewsletter
             ? 'blur-sm pointer-events-none select-none'
             : ''
@@ -259,7 +260,7 @@ function NewsletterCreateAndEditComponent({
         )}
 
         {/* Inputs */}
-        <section className='grid grid-rows-reg gap-y-4 w-full bg-geen-300 overflow-y-auto'>
+        <section className='grid grid-rows-reg gap-y-4 h-full w-full bg-geen-300 overflow-hidden px-2'>
           {/* Title */}
           <div>
             <label className='block text-sm font-medium mb-1' htmlFor='title'>
@@ -281,23 +282,7 @@ function NewsletterCreateAndEditComponent({
           </div>
 
           {/* Content */}
-          <div className='grid grid-rows-reg h-full'>
-            <label className='block text-sm font-medium mb-1' htmlFor='content'>
-              Content
-            </label>
-            <textarea
-              id='content'
-              className='w-full rounded shadow border px-2 py-1 text-sm font-mono'
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder='<p>Your newsletter content here</p>'
-              required
-              aria-describedby='newsletter-content-description'
-            />
-            <small id='newsletter-content-description' className='sr-only'>
-              Use valid HTML tags for formatting
-            </small>
-          </div>
+          <ContentInput content={content} setContent={setContent} />
         </section>
 
         {/* Action Buttons */}

@@ -46,7 +46,7 @@ function NewsletterAdminPageMainContainer() {
   return (
     <main
       role='main'
-      className='grid grid-rows-reg w-full h-full'
+      className='grid grid-rows-reg w-full h-full overflow-hidden'
       aria-label='Admin newsletter main contaiber'
     >
       <section className='grid grid-cols-3 px-1 py-1 gap-x-1'>
@@ -63,7 +63,7 @@ function NewsletterAdminPageMainContainer() {
         ))}
       </section>
 
-      <section className='grid w-full'>
+      <section className='grid w-full overflow-y-auto'>
         {selectedLayout === 'subscribers' && (
           <NewsletterAdminSubscriberSection
             newsletterSubscribers={newsletterSubscribers}

@@ -105,7 +105,7 @@ function NewsletterAdminSubscriberSection({
   };
 
   return (
-    <section className='grid w-full'>
+    <section className='grid w-full pb-4'>
       <div className='grid grid-rows-reg gap-y-2 w-full'>
         {/* Header */}
         <div>
@@ -202,6 +202,33 @@ function NewsletterAdminSubscriberSection({
                   </section>
                 ) : (
                   <ul className='grid gap-y-1 lg:grid-cols-3 gap-x-2 h-fit'>
+                    {filteredSubscribers.map((subscriber, index) => (
+                      <li key={subscriber.id}>
+                        <NewsletterSubscriberItem
+                          id={index}
+                          subscriber={subscriber}
+                          handleDelete={handleDelete}
+                        />
+                      </li>
+                    ))}
+                    {filteredSubscribers.map((subscriber, index) => (
+                      <li key={subscriber.id}>
+                        <NewsletterSubscriberItem
+                          id={index}
+                          subscriber={subscriber}
+                          handleDelete={handleDelete}
+                        />
+                      </li>
+                    ))}
+                    {filteredSubscribers.map((subscriber, index) => (
+                      <li key={subscriber.id}>
+                        <NewsletterSubscriberItem
+                          id={index}
+                          subscriber={subscriber}
+                          handleDelete={handleDelete}
+                        />
+                      </li>
+                    ))}
                     {filteredSubscribers.map((subscriber, index) => (
                       <li key={subscriber.id}>
                         <NewsletterSubscriberItem

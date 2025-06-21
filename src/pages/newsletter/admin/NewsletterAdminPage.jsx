@@ -19,7 +19,7 @@ function NewsletterAdminPage() {
         className='grid min-h-screen overflow-hidden bg-colour1 dark:bg-colour2 text-colour2 dark:text-colour1 font-poppins'
         aria-label='Newsletter Admin Page'
       >
-        <div className='grid grid-rows-reg'>
+        <div className='grid grid-rows-reg overflow-hidden'>
           {/* Navigation */}
           <Navbar />
 
