@@ -38,6 +38,7 @@ export const CREATE_NEW_NEWSLETTER_API = '/newsletter/create-new';
 export const SAVE_NEWSLETTER_API = '/newsletter/save-draft';
 export const PUBLISH_NEWSLETTER_API = '/newsletter/publish';
 export const NEWSLETTER_VALIDATE_EMAIL_API = '/newsletter/confirm-email';
+export const NEWSLETTER_UNSUBSCRIBE_API = '/newsletter/unsubscribe';
 export const NEWSLETTER_RESEND_VALIDATE_EMAIL_API = '/newsletter/resend-verification-email';
 
 // Blog API routes

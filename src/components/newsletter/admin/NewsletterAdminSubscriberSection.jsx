@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
@@ -10,6 +10,7 @@ import {
 import { CompanyName } from '../../../utils/Constants';
 // Components
 import NewsletterSubscriberItem from './NewsletterSubscriberItem';
+import SearchBarComponent from '../../search/SearchBarComponent';
 
 function NewsletterAdminSubscriberSection({
   newsletterSubscribers,
@@ -38,6 +39,19 @@ function NewsletterAdminSubscriberSection({
     setModalContent({ header, message });
     setModalOpen(true);
   };
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter subscribers based on search
+  const filteredSubscribers = useMemo(() => {
+    return newsletterSubscribers.filter((subscriber) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        subscriber.email.toLowerCase().includes(query) ||
+        subscriber.name?.toLowerCase().includes(query)
+      );
+    });
+  }, [newsletterSubscribers, searchQuery]);
 
   const handleDelete = (id) => {
     confirmAction({
@@ -78,72 +92,87 @@ function NewsletterAdminSubscriberSection({
 
   return (
     <section className='grid w-full'>
-      <div className='grid grid-rows-reg gap-y-4 w-full px-8 py-8 lg:container lg:mx-auto'>
+      <div className='grid grid-rows-reg gap-y-2 w-full lg:container lg:mx-auto'>
         {/* Header */}
-        <section
-          className='grid w-full bg-colour5 px-2 md:px-4 lg:px-6 py-2'
-          aria-label='Callback form admin header'
-        >
-          <div className='grid grid-flow-col items-center justify-between'>
-            <h1 className='sm:text-lg md:text-xl lg:text-2xl font-bold'>
-              Subscribers
-            </h1>
-            {newsletterSubscribers.length > 0 && (
-              <>
-                <button
-                  onClick={handleDeleteAll}
-                  className='bg-red-500 hover:bg-red-700 text-colour1 font-bold py-1 px-4 rounded'
-                  aria-describedby='delete-all-description'
-                >
-                  Delete All
-                </button>
-                <span id='delete-all-description' className='sr-only'>
-                  Deletes all stored newsletter subscribers permanently
-                </span>
-              </>
-            )}
-          </div>
-        </section>
-
-        {/* Email Copy Section */}
-        {newsletterSubscribers.length > 0 && (
-          <section className='w-full bg-colour1 p-4 rounded shadow'>
-            <h2 className='font-semibold text-sm mb-2'>
-              All Emails (comma-separated):
-            </h2>
-            <div className='text-sm text-black break-words'>
-              {newsletterSubscribers.map((s) => s.email).join(', ')}
+        <div>
+          <section
+            className='grid w-full bg-colour5 px-2 py-2'
+            aria-label='Callback form admin header'
+          >
+            <div className='grid grid-flow-col items-center justify-between'>
+              <h1 className='md:text-xl'>
+                Subscribers ({newsletterSubscribers.length})
+              </h1>
+              {newsletterSubscribers.length > 0 && (
+                <>
+                  <button
+                    onClick={handleDeleteAll}
+                    className='bg-red-500 hover:bg-red-700 text-colour1 font-bold py-1 px-4 rounded'
+                    aria-describedby='delete-all-description'
+                  >
+                    Delete All
+                  </button>
+                  <span id='delete-all-description' className='sr-only'>
+                    Deletes all stored newsletter subscribers permanently
+                  </span>
+                </>
+              )}
             </div>
           </section>
-        )}
 
-        {/* Subscribers */}
-        <section
-          className='grid w-full p-1'
-          aria-label={`List of submitted subscribers for ${CompanyName}`}
-        >
-          {newsletterSubscribers.length === 0 ? (
-            <section
-              className='grid items-center justify-center h-full w-full'
-              role='status'
-              aria-live='polite'
-            >
-              <p>No subscribers found.</p>
+          {/* Search bar */}
+          <section>
+            <SearchBarComponent
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              placeholder={`Search email or name..`}
+            />
+          </section>
+        </div>
+
+        <div className='grid gap-y-2 grid-rows-reg'>
+          {/* Email Copy Section */}
+          {newsletterSubscribers.length > 0 && (
+            <section className='grid w-full px-2'>
+              <div className='grid w-full bg-colour1 px-2 py-4 h-fit rounded shadow max-h-48 overflow-y-auto'>
+                <h2 className='font-semibold text-sm mb-2'>
+                  All Emails (comma-separated):
+                </h2>
+                <div className='text-xxs text-black break-words'>
+                  {newsletterSubscribers.map((s) => s.email).join(', ')}
+                </div>
+              </div>
             </section>
-          ) : (
-            <ul className='grid gap-y-2'>
-              {newsletterSubscribers.map((subscriber, index) => (
-                <li key={subscriber.id}>
-                  <NewsletterSubscriberItem
-                    id={index}
-                    subscriber={subscriber}
-                    handleDelete={handleDelete}
-                  />
-                </li>
-              ))}
-            </ul>
           )}
-        </section>
+
+          {/* Subscribers */}
+          <section
+            className='grid w-full px-2'
+            aria-label={`List of submitted subscribers for ${CompanyName}`}
+          >
+            {filteredSubscribers.length === 0 ? (
+              <section
+                className='grid items-center justify-center h-full w-full'
+                role='status'
+                aria-live='polite'
+              >
+                <p>No subscribers found.</p>
+              </section>
+            ) : (
+              <ul className='grid gap-y-1 h-fit'>
+                {filteredSubscribers.map((subscriber, index) => (
+                  <li key={subscriber.id}>
+                    <NewsletterSubscriberItem
+                      id={index}
+                      subscriber={subscriber}
+                      handleDelete={handleDelete}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
     </section>
   );

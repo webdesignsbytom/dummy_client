@@ -1,5 +1,5 @@
+// HelmetItem.jsx
 import { Helmet } from 'react-helmet';
-// Constants
 import { CompanyName } from '../../utils/Constants';
 
 export const HelmetItem = ({
@@ -7,23 +7,30 @@ export const HelmetItem = ({
   desc,
   keywords,
   additionalMeta = [],
-  structuredData = null, // New prop for structured data
+  structuredData = null,
+  noIndex = false, // NEW: toggle noindex
 }) => {
   return (
     <Helmet>
-      <title>
-        {PageName} - {CompanyName}
-      </title>
+      <title>{PageName} - {CompanyName}</title>
       <meta name="description" content={desc} />
-      {/* Keywords */}
       {keywords && <meta name="keywords" content={keywords} />}
-      {/* Additional meta tags */}
+      
+      {/* Inject additional meta tags */}
       {additionalMeta.map((meta, index) => (
         <meta key={index} {...meta} />
       ))}
-      {/* Structured Data */}
+
+      {/* Optional: Prevent indexing for admin/private pages */}
+      {noIndex && (
+        <meta name="robots" content="noindex, nofollow" />
+      )}
+
+      {/* Optional structured data */}
       {structuredData && (
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       )}
     </Helmet>
   );

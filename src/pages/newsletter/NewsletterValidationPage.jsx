@@ -9,7 +9,10 @@ import {
   NEWSLETTER_VALIDATE_EMAIL_API,
 } from '../../utils/ApiRoutes';
 // Data
-import { newsletterValidationAdditionalMeta, newsletterValidationStructuredData } from '../../utils/data/MetaData';
+import {
+  newsletterValidationAdditionalMeta,
+  newsletterValidationStructuredData,
+} from '../../utils/data/MetaData';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';

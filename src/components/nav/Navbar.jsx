@@ -19,7 +19,8 @@ function Navbar() {
   const { user, setUser } = useUser();
   const navigateToPage = useNavigateToPage();
   const navLinkItemsArray = getNavLinkItemsArray(user);
-
+  console.log('navLinkItemsArray', navLinkItemsArray);
+  
   const [isPhoneNavOpen, setIsPhoneNavOpen] = useState(false);
 
   const togglePhoneNav = () => {

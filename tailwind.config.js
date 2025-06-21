@@ -27,6 +27,9 @@ module.exports = {
         titleFont: ['Poppins'],
         fancyFont: ['Poppins'],
       },
+      fontSize: {
+        'xxs': '0.6rem',
+      },
       gridTemplateRows: {
         reg: 'auto 1fr',
         rev: '1fr auto',

@@ -11,13 +11,14 @@ import { getToken } from '../utils/user/token';
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-
   const [user, setUser] = useState({
-    id: null,
+    id: 1,
+    email: 't@g.com',
+    role: 'ADMIN',
   });
 
   const [token, setToken] = useState(getToken());
-
+  console.log('user', user);
   useEffect(() => {
     const decodedUserData = LoggedInUser();
 
