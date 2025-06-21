@@ -12,6 +12,7 @@ import { CompanyName } from '../../../utils/Constants';
 import ConfirmModal from '../../modals/ConfirmModal';
 import NewsletterAdminSubscriberSection from './NewsletterAdminSubscriberSection';
 import NewsletterAdminPublicationsSection from './NewsletterAdminPublicationsSection';
+import NewsletterCreateAndEditComponent from './NewsletterCreateAndEditComponent';
 
 const layoutOptions = [
   { key: 'subscribers', label: 'Subscribers' },
@@ -29,6 +30,7 @@ function NewsletterAdminPageMainContainer() {
   const [pendingAction, setPendingAction] = useState(null);
   const [modalContent, setModalContent] = useState({ header: '', message: '' });
   const [selectedLayout, setSelectedLayout] = useState('subscribers');
+  const [editingNewsletter, setEditingNewsletter] = useState(null);
 
   const confirmAction = ({ action, header, message }) => {
     setPendingAction(() => action);
@@ -78,14 +80,17 @@ function NewsletterAdminPageMainContainer() {
             setPublishedNewslettersArray={setPublishedNewslettersArray}
             draftNewslettersArray={draftNewslettersArray}
             setDraftNewslettersArray={setDraftNewslettersArray}
+            confirmAction={confirmAction}
+            setSelectedLayout={setSelectedLayout}
+            setEditingNewsletter={setEditingNewsletter}
           />
         )}
 
         {selectedLayout === 'create' && (
-          <div>
-            {/* TODO: Add your create newsletter form here */}
-            <p>Create new newsletter layout goes here.</p>
-          </div>
+          <NewsletterCreateAndEditComponent
+            editingNewsletter={editingNewsletter}
+            setEditingNewsletter={setEditingNewsletter}
+          />
         )}
       </section>
 
