@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   DELETE_NEWSLETTER_BY_ID_API,
   PUBLISH_NEWSLETTER_API,
+  SAVE_NEWSLETTER_API,
 } from '../../../utils/ApiRoutes';
 import client from '../../../api/client';
 import LoadingSpinner from '../../utils/LoadingSpinner';
@@ -16,6 +17,8 @@ function NewsletterCreateAndEditComponent({
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isPublishingNewsletter, setIsPublishingNewsletter] = useState('');
+  const [isSavingNewsletter, setIsSavingNewsletter] = useState('');
+  const [saveFeedback, setSaveFeedback] = useState(null); // null | 'success' | 'error'
 
   // Prefill fields if editing
   useEffect(() => {
@@ -30,12 +33,49 @@ function NewsletterCreateAndEditComponent({
 
   const updateAndSaveDraft = (e) => {
     e.preventDefault();
-    // TODO: Add your save logic here
-    console.log('Saving:', { title, content });
+
+    if (!title.trim() && !content.trim()) return;
+
+    setIsSavingNewsletter(true);
+
+    const payload = {
+      id: editingNewsletter?.id,
+      title: title.trim(),
+      content: content.trim(),
+    };
+
+    client
+      .patch(`${SAVE_NEWSLETTER_API}`, payload, false)
+      .then(() => {
+        console.log('Newsletter saved successfully.');
+        setIsSavingNewsletter(false);
+        setSaveFeedback('success');
+        setTimeout(() => setSaveFeedback(null), 3000);
+      })
+      .catch((err) => {
+        console.error('Failed to save newsletter:', err);
+        setIsSavingNewsletter(false);
+        setSaveFeedback('error');
+        setTimeout(() => setSaveFeedback(null), 3000);
+      });
   };
 
   const handleCancel = () => {
-    setEditingNewsletter(null); // clear editing state
+    if (!title.trim() && !content.trim()) {
+      setEditingNewsletter(null);
+      setSelectedLayout('newsletters');
+      return;
+    }
+
+    confirmAction({
+      header: 'Discard Changes?',
+      message:
+        'You have unsaved changes. Are you sure you want to cancel? All data will be lost.',
+      action: () => {
+        setEditingNewsletter(null);
+        setSelectedLayout('newsletters');
+      },
+    });
   };
 
   const deleteNewsletter = () => {
@@ -63,7 +103,7 @@ function NewsletterCreateAndEditComponent({
   };
 
   const createNewNewsletter = () => {
-    setEditingNewsletter(false); // Reset editing mode
+    setEditingNewsletter(null); // Reset editing mode
     setTitle(''); // Clear title field
     setContent(''); // Clear content field
   };
@@ -88,7 +128,7 @@ function NewsletterCreateAndEditComponent({
           .then(() => {
             console.log('Newsletter published successfully.');
             setIsPublishingNewsletter(false);
-            setEditingNewsletter(false);
+            setEditingNewsletter(null);
             setSelectedLayout('newsletters');
           })
           .catch((err) => {
@@ -127,20 +167,41 @@ function NewsletterCreateAndEditComponent({
 
       <form
         className={`grid grid-rows-rev relative gap-y-4 h-full bg-green-300 w-full pb-1 mx-auto ${
-          isPublishingNewsletter
+          isPublishingNewsletter || isSavingNewsletter
             ? 'blur-sm pointer-events-none select-none'
             : ''
         }`}
-        aria-busy={isPublishingNewsletter ? 'true' : 'false'}
+        aria-busy={
+          isPublishingNewsletter || isSavingNewsletter ? 'true' : 'false'
+        }
       >
         {/* Submitting */}
-        {isPublishingNewsletter && (
+        {(isPublishingNewsletter || isSavingNewsletter) && (
           <section
-            className='absolute grid h-full items-center justify-center w-full'
+            className='absolute grid h-full items-center justify-center w-full z-20'
             aria-live='assertive'
           >
             <LoadingSpinner lg={true} />
           </section>
+        )}
+
+        {/* Save feedback */}
+        {saveFeedback && (
+          <div
+            className='fixed inset-0 z-30 flex items-center justify-center'
+            onClick={() => setSaveFeedback(null)}
+          >
+            <div
+              className={`rounded-lg px-6 py-4 text-white shadow-md text-center text-lg ${
+                saveFeedback === 'success' ? 'bg-green-600' : 'bg-red-600'
+              }`}
+              onClick={(e) => e.stopPropagation()} // prevent modal from closing when clicking inside
+            >
+              {saveFeedback === 'success'
+                ? 'Draft saved successfully!'
+                : 'Failed to save draft.'}
+            </div>
+          </div>
         )}
 
         {/* Inputs */}
@@ -197,7 +258,7 @@ function NewsletterCreateAndEditComponent({
             </button>
             <button
               type='submit'
-              onClick={updateAndSaveDraft}
+              onClick={editingNewsletter ? updateAndSaveDraft : 'Create'}
               className='px-4 py-2 rounded bg-blue-600 text-colour1 hover:bg-blue-700 text-sm'
             >
               {editingNewsletter ? 'Update' : 'Create'}
