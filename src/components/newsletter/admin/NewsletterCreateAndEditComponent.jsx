@@ -18,6 +18,7 @@ function NewsletterCreateAndEditComponent({
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isPublishingNewsletter, setIsPublishingNewsletter] = useState('');
+  const [publishFeedback, setPublishFeedback] = useState(null); // null | 'success' | 'error'
   const [isSavingNewsletter, setIsSavingNewsletter] = useState('');
   const [saveFeedback, setSaveFeedback] = useState(null); // null | 'success' | 'error'
 
@@ -51,13 +52,13 @@ function NewsletterCreateAndEditComponent({
         console.log('Newsletter saved successfully.');
         setIsSavingNewsletter(false);
         setSaveFeedback('success');
-        setTimeout(() => setSaveFeedback(null), 3000);
+        // setTimeout(() => setSaveFeedback(null), 3000);
       })
       .catch((err) => {
         console.error('Failed to save newsletter:', err);
         setIsSavingNewsletter(false);
         setSaveFeedback('error');
-        setTimeout(() => setSaveFeedback(null), 3000);
+        // setTimeout(() => setSaveFeedback(null), 3000);
       });
   };
 
@@ -80,13 +81,13 @@ function NewsletterCreateAndEditComponent({
         console.log('Newsletter saved successfully.');
         setIsSavingNewsletter(false);
         setSaveFeedback('success');
-        setTimeout(() => setSaveFeedback(null), 500);
+        // setTimeout(() => setSaveFeedback(null), 500);
       })
       .catch((err) => {
         console.error('Failed to save newsletter:', err);
         setIsSavingNewsletter(false);
         setSaveFeedback('error');
-        setTimeout(() => setSaveFeedback(null), 500);
+        // setTimeout(() => setSaveFeedback(null), 500);
       });
   };
 
@@ -159,11 +160,15 @@ function NewsletterCreateAndEditComponent({
             console.log('Newsletter published successfully.');
             setIsPublishingNewsletter(false);
             setEditingNewsletter(null);
-            setSelectedLayout('newsletters');
+            // setSelectedLayout('newsletters');
+            setPublishFeedback('success');
+            // setTimeout(() => setPublishFeedback(null), 500);
           })
           .catch((err) => {
             console.error('Failed to publish newsletter:', err);
             setIsPublishingNewsletter(false);
+            setPublishFeedback('error');
+            // setTimeout(() => setPublishFeedback(null), 500);
           });
       },
     });
@@ -213,6 +218,25 @@ function NewsletterCreateAndEditComponent({
           >
             <LoadingSpinner lg={true} />
           </section>
+        )}
+
+        {/* Publish feedback */}
+        {publishFeedback && (
+          <div
+            className='fixed inset-0 z-30 flex items-center justify-center'
+            onClick={() => setPublishFeedback(null)}
+          >
+            <div
+              className={`rounded-lg px-6 py-4 text-white shadow-md text-center text-lg ${
+                publishFeedback === 'success' ? 'bg-green-600' : 'bg-red-600'
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {publishFeedback === 'success'
+                ? 'Newsletter published!'
+                : 'Failed to publish newsletter.'}
+            </div>
+          </div>
         )}
 
         {/* Save feedback */}
