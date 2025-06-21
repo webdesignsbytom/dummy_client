@@ -92,6 +92,7 @@ function NewsletterAdminPageMainContainer() {
             setEditingNewsletter={setEditingNewsletter}
             confirmAction={confirmAction}
             setPublishedNewslettersArray={setPublishedNewslettersArray}
+            setSelectedLayout={setSelectedLayout}
           />
         )}
       </section>

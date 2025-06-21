@@ -21,30 +21,30 @@ const UserProvider = ({ children }) => {
 
   console.log('user', user);
   
-  useEffect(() => {
-    // 1) Decode (and sanity-check) the token
-    const decoded = LoggedInUser();
-    // 2) If there’s no valid token, bail out immediately
-    if (!decoded) {
-      setUser({});
-      console.log('!!!decoded');
-      return;
-    }
+  // useEffect(() => {
+  //   // 1) Decode (and sanity-check) the token
+  //   const decoded = LoggedInUser();
+  //   // 2) If there’s no valid token, bail out immediately
+  //   if (!decoded) {
+  //     setUser({});
+  //     console.log('!!!decoded');
+  //     return;
+  //   }
 
-    // 3) Otherwise, fetch the real user exactly once per new token
-    client
-      .get(GET_LOGGED_IN_USER_API, true)
-      .then((res) => setUser(res.data.user))
-      .catch((err) => {
-        console.error('Unable to retrieve user data', err);
-        // If it’s a 401, clear token so we don’t keep retrying
-        if (err.response?.status === 401) {
-          localStorage.removeItem(process.env.REACT_APP_USER_TOKEN);
-          setToken(null);
-        }
-        setUser(null);
-      });
-  }, [token]);
+  //   // 3) Otherwise, fetch the real user exactly once per new token
+  //   client
+  //     .get(GET_LOGGED_IN_USER_API, true)
+  //     .then((res) => setUser(res.data.user))
+  //     .catch((err) => {
+  //       console.error('Unable to retrieve user data', err);
+  //       // If it’s a 401, clear token so we don’t keep retrying
+  //       if (err.response?.status === 401) {
+  //         localStorage.removeItem(process.env.REACT_APP_USER_TOKEN);
+  //         setToken(null);
+  //       }
+  //       setUser({});
+  //     });
+  // }, [token]);
 
   return (
     <UserContext.Provider
