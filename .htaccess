@@ -5,12 +5,6 @@ RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
 RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# # Basic Authentication
-# AuthType Basic
-# AuthName "Restricted Area"
-# AuthUserFile .htpasswd
-# Require valid-user
-
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -30,7 +24,7 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 ## Security headers
 <IfModule mod_headers.c>
-  Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://tdt-server.vercel.app"
+Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://www.googletagmanager.com; connect-src 'self' https://dummy-server-ruby.vercel.app https://region1.google-analytics.com"
   Header set X-Content-Type-Options nosniff
   Header set X-Frame-Options DENY
   Header set X-XSS-Protection "1; mode=block"
