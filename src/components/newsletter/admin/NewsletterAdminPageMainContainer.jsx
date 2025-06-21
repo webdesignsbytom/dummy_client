@@ -90,6 +90,8 @@ function NewsletterAdminPageMainContainer() {
           <NewsletterCreateAndEditComponent
             editingNewsletter={editingNewsletter}
             setEditingNewsletter={setEditingNewsletter}
+            confirmAction={confirmAction}
+            setPublishedNewslettersArray={setPublishedNewslettersArray}
           />
         )}
       </section>
