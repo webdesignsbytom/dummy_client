@@ -18,23 +18,33 @@ const UserProvider = ({ children }) => {
   });
 
   const [token, setToken] = useState(getToken());
+
   console.log('user', user);
+  
   useEffect(() => {
-    const decodedUserData = LoggedInUser();
+    // 1) Decode (and sanity-check) the token
+    const decoded = LoggedInUser();
+    // 2) If there’s no valid token, bail out immediately
+    if (!decoded) {
+      setUser({});
+      console.log('!!!decoded');
+      return;
+    }
 
-    // if (decodedUserData !== null) {
-    //   const userId = decodedUserData.id;
-
-    //   client
-    //     .get(`${GET_LOGGED_IN_USER_API}/${userId}`)
-    //     .then((res) => {
-    //       setUser(res.data.user); // Set user state based on API response
-    //     })
-    //     .catch((err) => {
-    //       console.error('Unable to retrieve user data', err);
-    //     });
-    // }
-  }, []);
+    // 3) Otherwise, fetch the real user exactly once per new token
+    client
+      .get(GET_LOGGED_IN_USER_API, true)
+      .then((res) => setUser(res.data.user))
+      .catch((err) => {
+        console.error('Unable to retrieve user data', err);
+        // If it’s a 401, clear token so we don’t keep retrying
+        if (err.response?.status === 401) {
+          localStorage.removeItem(process.env.REACT_APP_USER_TOKEN);
+          setToken(null);
+        }
+        setUser(null);
+      });
+  }, [token]);
 
   return (
     <UserContext.Provider
