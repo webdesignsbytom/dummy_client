@@ -34,6 +34,7 @@ export const DELETE_NEWSLETTER_BY_ID_API = '/newsletter/delete-newsletter';
 export const GET_ALL_PUBLISHED_NEWSLETTERS_API = '/newsletter/get-all-published-newsletters';
 export const GET_ALL_DRAFT_NEWSLETTERS_API = '/newsletter/get-all-newsletter-drafts';
 export const CREATE_NEW_NEWSLETTER_API = '/newsletter/create-new';
+export const CREATE_SAVE_NEW_NEWSLETTER_API = '/newsletter/create-new-and-save';
 export const SAVE_NEWSLETTER_API = '/newsletter/update-draft';
 export const PUBLISH_NEWSLETTER_API = '/newsletter/publish-and-send-bulk-email';
 export const NEWSLETTER_VALIDATE_EMAIL_API = '/newsletter/confirm-email';

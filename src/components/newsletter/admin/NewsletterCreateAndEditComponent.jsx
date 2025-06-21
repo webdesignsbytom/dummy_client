@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  CREATE_SAVE_NEW_NEWSLETTER_API,
   DELETE_NEWSLETTER_BY_ID_API,
   PUBLISH_NEWSLETTER_API,
   SAVE_NEWSLETTER_API,
@@ -57,6 +58,35 @@ function NewsletterCreateAndEditComponent({
         setIsSavingNewsletter(false);
         setSaveFeedback('error');
         setTimeout(() => setSaveFeedback(null), 3000);
+      });
+  };
+
+  const createAndSave = (e) => {
+    e.preventDefault();
+
+    console.log('PPPPPPPPPPPPP');
+    if (!title.trim() && !content.trim()) return;
+
+    setIsSavingNewsletter(true);
+
+    const payload = {
+      title: title.trim(),
+      content: content.trim(),
+    };
+
+    client
+      .post(`${CREATE_SAVE_NEW_NEWSLETTER_API}`, payload, false)
+      .then(() => {
+        console.log('Newsletter saved successfully.');
+        setIsSavingNewsletter(false);
+        setSaveFeedback('success');
+        setTimeout(() => setSaveFeedback(null), 500);
+      })
+      .catch((err) => {
+        console.error('Failed to save newsletter:', err);
+        setIsSavingNewsletter(false);
+        setSaveFeedback('error');
+        setTimeout(() => setSaveFeedback(null), 500);
       });
   };
 
@@ -258,7 +288,7 @@ function NewsletterCreateAndEditComponent({
             </button>
             <button
               type='submit'
-              onClick={editingNewsletter ? updateAndSaveDraft : 'Create'}
+              onClick={editingNewsletter ? updateAndSaveDraft : createAndSave}
               className='px-4 py-2 rounded bg-blue-600 text-colour1 hover:bg-blue-700 text-sm'
             >
               {editingNewsletter ? 'Update' : 'Create'}
