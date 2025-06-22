@@ -211,33 +211,6 @@ function NewsletterAdminSubscriberSection({
                         />
                       </li>
                     ))}
-                    {filteredSubscribers.map((subscriber, index) => (
-                      <li key={subscriber.id}>
-                        <NewsletterSubscriberItem
-                          id={index}
-                          subscriber={subscriber}
-                          handleDelete={handleDelete}
-                        />
-                      </li>
-                    ))}
-                    {filteredSubscribers.map((subscriber, index) => (
-                      <li key={subscriber.id}>
-                        <NewsletterSubscriberItem
-                          id={index}
-                          subscriber={subscriber}
-                          handleDelete={handleDelete}
-                        />
-                      </li>
-                    ))}
-                    {filteredSubscribers.map((subscriber, index) => (
-                      <li key={subscriber.id}>
-                        <NewsletterSubscriberItem
-                          id={index}
-                          subscriber={subscriber}
-                          handleDelete={handleDelete}
-                        />
-                      </li>
-                    ))}
                   </ul>
                 )}
               </>
