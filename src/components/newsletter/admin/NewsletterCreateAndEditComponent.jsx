@@ -12,9 +12,9 @@ import ContentInput from './ContentInput';
 function NewsletterCreateAndEditComponent({
   editingNewsletter,
   setEditingNewsletter,
-  confirmAction,
   setPublishedNewslettersArray,
   setSelectedLayout,
+  confirmAction,
 }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -34,10 +34,24 @@ function NewsletterCreateAndEditComponent({
     }
   }, [editingNewsletter]);
 
+  const isFormValid = () => {
+    if (!title.trim()) {
+      alert('Please enter a title.');
+      return false;
+    }
+
+    if (!content.trim()) {
+      alert('Please enter newsletter content.');
+      return false;
+    }
+
+    return true;
+  };
+
   const updateAndSaveDraft = (e) => {
     e.preventDefault();
 
-    if (!title.trim() && !content.trim()) return;
+    if (!isFormValid()) return;
 
     setIsSavingNewsletter(true);
 
@@ -67,7 +81,7 @@ function NewsletterCreateAndEditComponent({
     e.preventDefault();
 
     console.log('PPPPPPPPPPPPP');
-    if (!title.trim() && !content.trim()) return;
+    if (!isFormValid()) return;
 
     setIsSavingNewsletter(true);
 
@@ -144,6 +158,9 @@ function NewsletterCreateAndEditComponent({
 
   const publishNewsletter = (e) => {
     e.preventDefault();
+
+    if (!isFormValid()) return;
+
     if (!editingNewsletter?.id) {
       console.error('No newsletter selected for publishing.');
       return;

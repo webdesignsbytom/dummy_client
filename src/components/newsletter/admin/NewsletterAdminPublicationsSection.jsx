@@ -20,9 +20,9 @@ function NewsletterAdminPublicationsSection({
   setPublishedNewslettersArray,
   draftNewslettersArray,
   setDraftNewslettersArray,
-  confirmAction,
   setSelectedLayout,
   setEditingNewsletter,
+  confirmAction,
 }) {
   const [isLoadingPublishedArray, setIsLoadingPublishedArray] = useState(false);
   const [isLoadingDraftArray, setIsLoadingDraftArray] = useState(false);

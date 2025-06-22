@@ -13,6 +13,7 @@ import ConfirmModal from '../../modals/ConfirmModal';
 import NewsletterAdminSubscriberSection from './NewsletterAdminSubscriberSection';
 import NewsletterAdminPublicationsSection from './NewsletterAdminPublicationsSection';
 import NewsletterCreateAndEditComponent from './NewsletterCreateAndEditComponent';
+import useConfirmAction from '../../../hooks/useConfirmAction';
 
 const layoutOptions = [
   { key: 'subscribers', label: 'Subscribers' },
@@ -21,27 +22,15 @@ const layoutOptions = [
 ];
 
 function NewsletterAdminPageMainContainer() {
+  const confirmActionState = useConfirmAction();
+
   const [newsletterSubscribers, setNewsletterSubscribers] = useState([]);
   const [publishedNewslettersArray, setPublishedNewslettersArray] = useState(
     []
   );
   const [draftNewslettersArray, setDraftNewslettersArray] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [pendingAction, setPendingAction] = useState(null);
-  const [modalContent, setModalContent] = useState({ header: '', message: '' });
   const [selectedLayout, setSelectedLayout] = useState('subscribers');
   const [editingNewsletter, setEditingNewsletter] = useState(null);
-
-  const confirmAction = ({ action, header, message }) => {
-    setPendingAction(() => action);
-    setModalContent({ header, message });
-    setModalOpen(true);
-  };
-
-  const handleModalConfirm = () => {
-    if (pendingAction) pendingAction();
-    setModalOpen(false);
-  };
 
   return (
     <main
@@ -68,9 +57,7 @@ function NewsletterAdminPageMainContainer() {
           <NewsletterAdminSubscriberSection
             newsletterSubscribers={newsletterSubscribers}
             setNewsletterSubscribers={setNewsletterSubscribers}
-            setPendingAction={setPendingAction}
-            setModalContent={setModalContent}
-            setModalOpen={setModalOpen}
+            {...confirmActionState}
           />
         )}
 
@@ -80,9 +67,9 @@ function NewsletterAdminPageMainContainer() {
             setPublishedNewslettersArray={setPublishedNewslettersArray}
             draftNewslettersArray={draftNewslettersArray}
             setDraftNewslettersArray={setDraftNewslettersArray}
-            confirmAction={confirmAction}
             setSelectedLayout={setSelectedLayout}
             setEditingNewsletter={setEditingNewsletter}
+            {...confirmActionState}
           />
         )}
 
@@ -90,20 +77,20 @@ function NewsletterAdminPageMainContainer() {
           <NewsletterCreateAndEditComponent
             editingNewsletter={editingNewsletter}
             setEditingNewsletter={setEditingNewsletter}
-            confirmAction={confirmAction}
             setPublishedNewslettersArray={setPublishedNewslettersArray}
             setSelectedLayout={setSelectedLayout}
+            {...confirmActionState}
           />
         )}
       </section>
 
       {/* Confirm Modal */}
-      {modalOpen && (
+      {confirmActionState.modalOpen && (
         <ConfirmModal
-          onClose={() => setModalOpen(false)}
-          onConfirm={handleModalConfirm}
-          header={modalContent.header}
-          message={modalContent.message}
+          onClose={() => confirmActionState.setModalOpen(false)}
+          onConfirm={confirmActionState.handleModalConfirm}
+          header={confirmActionState.modalContent.header}
+          message={confirmActionState.modalContent.message}
         />
       )}
     </main>

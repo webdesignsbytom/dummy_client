@@ -19,9 +19,7 @@ import SearchBarComponent from '../../search/SearchBarComponent';
 function NewsletterAdminSubscriberSection({
   newsletterSubscribers,
   setNewsletterSubscribers,
-  setPendingAction,
-  setModalContent,
-  setModalOpen,
+  confirmAction,
 }) {
   const [isLoadingSubscriberList, setIsLoadingSubscriberList] = useState(false);
 
@@ -46,12 +44,6 @@ function NewsletterAdminSubscriberSection({
           setIsLoadingSubscriberList(false);
         }, 500); // 0.5 second delay on error too
       });
-  };
-
-  const confirmAction = ({ action, header, message }) => {
-    setPendingAction(() => action);
-    setModalContent({ header, message });
-    setModalOpen(true);
   };
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -87,6 +79,8 @@ function NewsletterAdminSubscriberSection({
   };
 
   const handleDeleteAll = () => {
+    console.log('AAAAAAAAA');
+
     confirmAction({
       header: 'Delete All Subscribers',
       message:
