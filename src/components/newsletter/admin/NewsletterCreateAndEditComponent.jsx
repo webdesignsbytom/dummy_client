@@ -36,12 +36,20 @@ function NewsletterCreateAndEditComponent({
 
   const isFormValid = () => {
     if (!title.trim()) {
-      alert('Please enter a title.');
+      confirmAction({
+        header: 'Missing Title',
+        message: 'Please enter a title before saving or publishing.',
+        action: () => {},
+      });
       return false;
     }
 
     if (!content.trim()) {
-      alert('Please enter newsletter content.');
+      confirmAction({
+        header: 'Missing Content',
+        message: 'Please enter newsletter content before saving or publishing.',
+        action: () => {},
+      });
       return false;
     }
 
