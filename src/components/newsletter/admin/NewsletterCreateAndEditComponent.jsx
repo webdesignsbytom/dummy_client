@@ -203,8 +203,8 @@ function NewsletterCreateAndEditComponent({
   };
 
   return (
-    <section className='grid grid-rows-reg w-full h-full px-2 overflow-hidden'>
-      <section className='grid grid-flow-col py-2 px-1'>
+    <section className='grid grid-rows-reg gap-y-4 w-full h-full px-2 lg:px-4 lg:py-4 overflow-hidden'>
+      <section className='grid grid-flow-col'>
         <div>
           <h2 className='lg:text-xl font-semibold text-colour8'>
             {editingNewsletter ? 'Edit Newsletter' : 'Create Newsletter'}
@@ -287,7 +287,7 @@ function NewsletterCreateAndEditComponent({
         )}
 
         {/* Inputs */}
-        <section className='grid grid-rows-reg gap-y-4 h-full w-full bg-geen-300 overflow-hidden px-2'>
+        <section className='grid grid-rows-reg gap-y-4 h-full w-full overflow-hidden '>
           {/* Title */}
           <div>
             <label className='block text-sm font-medium mb-1' htmlFor='title'>
@@ -313,8 +313,8 @@ function NewsletterCreateAndEditComponent({
         </section>
 
         {/* Action Buttons */}
-        <section className='grid items-end h-fit gap-y-1 pb-2'>
-          <div className='grid items-end h-fit grid-cols-2 gap-x-1 justify-between'>
+        <section className='grid items-end lg:justify-end h-fit gap-y-1 pb-2'>
+          <div className='grid items-end h-fit grid-cols-2 gap-x-1 justify-between lg:min-w-[50vw]'>
             <button
               type='button'
               onClick={handleCancel}

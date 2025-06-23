@@ -9,8 +9,7 @@
 2. Multiple paginations bars
 
 ## Newsletter
-1. Enter title to save or create
-2. 
+
 ## Reviews
 
 ## Shop

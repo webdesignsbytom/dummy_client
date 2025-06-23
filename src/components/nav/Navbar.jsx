@@ -61,14 +61,14 @@ function Navbar() {
           </button>
 
           {/* Large screen */}
-          <ul className='hidden md:grid grid-flow-col gap-6 items-center text-orange-600'>
+          <ul className='hidden lg:grid grid-flow-col gap-6 items-center text-orange-600'>
             {navLinkItemsArray.map(({ path, label }) => (
               <NavItem key={label} url={path} title={label} />
             ))}
             {user?.email && (
               <li>
                 <button
-                  className='text-xl md:text-lg text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
+                  className='text-xl lg:text-base text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
                   onClick={handleLogout}
                 >
                   Logout
@@ -113,7 +113,7 @@ const NavItem = ({ url, title }) => {
       <NavLink
         to={url}
         aria-label={`${title} page navigation tab`}
-        className='text-xl md:text-lg text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
+        className='text-xl md:text-sm text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75'
         aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
         style={({ isActive }) => {
           return isActive ? { color: '#f8fafc' } : {};
