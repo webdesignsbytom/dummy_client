@@ -210,7 +210,7 @@ function NewsletterCreateAndEditComponent({
             {editingNewsletter ? 'Edit Newsletter' : 'Create Newsletter'}
           </h2>
         </div>
-        <div className='grid grid-flow-col gap-x-1'>
+        <div className='grid grid-flow-col justify-end gap-x-1'>
           {editingNewsletter && (
             <button
               onClick={createNewNewsletter}
@@ -221,7 +221,7 @@ function NewsletterCreateAndEditComponent({
           )}
           <button
             onClick={deleteNewsletter}
-            className='text-colour1 text-xs bg-red-600 rounded-md hover:bg-red-700 transition'
+            className='text-colour1 text-xs bg-red-600 rounded-md hover:bg-red-700 transition min-w-16 lg:min-w-24 px-2'
           >
             Delete
           </button>
@@ -229,7 +229,7 @@ function NewsletterCreateAndEditComponent({
       </section>
 
       <form
-        className={`grid grid-rows-rev relative gap-y-4 h-full bg-green-300 overflow-hidden w-full pb-1 mx-auto ${
+        className={`grid grid-rows-rev relative gap-y-4 h-full overflow-hidden w-full pb-1 mx-auto ${
           isPublishingNewsletter || isSavingNewsletter
             ? 'blur-sm pointer-events-none select-none'
             : ''

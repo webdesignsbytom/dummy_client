@@ -5,7 +5,6 @@ import client from '../../../api/client';
 import {
   DELETE_ALL_SUBSCRIBERS_API,
   DELETE_SUBSCRIBER_BY_ID_API,
-  GET_ALL_NEWSLETTER_SUBSCRIBERS_API,
 } from '../../../utils/ApiRoutes';
 import { CompanyName } from '../../../utils/Constants';
 // Icons
@@ -20,32 +19,9 @@ function NewsletterAdminSubscriberSection({
   newsletterSubscribers,
   setNewsletterSubscribers,
   confirmAction,
+  fetchNewsletterSubscribers,
+  isLoadingSubscriberList,
 }) {
-  const [isLoadingSubscriberList, setIsLoadingSubscriberList] = useState(false);
-
-  useEffect(() => {
-    fetchNewsletterSubscribers();
-  }, []);
-
-  const fetchNewsletterSubscribers = () => {
-    setIsLoadingSubscriberList(true);
-
-    client
-      .get(GET_ALL_NEWSLETTER_SUBSCRIBERS_API, false)
-      .then((res) => {
-        setNewsletterSubscribers(res.data.subscribers);
-        setTimeout(() => {
-          setIsLoadingSubscriberList(false);
-        }, 500); // 0.5 second delay
-      })
-      .catch((err) => {
-        console.error('Unable to retrieve callback form data', err);
-        setTimeout(() => {
-          setIsLoadingSubscriberList(false);
-        }, 500); // 0.5 second delay on error too
-      });
-  };
-
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter subscribers based on search

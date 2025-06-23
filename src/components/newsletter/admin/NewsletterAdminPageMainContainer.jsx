@@ -6,6 +6,8 @@ import {
   GET_ALL_NEWSLETTER_SUBSCRIBERS_API,
   DELETE_ALL_SUBSCRIBERS_API,
   DELETE_SUBSCRIBER_BY_ID_API,
+  GET_ALL_PUBLISHED_NEWSLETTERS_API,
+  GET_ALL_DRAFT_NEWSLETTERS_API,
 } from '../../../utils/ApiRoutes';
 import { CompanyName } from '../../../utils/Constants';
 // Components
@@ -34,6 +36,76 @@ function NewsletterAdminPageMainContainer() {
   const [editingNewsletter, setEditingNewsletter] = useState(null);
   const [viewingNewsletter, setViewingNewsletter] = useState(null);
 
+  const [isLoadingPublishedArray, setIsLoadingPublishedArray] = useState(false);
+  const [isLoadingDraftArray, setIsLoadingDraftArray] = useState(false);
+
+  const [isLoadingSubscriberList, setIsLoadingSubscriberList] = useState(false);
+
+  useEffect(() => {
+    fetchPublishedNewsletters();
+    fetchDraftNewsletters();
+    fetchNewsletterSubscribers();
+  }, []);
+
+  const fetchNewsletterSubscribers = () => {
+    setIsLoadingSubscriberList(true);
+
+    client
+      .get(GET_ALL_NEWSLETTER_SUBSCRIBERS_API, false)
+      .then((res) => {
+        setNewsletterSubscribers(res.data.subscribers);
+        setTimeout(() => {
+          setIsLoadingSubscriberList(false);
+        }, 500); // 0.5 second delay
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve callback form data', err);
+        setTimeout(() => {
+          setIsLoadingSubscriberList(false);
+        }, 500); // 0.5 second delay on error too
+      });
+  };
+
+  const fetchPublishedNewsletters = () => {
+    setIsLoadingPublishedArray(true);
+
+    client
+      .get(GET_ALL_PUBLISHED_NEWSLETTERS_API, false)
+      .then((res) => {
+        setTimeout(() => {
+          setPublishedNewslettersArray(res.data.newsletters);
+          setIsLoadingPublishedArray(false);
+        }, 500);
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve published newsletters array', err);
+        setTimeout(() => {
+          setPublishedNewslettersArray([]);
+          setIsLoadingPublishedArray(false);
+        }, 500);
+      });
+  };
+
+  const fetchDraftNewsletters = () => {
+    setIsLoadingDraftArray(true);
+
+    client
+      .get(GET_ALL_DRAFT_NEWSLETTERS_API, false)
+      .then((res) => {
+        setTimeout(() => {
+          setDraftNewslettersArray(res.data.drafts);
+          setIsLoadingDraftArray(false);
+        }, 500);
+      })
+      .catch((err) => {
+        console.error('Unable to retrieve draft newsletters array', err);
+        setTimeout(() => {
+          setDraftNewslettersArray([]);
+          setIsLoadingDraftArray(false);
+        }, 500);
+      });
+  };
+
   return (
     <main
       role='main'
@@ -60,6 +132,8 @@ function NewsletterAdminPageMainContainer() {
             newsletterSubscribers={newsletterSubscribers}
             setNewsletterSubscribers={setNewsletterSubscribers}
             {...confirmActionState}
+            fetchNewsletterSubscribers={fetchNewsletterSubscribers}
+            isLoadingSubscriberList={isLoadingSubscriberList}
           />
         )}
 
@@ -73,6 +147,10 @@ function NewsletterAdminPageMainContainer() {
             setEditingNewsletter={setEditingNewsletter}
             {...confirmActionState}
             setViewingNewsletter={setViewingNewsletter}
+            fetchPublishedNewsletters={fetchPublishedNewsletters}
+            fetchDraftNewsletters={fetchDraftNewsletters}
+            isLoadingDraftArray={isLoadingDraftArray}
+            isLoadingPublishedArray={isLoadingPublishedArray}
           />
         )}
 
@@ -87,9 +165,7 @@ function NewsletterAdminPageMainContainer() {
         )}
 
         {selectedLayout === 'newsletter' && (
-          <NewsletterDisplayComponent
-            viewingNewsletter={viewingNewsletter}
-          />
+          <NewsletterDisplayComponent viewingNewsletter={viewingNewsletter} />
         )}
       </section>
 

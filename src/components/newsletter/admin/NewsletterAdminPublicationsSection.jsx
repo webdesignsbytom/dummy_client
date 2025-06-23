@@ -2,11 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
-import {
-  DELETE_NEWSLETTER_BY_ID_API,
-  GET_ALL_DRAFT_NEWSLETTERS_API,
-  GET_ALL_PUBLISHED_NEWSLETTERS_API,
-} from '../../../utils/ApiRoutes';
+import { DELETE_NEWSLETTER_BY_ID_API } from '../../../utils/ApiRoutes';
 // Icons
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -19,60 +15,16 @@ function NewsletterAdminPublicationsSection({
   publishedNewslettersArray,
   setPublishedNewslettersArray,
   draftNewslettersArray,
-  setDraftNewslettersArray,
   setSelectedLayout,
   setEditingNewsletter,
   confirmAction,
   setViewingNewsletter,
+  fetchPublishedNewsletters,
+  fetchDraftNewsletters,
+  isLoadingDraftArray,
+  isLoadingPublishedArray,
 }) {
-  const [isLoadingPublishedArray, setIsLoadingPublishedArray] = useState(false);
-  const [isLoadingDraftArray, setIsLoadingDraftArray] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
-    fetchPublishedNewsletters();
-    fetchDraftNewsletters();
-  }, []);
-
-  const fetchPublishedNewsletters = () => {
-    setIsLoadingPublishedArray(true);
-
-    client
-      .get(GET_ALL_PUBLISHED_NEWSLETTERS_API, false)
-      .then((res) => {
-        setTimeout(() => {
-          setPublishedNewslettersArray(res.data.newsletters);
-          setIsLoadingPublishedArray(false);
-        }, 500);
-      })
-      .catch((err) => {
-        console.error('Unable to retrieve published newsletters array', err);
-        setTimeout(() => {
-          setPublishedNewslettersArray([]);
-          setIsLoadingPublishedArray(false);
-        }, 500);
-      });
-  };
-
-  const fetchDraftNewsletters = () => {
-    setIsLoadingDraftArray(true);
-
-    client
-      .get(GET_ALL_DRAFT_NEWSLETTERS_API, false)
-      .then((res) => {
-        setTimeout(() => {
-          setDraftNewslettersArray(res.data.drafts);
-          setIsLoadingDraftArray(false);
-        }, 500);
-      })
-      .catch((err) => {
-        console.error('Unable to retrieve draft newsletters array', err);
-        setTimeout(() => {
-          setDraftNewslettersArray([]);
-          setIsLoadingDraftArray(false);
-        }, 500);
-      });
-  };
 
   const filteredDrafts = useMemo(() => {
     const query = searchQuery.toLowerCase();

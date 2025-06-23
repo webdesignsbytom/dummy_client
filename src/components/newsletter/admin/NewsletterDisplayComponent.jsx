@@ -14,10 +14,10 @@ function NewsletterDisplayComponent({ viewingNewsletter }) {
   return (
     <section className='grid w-full bg-green-500 px-2 py-2'>
       <article className='grid grid-rows-reg w-full lg:max-w-4xl lg:mx-auto bg-colour1'>
-        <div>
-          <h1 className='text-xl font-semibolmb-2'>{title}</h1>
+        <section className='grid gap-y-1 border-b-2 border-solid border-colour9 px-1 h-fit py-2'>
+          <h1 className='text-xl font-semibold'>{title}</h1>
           {publishedAt && (
-            <p className='text-xs text-gray-500 mb-4'>
+            <p className='text-xs text-gray-500 pl-2'>
               Published:{' '}
               {new Date(publishedAt).toLocaleString('en-GB', {
                 day: '2-digit',
@@ -28,9 +28,9 @@ function NewsletterDisplayComponent({ viewingNewsletter }) {
               })}
             </p>
           )}
-        </div>
+        </section>
 
-        <section>
+        <section className='grid p-2'>
           <div
             className='prose text-sm'
             dangerouslySetInnerHTML={{ __html: content }}
