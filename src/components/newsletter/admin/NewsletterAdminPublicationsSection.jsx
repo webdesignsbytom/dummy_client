@@ -23,6 +23,7 @@ function NewsletterAdminPublicationsSection({
   setSelectedLayout,
   setEditingNewsletter,
   confirmAction,
+  setViewingNewsletter,
 }) {
   const [isLoadingPublishedArray, setIsLoadingPublishedArray] = useState(false);
   const [isLoadingDraftArray, setIsLoadingDraftArray] = useState(false);
@@ -111,6 +112,12 @@ function NewsletterAdminPublicationsSection({
     setEditingNewsletter(draft);
     setSelectedLayout('create');
     console.log(`Edit draft newsletter with ID: ${draft.id}`);
+  };
+
+  const viewNewsletter = (newsletter) => {
+    setViewingNewsletter(newsletter);
+    setSelectedLayout('newsletter');
+    console.log(`Viewing newsletter with ID: ${newsletter.id}`);
   };
 
   return (
@@ -230,13 +237,22 @@ function NewsletterAdminPublicationsSection({
                         </span>
                       </p>
                     </div>
-                    <button
-                      onClick={() => deleteNewsletter(pub.id)}
-                      className='text-red-600 min-w-4 hover:text-red-800 text-sm'
-                      title='Delete Published Newsletter'
-                    >
-                      <FiTrash2 />
-                    </button>
+                    <div className='grid grid-flow-col gap-x-2 items-center'>
+                      <button
+                        onClick={() => viewNewsletter(pub)}
+                        className='text-green-600 min-w-4 hover:text-green-800 text-sm pl-1'
+                        title='View Newsletter'
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => deleteNewsletter(pub.id)}
+                        className='text-red-600 min-w-4 hover:text-red-800 text-sm'
+                        title='Delete Published Newsletter'
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>

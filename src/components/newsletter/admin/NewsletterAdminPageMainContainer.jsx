@@ -14,6 +14,7 @@ import NewsletterAdminSubscriberSection from './NewsletterAdminSubscriberSection
 import NewsletterAdminPublicationsSection from './NewsletterAdminPublicationsSection';
 import NewsletterCreateAndEditComponent from './NewsletterCreateAndEditComponent';
 import useConfirmAction from '../../../hooks/useConfirmAction';
+import NewsletterDisplayComponent from './NewsletterDisplayComponent';
 
 const layoutOptions = [
   { key: 'subscribers', label: 'Subscribers' },
@@ -31,6 +32,7 @@ function NewsletterAdminPageMainContainer() {
   const [draftNewslettersArray, setDraftNewslettersArray] = useState([]);
   const [selectedLayout, setSelectedLayout] = useState('subscribers');
   const [editingNewsletter, setEditingNewsletter] = useState(null);
+  const [viewingNewsletter, setViewingNewsletter] = useState(null);
 
   return (
     <main
@@ -70,6 +72,7 @@ function NewsletterAdminPageMainContainer() {
             setSelectedLayout={setSelectedLayout}
             setEditingNewsletter={setEditingNewsletter}
             {...confirmActionState}
+            setViewingNewsletter={setViewingNewsletter}
           />
         )}
 
@@ -80,6 +83,12 @@ function NewsletterAdminPageMainContainer() {
             setPublishedNewslettersArray={setPublishedNewslettersArray}
             setSelectedLayout={setSelectedLayout}
             {...confirmActionState}
+          />
+        )}
+
+        {selectedLayout === 'newsletter' && (
+          <NewsletterDisplayComponent
+            viewingNewsletter={viewingNewsletter}
           />
         )}
       </section>
