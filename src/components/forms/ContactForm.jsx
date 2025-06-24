@@ -47,14 +47,14 @@ function ContactForm() {
         .post(SUBMIT_CONTACT_FORM_API, formData, false)
         .then((res) => {
           setSubmitState(submitStates[3]); // "success"
+          setFormData(emptyContactFormData);
+          setErrors({});
         })
         .catch((err) => {
           console.error('Unable to submit contact request', err);
           setSubmitState(submitStates[2]); // "failed"
         });
 
-      setFormData(emptyContactFormData);
-      setErrors({});
     }
   };
 
