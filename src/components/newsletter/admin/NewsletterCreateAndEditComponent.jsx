@@ -149,6 +149,12 @@ function NewsletterCreateAndEditComponent({
             setPublishedNewslettersArray((prev) =>
               prev.filter((n) => n.id !== editingNewsletter.id)
             );
+
+            // Remove from published array
+            setPublishedNewslettersArray((prev) =>
+              prev.filter((n) => n.id !== editingNewsletter.id)
+            );
+
             setSelectedLayout('newsletters');
           })
           .catch((err) => {

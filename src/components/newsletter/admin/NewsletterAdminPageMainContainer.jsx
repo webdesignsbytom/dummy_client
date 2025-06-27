@@ -32,8 +32,8 @@ function NewsletterAdminPageMainContainer() {
     []
   );
   const [draftNewslettersArray, setDraftNewslettersArray] = useState([]);
-  const [selectedLayout, setSelectedLayout] = useState('subscribers');
   const [editingNewsletter, setEditingNewsletter] = useState(null);
+  const [selectedLayout, setSelectedLayout] = useState('subscribers');
   const [viewingNewsletter, setViewingNewsletter] = useState(null);
 
   const [isLoadingPublishedArray, setIsLoadingPublishedArray] = useState(false);
