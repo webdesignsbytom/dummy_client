@@ -28,6 +28,7 @@ import {
   NEWSLETTER_PAGE_URL,
   NEWSLETTER_ADMIN_PAGE_URL,
   NEWSLETTER_CONFIRM_EMAIL_PAGE_URL,
+  NEWSLETTER_UNSUBSCRIBE_PAGE_URL,
 } from './utils/Routes';
 import { COOKIE_TIMER, CookiePolicyName } from './utils/Constants';
 // Pages
@@ -65,6 +66,7 @@ import MaintenancePage from './pages/maintenance/MaintenancePage';
 import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
 import NewsletterValidationPage from './pages/newsletter/NewsletterValidationPage';
+import NewsletterUnsubscribePage from './pages/newsletter/NewsletterUnsubscribePage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -141,6 +143,10 @@ function App() {
           <Route
             path={`${NEWSLETTER_CONFIRM_EMAIL_PAGE_URL}/:userId/:uniqueString/:verificationTokenId`}
             element={<NewsletterValidationPage />}
+          />
+          <Route
+            path={`${NEWSLETTER_UNSUBSCRIBE_PAGE_URL}/:userId/:uniqueString`}
+            element={<NewsletterUnsubscribePage />}
           />
 
           {/* Booking routes */}

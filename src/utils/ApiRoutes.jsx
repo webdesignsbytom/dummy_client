@@ -32,6 +32,10 @@ export const DELETE_REVIEW_API = '/reviews/delete-review'; // /:reviewId
 // Newsletter
 // =========================
 export const SUBSCRIBE_TO_NEWSLETTER_API = '/newsletter/subscribe-to-newsletter';
+export const NEWSLETTER_VALIDATE_EMAIL_API = '/newsletter/confirm-email';
+export const NEWSLETTER_UNSUBSCRIBE_API = '/newsletter/unsubscribe';
+export const NEWSLETTER_RESEND_VALIDATE_EMAIL_API = '/newsletter/resend-verification-email';
+
 export const GET_ALL_NEWSLETTER_SUBSCRIBERS_API = '/newsletter/get-subscriber-list';
 export const DELETE_SUBSCRIBER_BY_ID_API = '/newsletter/delete-subscriber-by-id';
 export const DELETE_SUBSCRIBER_BY_EMAIL_API = '/newsletter/delete-subscriber-by-email';
@@ -45,10 +49,6 @@ export const PUBLISH_NEWSLETTER_API = '/newsletter/publish-and-send-bulk-email';
 
 export const GET_ALL_PUBLISHED_NEWSLETTERS_API = '/newsletter/get-all-published-newsletters';
 export const GET_ALL_DRAFT_NEWSLETTERS_API = '/newsletter/get-all-newsletter-drafts';
-
-export const NEWSLETTER_VALIDATE_EMAIL_API = '/newsletter/confirm-email';
-export const NEWSLETTER_UNSUBSCRIBE_API = '/newsletter/unsubscribe';
-export const NEWSLETTER_RESEND_VALIDATE_EMAIL_API = '/newsletter/resend-verification-email';
 
 // =========================
 // Blog
