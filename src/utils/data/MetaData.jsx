@@ -125,6 +125,49 @@ export const newsletterValidationAdditionalMeta = [
   { name: 'robots', content: 'noindex, follow' }, // Optional, prevents indexing
 ];
 
+export const newsletterUnsubscribeStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: `${CompanyName} Newsletter Unsubscribe`,
+  url: `${FULL_BUSINESS_URL}/newsletter/unsubscribe`,
+  description: `Unsubscribe from the ${CompanyName} newsletter and stop receiving further updates or promotions.`,
+  mainEntity: {
+    '@type': 'Organization',
+    name: CompanyName,
+    url: FULL_BUSINESS_URL,
+    // sameAs could be added here if you want social links
+  },
+};
+
+export const newsletterUnsubscribeAdditionalMeta = [
+  {
+    property: 'og:title',
+    content: `Unsubscribe from ${CompanyName} Newsletter`,
+  },
+  {
+    property: 'og:description',
+    content: `You've chosen to unsubscribe from the ${CompanyName} newsletter. We're sorry to see you go, but you're always welcome back.`,
+  },
+  {
+    property: 'og:url',
+    content: `${FULL_BUSINESS_URL}/newsletter/unsubscribe`,
+  },
+  { name: 'robots', content: 'noindex, follow' }, // Prevent indexing if desired
+  { name: 'twitter:card', content: 'summary_large_image' },
+  {
+    name: 'twitter:title',
+    content: `Unsubscribe – ${CompanyName} Newsletter`,
+  },
+  {
+    name: 'twitter:description',
+    content: `Manage your email preferences and stop receiving the ${CompanyName} newsletter.`,
+  },
+  {
+    name: 'twitter:image',
+    content: `${FULL_BUSINESS_URL}/brand/logo.png`,
+  },
+];
+
 // Reviews //
 // Reviews page
 export const reviewsPageStructuredData = {

@@ -145,7 +145,7 @@ function App() {
             element={<NewsletterValidationPage />}
           />
           <Route
-            path={`${NEWSLETTER_UNSUBSCRIBE_PAGE_URL}/:userId/:uniqueString`}
+            path={`${NEWSLETTER_UNSUBSCRIBE_PAGE_URL}/:subId/:uniqueString`}
             element={<NewsletterUnsubscribePage />}
           />
 

@@ -4,9 +4,7 @@ import { useParams } from 'react-router-dom';
 import client from '../../api/client';
 // Constants
 import { CompanyName } from '../../utils/Constants';
-import {
-  NEWSLETTER_UNSUBSCRIBE_API,
-} from '../../utils/ApiRoutes';
+import { NEWSLETTER_UNSUBSCRIBE_API } from '../../utils/ApiRoutes';
 // Data
 import {
   newsletterValidationAdditionalMeta,
@@ -20,10 +18,10 @@ import LoadingSpinner from '../../components/utils/LoadingSpinner';
 function NewsletterUnsubscribePage() {
   const { subId, uniqueString } = useParams();
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
-  const [resendStatus, setResendStatus] = useState(null); // null, 'loading', 'success', 'error'
+  const [retryStatus, setRetryStatus] = useState(null); // null, 'loading', 'success', 'error'
 
-  const handleResendVerification = async () => {
-    setResendStatus('loading');
+  const handleRetryUnsubscribe = async () => {
+    setRetryStatus('loading');
 
     client
       .delete(`${NEWSLETTER_UNSUBSCRIBE_API}/${subId}/${uniqueString}`, false)
@@ -31,17 +29,29 @@ function NewsletterUnsubscribePage() {
         setStatus('success');
       })
       .catch((err) => {
-        console.error('Failed to resend verification:', err);
+        console.error('Failed to unsubscribe:', err);
         setStatus('error');
       });
   };
 
+  useEffect(() => {
+    client
+      .delete(`${NEWSLETTER_UNSUBSCRIBE_API}/${subId}/${uniqueString}`, false)
+      .then(() => {
+        setStatus('success');
+      })
+      .catch((err) => {
+        console.error('Failed to process unsubscribe:', err);
+        setStatus('error');
+      });
+  }, [subId, uniqueString]);
+
   return (
     <>
       <HelmetItem
-        PageName='Confirm Your Email - Newsletter'
-        desc={`Verify your email address to complete your subscription to the ${CompanyName} newsletter. Get updates, offers, and exclusive insights.`}
-        keywords={`email verification, ${CompanyName} newsletter, confirm email, subscribe, updates`}
+        PageName='Unsubscribe - Newsletter'
+        desc={`Unsubscribe from the ${CompanyName} newsletter. Manage your preferences and stop receiving updates.`}
+        keywords={`unsubscribe, ${CompanyName} newsletter, stop emails, email preferences`}
         additionalMeta={newsletterValidationAdditionalMeta}
         structuredData={newsletterValidationStructuredData}
       />
@@ -51,12 +61,15 @@ function NewsletterUnsubscribePage() {
           <Navbar />
           <header className='grid w-full' role='banner'>
             <div className='grid gap-y-4 w-full px-8 text-center lg:container lg:mx-auto py-6'>
-              <h1 className='text-xl font-semibold'>Email Confirmation</h1>
+              <h1 className='text-xl font-semibold'>
+                Unsubscribe Confirmation
+              </h1>
               <p className='text-sm text-gray-700 mt-2 max-w-2xl mx-auto'>
-                You're nearly done! This page confirms your subscription to the{' '}
-                {CompanyName} newsletter. <br />
-                Once validated, you’ll start receiving updates, offers, and
-                helpful resources right in your inbox.
+                This page processes your request to unsubscribe from the{' '}
+                {CompanyName} newsletter.
+                <br />
+                We’re sorry to see you go, but you can always resubscribe at any
+                time.
               </p>
             </div>
           </header>
@@ -67,11 +80,13 @@ function NewsletterUnsubscribePage() {
             className='grid gap-3 text-center'
             role='status'
             aria-live='polite'
-            aria-busy={status === 'loading' || resendStatus === 'loading'}
+            aria-busy={status === 'loading' || retryStatus === 'loading'}
           >
             {status === 'loading' && (
               <>
-                <p className='mb-2'>Validating your email, please wait...</p>
+                <p className='mb-2'>
+                  Processing your unsubscribe request, please wait...
+                </p>
                 <div className='flex justify-center mx-auto'>
                   <LoadingSpinner lg={true} />
                 </div>
@@ -81,15 +96,15 @@ function NewsletterUnsubscribePage() {
             {status === 'success' && (
               <>
                 <p className='text-green-600 font-medium'>
-                  ✅ Your email has been successfully confirmed!
+                  ✅ You have been successfully unsubscribed!
                 </p>
                 <p className='text-gray-800 text-sm max-w-md'>
-                  You’re now subscribed to the {CompanyName} newsletter. Expect
-                  occasional updates packed with useful content, special offers,
-                  and news.
+                  You will no longer receive emails from the {CompanyName}{' '}
+                  newsletter.
                 </p>
                 <p className='text-gray-600 text-sm'>
-                  Thanks for confirming — we’re glad to have you on board!
+                  If this was a mistake or you change your mind, you’re always
+                  welcome to subscribe again.
                 </p>
               </>
             )}
@@ -97,34 +112,34 @@ function NewsletterUnsubscribePage() {
             {status === 'error' && (
               <>
                 <p className='text-red-600 font-medium'>
-                  ❌ This verification link is invalid or has expired.
+                  ❌ Unsubscribe request failed or the link is invalid/expired.
                 </p>
                 <p className='text-gray-800 text-sm max-w-md'>
-                  If the link was broken or has timed out, you can request a new
-                  one below.
+                  If you believe this is an error, you can retry the unsubscribe
+                  request below.
                 </p>
                 <button
-                  onClick={handleResendVerification}
-                  disabled={resendStatus === 'loading'}
+                  onClick={handleRetryUnsubscribe}
+                  disabled={retryStatus === 'loading'}
                   className='text-sm text-blue-600 underline hover:text-blue-800 disabled:opacity-50'
-                  aria-label='Resend newsletter verification email'
+                  aria-label='Retry unsubscribe request'
                 >
-                  {resendStatus === 'loading' ? (
+                  {retryStatus === 'loading' ? (
                     <div className='flex justify-center mx-auto'>
                       <LoadingSpinner xs={true} />
                     </div>
                   ) : (
-                    'Resend verification email'
+                    'Retry unsubscribe'
                   )}
                 </button>
-                {resendStatus === 'success' && (
+                {retryStatus === 'success' && (
                   <p className='text-green-600 text-sm'>
-                    ✅ A new verification email has been sent.
+                    ✅ Your unsubscribe request was successful.
                   </p>
                 )}
-                {resendStatus === 'error' && (
+                {retryStatus === 'error' && (
                   <p className='text-red-600 text-sm'>
-                    ❌ Failed to resend. Please try again shortly.
+                    ❌ Failed to process unsubscribe. Please try again shortly.
                   </p>
                 )}
               </>
