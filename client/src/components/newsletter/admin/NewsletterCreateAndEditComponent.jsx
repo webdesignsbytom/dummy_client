@@ -15,6 +15,9 @@ function NewsletterCreateAndEditComponent({
   setPublishedNewslettersArray,
   setSelectedLayout,
   confirmAction,
+  draftNewslettersArray,
+  setDraftNewslettersArray,
+  publishedNewslettersArray,
 }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -23,6 +26,7 @@ function NewsletterCreateAndEditComponent({
   const [isSavingNewsletter, setIsSavingNewsletter] = useState('');
   const [saveFeedback, setSaveFeedback] = useState(null); // null | 'success' | 'error'
 
+  console.log('editingNewsletter', editingNewsletter);
   // Prefill fields if editing
   useEffect(() => {
     if (editingNewsletter) {
@@ -100,17 +104,18 @@ function NewsletterCreateAndEditComponent({
 
     client
       .post(`${CREATE_SAVE_NEW_NEWSLETTER_API}`, payload, false)
-      .then(() => {
+      .then((res) => {
+        console.log('res', res.data);
         console.log('Newsletter saved successfully.');
         setIsSavingNewsletter(false);
         setSaveFeedback('success');
-        // setTimeout(() => setSaveFeedback(null), 500);
+        setEditingNewsletter(res.data.newsletter);
+        setDraftNewslettersArray((prev) => [...prev, res.data.newsletter]);
       })
       .catch((err) => {
         console.error('Failed to save newsletter:', err);
         setIsSavingNewsletter(false);
         setSaveFeedback('error');
-        // setTimeout(() => setSaveFeedback(null), 500);
       });
   };
 
@@ -190,19 +195,21 @@ function NewsletterCreateAndEditComponent({
       action: () => {
         client
           .patch(`${PUBLISH_NEWSLETTER_API}`, { newsletterId }, false)
-          .then(() => {
+          .then((res) => {
+            console.log('rexxxs', res.data);
             console.log('Newsletter published successfully.');
             setIsPublishingNewsletter(false);
             setEditingNewsletter(null);
-            // setSelectedLayout('newsletters');
             setPublishFeedback('success');
-            // setTimeout(() => setPublishFeedback(null), 500);
+            setPublishedNewslettersArray((prev) => [
+              ...prev,
+              res.data.newsletter,
+            ]);
           })
           .catch((err) => {
             console.error('Failed to publish newsletter:', err);
             setIsPublishingNewsletter(false);
             setPublishFeedback('error');
-            // setTimeout(() => setPublishFeedback(null), 500);
           });
       },
     });
@@ -338,15 +345,17 @@ function NewsletterCreateAndEditComponent({
           </div>
 
           {/* Publish button */}
-          <div className='grid w-full'>
-            <button
-              type='submit'
-              className='px-4 py-2 rounded bg-blue-600 text-colour1 hover:bg-blue-700 text-sm'
-              onClick={publishNewsletter}
-            >
-              Publish
-            </button>
-          </div>
+          {editingNewsletter?.id && (
+            <div className='grid w-full'>
+              <button
+                type='submit'
+                className='px-4 py-2 rounded bg-blue-600 text-colour1 hover:bg-blue-700 text-sm'
+                onClick={publishNewsletter}
+              >
+                Publish
+              </button>
+            </div>
+          )}
         </section>
       </form>
     </section>

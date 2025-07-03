@@ -4,12 +4,9 @@ import client from '../../../api/client';
 // Constants
 import {
   GET_ALL_NEWSLETTER_SUBSCRIBERS_API,
-  DELETE_ALL_SUBSCRIBERS_API,
-  DELETE_SUBSCRIBER_BY_ID_API,
   GET_ALL_PUBLISHED_NEWSLETTERS_API,
   GET_ALL_DRAFT_NEWSLETTERS_API,
 } from '../../../utils/ApiRoutes';
-import { CompanyName } from '../../../utils/Constants';
 // Components
 import ConfirmModal from '../../modals/ConfirmModal';
 import NewsletterAdminSubscriberSection from './NewsletterAdminSubscriberSection';
@@ -161,6 +158,9 @@ function NewsletterAdminPageMainContainer() {
             setPublishedNewslettersArray={setPublishedNewslettersArray}
             setSelectedLayout={setSelectedLayout}
             {...confirmActionState}
+            draftNewslettersArray={draftNewslettersArray}
+            setDraftNewslettersArray={setDraftNewslettersArray}
+            publishedNewslettersArray={publishedNewslettersArray}
           />
         )}
 
