@@ -158,9 +158,7 @@ function NewsletterAdminPageMainContainer() {
             setPublishedNewslettersArray={setPublishedNewslettersArray}
             setSelectedLayout={setSelectedLayout}
             {...confirmActionState}
-            draftNewslettersArray={draftNewslettersArray}
             setDraftNewslettersArray={setDraftNewslettersArray}
-            publishedNewslettersArray={publishedNewslettersArray}
           />
         )}
 

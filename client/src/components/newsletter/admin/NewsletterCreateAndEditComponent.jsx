@@ -15,9 +15,7 @@ function NewsletterCreateAndEditComponent({
   setPublishedNewslettersArray,
   setSelectedLayout,
   confirmAction,
-  draftNewslettersArray,
   setDraftNewslettersArray,
-  publishedNewslettersArray,
 }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -79,13 +77,11 @@ function NewsletterCreateAndEditComponent({
         console.log('Newsletter saved successfully.');
         setIsSavingNewsletter(false);
         setSaveFeedback('success');
-        // setTimeout(() => setSaveFeedback(null), 3000);
       })
       .catch((err) => {
         console.error('Failed to save newsletter:', err);
         setIsSavingNewsletter(false);
         setSaveFeedback('error');
-        // setTimeout(() => setSaveFeedback(null), 3000);
       });
   };
 
