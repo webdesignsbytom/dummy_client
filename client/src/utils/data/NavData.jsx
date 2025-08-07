@@ -8,6 +8,7 @@ import {
   CONTACT_PAGE_URL,
   NEWSLETTER_PAGE_URL,
   NEWSLETTER_ADMIN_PAGE_URL,
+  BLOG_PAGE_URL,
 } from '../Routes';
 
 export const getNavLinkItemsArray = (user) => [
@@ -15,6 +16,7 @@ export const getNavLinkItemsArray = (user) => [
   { path: BOOKING_PAGE_URL, label: 'Booking' },
   { path: NEWSLETTER_PAGE_URL, label: 'Newsletter' },
   { path: CONTACT_PAGE_URL, label: 'Contact' },
+  { path: BLOG_PAGE_URL, label: 'Blog' },
   ...(user?.email
     ? user.role === 'ADMIN' || user.role === 'DEVELOPER'
       ? [
