@@ -39,8 +39,8 @@ import ContactPage from './pages/contact/ContactPage';
 // Blog
 import BlogPage from './pages/blog/BlogPage';
 import BlogPostPage from './pages/blog/BlogPostPage';
-import BlogPostCreationPage from './pages/blog/BlogPostCreationPage';
-import BlogPostEditPage from './pages/blog/BlogPostEditPage';
+import BlogPostCreationPage from './pages/blog/admin/BlogPostCreationPage';
+import BlogPostEditPage from './pages/blog/admin/BlogPostEditPage';
 // Booking
 import BookingPage from './pages/booking/BookingPage';
 import BookingAdminPage from './pages/booking/admin/BookingAdminPage';
@@ -124,11 +124,19 @@ function App() {
           />
           <Route
             path={CREATE_BLOG_POST_PAGE_URL}
-            element={<BlogPostCreationPage />}
+            element={
+              <AuthenticateAdmin>
+                <BlogPostCreationPage />
+              </AuthenticateAdmin>
+            }
           />
           <Route
             path={EDIT_BLOG_POST_PAGE_URL}
-            element={<BlogPostEditPage />}
+            element={
+              <AuthenticateAdmin>
+                <BlogPostEditPage />
+              </AuthenticateAdmin>
+            }
           />
 
           {/* Newsletter routes */}

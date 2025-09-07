@@ -9,6 +9,7 @@ import {
   NEWSLETTER_PAGE_URL,
   NEWSLETTER_ADMIN_PAGE_URL,
   BLOG_PAGE_URL,
+  CREATE_BLOG_POST_PAGE_URL,
 } from '../Routes';
 
 export const getNavLinkItemsArray = (user) => [
@@ -22,6 +23,7 @@ export const getNavLinkItemsArray = (user) => [
       ? [
           { path: ADMIN_PAGE_URL, label: 'Admin' },
           { path: BOOKING_ADMIN_PAGE_URL, label: 'Booking Admin' },
+          { path: CREATE_BLOG_POST_PAGE_URL, label: 'Blog Admin' },
           { path: NEWSLETTER_ADMIN_PAGE_URL, label: 'Newsletter Admin' },
         ]
       : []
