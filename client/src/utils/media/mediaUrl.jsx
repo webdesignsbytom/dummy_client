@@ -1,7 +1,5 @@
 const CDN_BASE =
-  process.env.REACT_APP_MEDIA_CDN ||
-  process.env.REACT_APP_S3_PUBLIC_BASE ||
-  '';
+  process.env.REACT_APP_MEDIA_CDN;
 
 const PUBLIC_ENDPOINT = process.env.REACT_APP_S3_PUBLIC_ENDPOINT || '';
 const SIGNED_VIEW_PATH =

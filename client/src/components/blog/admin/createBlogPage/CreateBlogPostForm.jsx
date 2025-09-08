@@ -38,11 +38,13 @@ function CreateBlogPostForm() {
     subTitle: '',
     subject: '',
     location: '',
-    content: [], // [{ type:'paragraph'|'image'|'video', text?, file?, previewUrl?, isThumbnail? }]
+    // [{ type:'paragraph'|'image'|'video', text?, file?, previewUrl?, isThumbnail? }]
+    content: [],
     authorName: '',
     tags: '', // comma-separated
   });
   console.log('[CreateBlogPostForm], blogPosty', blogPost);
+
   const [submitting, setSubmitting] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [okMsg, setOkMsg] = useState('');
@@ -65,13 +67,12 @@ function CreateBlogPostForm() {
       ...prev,
       content: [
         ...prev.content,
-        { type, text: '', file: null, previewUrl: '', isThumbnail: false }, // <— add isThumbnail
+        { type, text: '', file: null, previewUrl: '', isThumbnail: false },
       ],
     }));
   };
 
-  const isObjectURL = (url) =>
-    typeof url === 'string' && url.startsWith('blob:');
+  const isObjectURL = (url) => typeof url === 'string' && url.startsWith('blob:');
 
   const validateFile = (file, kind) => {
     if (!file) return { ok: false, reason: 'No file' };
@@ -124,8 +125,7 @@ function CreateBlogPostForm() {
   const deleteContentItem = (index) => {
     setBlogPost((prev) => {
       const item = prev.content[index];
-      if (item?.previewUrl && isObjectURL(item.previewUrl))
-        URL.revokeObjectURL(item.previewUrl);
+      if (item?.previewUrl && isObjectURL(item.previewUrl)) URL.revokeObjectURL(item.previewUrl);
       const updated = prev.content.filter((_, i) => i !== index);
       return { ...prev, content: updated };
     });
@@ -146,22 +146,14 @@ function CreateBlogPostForm() {
       ...prev,
       content: reorderArray(prev.content, from, to),
     }));
-    fileInputRefs.current.image = reorderArray(
-      fileInputRefs.current.image,
-      from,
-      to
-    );
-    fileInputRefs.current.video = reorderArray(
-      fileInputRefs.current.video,
-      from,
-      to
-    );
+    fileInputRefs.current.image = reorderArray(fileInputRefs.current.image, from, to);
+    fileInputRefs.current.video = reorderArray(fileInputRefs.current.video, from, to);
   };
 
   const getTypeNumber = (type, index) =>
     blogPost.content.slice(0, index + 1).filter((c) => c.type === type).length;
 
-  // only one thumbnail at a time
+  // if you ever want to enforce exactly one thumbnail, flip others off when one is set true.
   const setThumbnailIndex = (idx) => {
     setBlogPost((prev) => ({
       ...prev,
@@ -171,7 +163,11 @@ function CreateBlogPostForm() {
     }));
   };
 
-  async function submitUploads() {
+  // Upload once, build ordered content for DB (paragraphs + {image|video, key}),
+  // and return normalized key arrays for join table.
+  async function submitUploadsAndBuildContent() {
+    console.log('[CreateBlogPostForm] submitUploadsAndBuildContent()');
+    const orderedContent = [];
     const galleryKeys = [];
     const embedKeys = [];
     let thumbnailImageKey = null;
@@ -179,14 +175,24 @@ function CreateBlogPostForm() {
     for (let i = 0; i < blogPost.content.length; i++) {
       const item = blogPost.content[i];
 
+      if (item.type === 'paragraph') {
+        const text = item.text?.trim();
+        if (text) orderedContent.push({ type: 'paragraph', text });
+        continue;
+      }
+
       if (item.type === 'image' && item.file) {
         const { key } = await presignAndUpload({
           resource: 'blog',
           file: item.file,
           filename: item.file.name,
         });
+        console.log('[upload:image] key', key);
+
         galleryKeys.push(key);
-        if (item.isThumbnail) thumbnailImageKey = key;
+        if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
+        orderedContent.push({ type: 'image', key });
+        continue;
       }
 
       if (item.type === 'video' && item.file) {
@@ -195,11 +201,15 @@ function CreateBlogPostForm() {
           file: item.file,
           filename: item.file.name,
         });
+        console.log('[upload:video] key', key);
+
         embedKeys.push(key);
+        orderedContent.push({ type: 'video', key });
+        continue;
       }
     }
 
-    return { thumbnailImageKey, galleryKeys, embedKeys };
+    return { orderedContent, galleryKeys, embedKeys, thumbnailImageKey };
   }
 
   const handleSubmit = async (e) => {
@@ -208,26 +218,19 @@ function CreateBlogPostForm() {
     setOkMsg('');
     setSubmitting(true);
     console.log('handleSubmit');
+
     try {
       const { title, slug, authorName } = blogPost;
-      console.log(
-        'handleSubmit title, slug, authorName',
-        title,
-        slug,
-        authorName
-      );
+      console.log('handleSubmit title, slug, authorName', title, slug, authorName);
+
       if (!title || !slug) {
         setErrMsg('Please provide both a title and a slug.');
         setSubmitting(false);
         return;
       }
 
-      const { thumbnailImageKey, galleryKeys, embedKeys } =
-        await submitUploads();
-
-      const contentBlocks = blogPost.content
-        .filter((c) => c.type === 'paragraph' && c.text?.trim())
-        .map((c) => ({ type: 'paragraph', text: c.text.trim() }));
+      const { orderedContent, galleryKeys, embedKeys, thumbnailImageKey } =
+        await submitUploadsAndBuildContent();
 
       const tagNames = blogPost.tags
         .split(',')
@@ -240,18 +243,19 @@ function CreateBlogPostForm() {
         subject: blogPost.subject || null,
         location: blogPost.location || null,
         slug,
-        content: contentBlocks,
+        content: orderedContent, // <— ordered mix of paragraphs/images/videos
         authorId: user?.id ?? null,
         authorName: authorName || null,
         tags: tagNames,
-        thumbnailImageKey, // from checked image (optional)
-        galleryKeys, // all uploaded images
-        embedKeys, // all uploaded videos
-        // no isPublished / publishedAt here (backend controls it)
+        thumbnailImageKey, // may be null
+        galleryKeys,
+        embedKeys,
       };
+
       console.log('payload', payload);
       const resp = await client.post(CREATE_BLOG_POST_API, payload, true);
       console.log('resp', resp);
+
       if (!resp?.data?.post) {
         setErrMsg('Create failed.');
         setSubmitting(false);
@@ -259,7 +263,7 @@ function CreateBlogPostForm() {
       }
 
       setOkMsg(`Created: ${resp.data.post.title}`);
-      // optionally reset form here
+      // optional: reset form here
     } catch (err) {
       console.error('Create blog error', err);
       const apiMsg =
@@ -371,8 +375,7 @@ function CreateBlogPostForm() {
             >
               <div className='grid grid-flow-col auto-cols-max items-center justify-between'>
                 <div className='font-semibold'>
-                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{' '}
-                  {number}
+                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)} {number}
                 </div>
                 <div className='grid grid-flow-col auto-cols-max gap-2'>
                   <button
@@ -434,9 +437,7 @@ function CreateBlogPostForm() {
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>
-                        Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)
-                      </span>
+                      <span>Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)</span>
                     </div>
                   )}
 
@@ -465,6 +466,7 @@ function CreateBlogPostForm() {
                         const updated = [...blogPost.content];
                         updated[index].isThumbnail = e.target.checked;
                         setBlogPost((prev) => ({ ...prev, content: updated }));
+                        if (e.target.checked) setThumbnailIndex(index);
                       }}
                     />
                     <span>Use as thumbnail</span>
@@ -499,9 +501,7 @@ function CreateBlogPostForm() {
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>
-                        Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)
-                      </span>
+                      <span>Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)</span>
                     </div>
                   )}
 
@@ -542,6 +542,7 @@ function CreateBlogPostForm() {
             </div>
           );
         })}
+
         <div className='grid gap-2'>
           <button
             type='button'
