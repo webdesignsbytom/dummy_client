@@ -47,7 +47,7 @@ function BlogSummaryComponent() {
 
   if (loading) {
     return (
-      <section className='grid gap-3'>
+      <section className='grid gap-2 h-fit px-8'>
         {[...Array(5)].map((_, i) => (
           <div
             key={i}
@@ -90,7 +90,7 @@ function BlogSummaryComponent() {
             return (
               <li
                 key={p.id}
-                className='flex items-center justify-between gap-3 rounded px-4 py-3 bg-colour1 border-2 border-solid border-colour2 shadow-cardShadow'
+                className='flex items-center justify-between gap-2 h-fit rounded px-4 py-2 bg-colour1 border-2 border-solid border-colour2 shadow-cardShadow'
                 aria-label={`Summary for ${p.title}`}
                 title={p.title}
               >
@@ -120,7 +120,7 @@ function BlogSummaryComponent() {
                 </div>
 
                 {/* Right-side: date + Edit button */}
-                <div className='flex items-center gap-3'>
+                <div className='flex items-center gap-2 h-fit'>
                   <div className='hidden sm:block text-xs text-colour7 whitespace-nowrap'>
                     {isPublished ? published : created}
                   </div>
@@ -128,7 +128,7 @@ function BlogSummaryComponent() {
                   <Link
                     to={EDIT_BLOG_POST_PAGE_URL} 
                     state={{ postId: p.id }}
-                    className='inline-flex items-center px-3 py-1 text-xs font-medium rounded border-2 border-solid border-colour2 hover:bg-colour1'
+                    className='inline-flex items-center px-4 py-1 text-xs font-medium rounded border-2 border-solid border-colour2 hover:bg-colour1'
                     aria-label={`Edit ${p.title}`}
                     title={`Edit ${p.title}`}
                   >
