@@ -81,7 +81,7 @@ function safeDate(d) {
 }
 
 function BlogArticle({ post }) {
-  // ✅ Hooks at top-level (never conditional)
+  console.log('[BlogArticle] post', post);
   const blocks = useMemo(() => toBlocks(post?.content), [post?.content]);
   const featuredSrc = useMemo(() => pickFeatured(post), [post]);
   const published = useMemo(() => safeDate(post?.publishedAt), [post?.publishedAt]);

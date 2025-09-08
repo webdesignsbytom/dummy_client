@@ -4,7 +4,7 @@ import client from '../../../api/client';
 // Constants
 import { GET_BLOG_POSTS_API } from '../../../utils/ApiRoutes';
 // Data
-import { tempBlogPosts } from '../../../utils/data/BlogData';
+// import { tempBlogPosts } from '../../../utils/data/BlogData';
 // Components
 import BlogPostPreview from './BlogPostPreview';
 import BlogPaginationButtons from '../pagination/BlogPaginationButtons';
@@ -15,7 +15,7 @@ function BlogPageMainContainer() {
   const [fetchCompleted, setFetchCompleted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  console.log('[BlogPageMainContainer] displayedBlogPosts', displayedBlogPosts);
   const postsPerPage = 9;
 
   useEffect(() => {

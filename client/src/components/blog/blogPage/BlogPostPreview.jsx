@@ -81,7 +81,7 @@ function formatDate(dateStr) {
 
 const BlogPostPreview = ({ post }) => {
   const navigateToPage = useNavigateToPage();
-
+console.log('[BlogPostPreview] post', post);
   const previewText = useMemo(() => extractFirstParagraphText(post?.content, 100), [post?.content]);
   const thumbSrc = useMemo(() => pickThumbnail(post), [post]);
   const published = useMemo(() => formatDate(post?.publishedAt), [post?.publishedAt]);

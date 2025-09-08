@@ -14,7 +14,7 @@ function BlogPostPage() {
   const [post, setPost] = useState(location.state?.post || null);
   const [loading, setLoading] = useState(!post);
   const [error, setError] = useState(null);
-
+console.log('[BlogPostPage] post', post);
   return (
     <>
       {/* Tab Data */}
