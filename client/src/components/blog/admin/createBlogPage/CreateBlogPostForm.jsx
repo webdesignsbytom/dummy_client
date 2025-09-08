@@ -65,7 +65,7 @@ function CreateBlogPostForm() {
       ...prev,
       content: [
         ...prev.content,
-        { type, text: '', file: null, previewUrl: '', isThumbnail: false },
+        { type, text: '', file: null, previewUrl: '', isThumbnail: false }, // <— add isThumbnail
       ],
     }));
   };
@@ -461,13 +461,13 @@ function CreateBlogPostForm() {
                     <input
                       type='checkbox'
                       checked={!!item.isThumbnail}
-                      onChange={(e) =>
-                        e.target.checked
-                          ? setThumbnailIndex(index)
-                          : setThumbnailIndex(-1)
-                      }
+                      onChange={(e) => {
+                        const updated = [...blogPost.content];
+                        updated[index].isThumbnail = e.target.checked;
+                        setBlogPost((prev) => ({ ...prev, content: updated }));
+                      }}
                     />
-                    <span>Use this image as thumbnail</span>
+                    <span>Use as thumbnail</span>
                   </label>
 
                   <div className='grid grid-flow-col auto-cols-max gap-2 justify-start'>

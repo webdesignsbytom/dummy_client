@@ -4,7 +4,7 @@ import CreateBlogPostForm from './CreateBlogPostForm';
 
 function BlogPostCreationPageMainContainer() {
   return (
-    <main role='main' className='grid w-full pt-6'>
+    <main role='main' className='grid w-full pt-6 pb-12'>
       {/* Form section */}
       <section className='grid'>
         <div className='grid px-6 sm:px-8 md:px-12 lg:px-20 lg:container lg:mx-auto'>
