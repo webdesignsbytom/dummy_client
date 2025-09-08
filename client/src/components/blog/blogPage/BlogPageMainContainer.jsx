@@ -27,15 +27,15 @@ function BlogPageMainContainer() {
       .then((res) => {
         setDisplayedBlogPosts(res.data.posts);
         if (res.data.posts.length <= 0) {
-          setDisplayedBlogPosts(tempBlogPosts);
-          setTotalPages(tempBlogPosts.length);
+          // setDisplayedBlogPosts(tempBlogPosts);
+          // setTotalPages(tempBlogPosts.length);
         }
         setTotalPages(res.data.totalPages);
         setFetchCompleted(true);
       })
       .catch((err) => {
-        setDisplayedBlogPosts(tempBlogPosts);
-        setTotalPages(tempBlogPosts.length);
+        // setDisplayedBlogPosts(tempBlogPosts);
+        // setTotalPages(tempBlogPosts.length);
         setFetchCompleted(true);
 
         console.error('Unable to retrieve blog post data', err);
