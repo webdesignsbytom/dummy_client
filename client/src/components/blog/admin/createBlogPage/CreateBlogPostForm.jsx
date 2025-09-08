@@ -338,11 +338,11 @@ function CreateBlogPostForm({ onSubmit }) {
           </div>
           <div className='grid gap-2'>
             <button type='button' onClick={() => handleAddContent('paragraph')}
-              className='bg-blue-500 text-colour1 p-2 rounded'>Add Paragraph</button>
+              className='bg-blue-500 text-colour1 p-2 rounded hover:brightness-90'>Add Paragraph</button>
             <button type='button' onClick={() => handleAddContent('image')}
-              className='bg-green-500 text-colour1 p-2 rounded'>Add Image</button>
+              className='bg-green-500 text-colour1 p-2 rounded hover:brightness-90'>Add Image</button>
             <button type='button' onClick={() => handleAddContent('video')}
-              className='bg-orange-500 text-colour1 p-2 rounded'>Add Video</button>
+              className='bg-orange-500 text-colour1 p-2 rounded hover:brightness-90'>Add Video</button>
           </div>
         </section>
       </section>
@@ -350,7 +350,7 @@ function CreateBlogPostForm({ onSubmit }) {
       {/* Submit */}
       <section className='grid w-full'>
         <div className='grid'>
-          <button type='submit' className='bg-colour5 text-colour1 px-2 py-3 rounded'>
+          <button type='submit' className='bg-colour5 text-colour1 px-2 py-2 rounded hover:brightness-90'>
             Submit Post
           </button>
         </div>
