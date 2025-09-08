@@ -309,18 +309,18 @@ function CreateBlogPostForm({ onSubmit }) {
                     />
                   )}
 
-                  <div className='grid grid-flow-col auto-cols-max gap-2 items-center justify-start'>
+                  <div className='grid grid-flow-col auto-cols-max gap-2 items-center justify-end'>
                     <button
                       type='button'
                       onClick={() => deleteContentItem(index)}
-                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 p-2 rounded whitespace-nowrap'
+                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded whitespace-nowrap'
                     >
                       <FiTrash2 className='text-base' /> Delete
                     </button>
                     <button
                       type='button'
                       onClick={() => openFileDialog(index, 'video')}
-                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-yellow-500 text-colour1 p-2 rounded whitespace-nowrap'
+                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-yellow-500 text-colour1 px-2 py-1 rounded whitespace-nowrap'
                     >
                       <FiEdit2 className='text-base' /> Change
                     </button>
