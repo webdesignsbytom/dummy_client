@@ -29,6 +29,7 @@ import {
   NEWSLETTER_ADMIN_PAGE_URL,
   NEWSLETTER_CONFIRM_EMAIL_PAGE_URL,
   NEWSLETTER_UNSUBSCRIBE_PAGE_URL,
+  BLOG_ADMIN_PAGE_URL,
 } from './utils/Routes';
 import { COOKIE_TIMER, CookiePolicyName } from './utils/Constants';
 // Pages
@@ -67,6 +68,7 @@ import Error404 from './pages/error/Error404';
 import ReviewsPage from './pages/reviews/ReviewsPage';
 import NewsletterValidationPage from './pages/newsletter/NewsletterValidationPage';
 import NewsletterUnsubscribePage from './pages/newsletter/NewsletterUnsubscribePage';
+import BlogAdminMainPage from './pages/blog/admin/BlogAdminMainPage';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -121,6 +123,14 @@ function App() {
           <Route
             path={`${BLOG_POST_PAGE_URL}/:title`}
             element={<BlogPostPage />}
+          />
+          <Route
+            path={BLOG_ADMIN_PAGE_URL}
+            element={
+              <AuthenticateAdmin>
+                <BlogAdminMainPage />
+              </AuthenticateAdmin>
+            }
           />
           <Route
             path={CREATE_BLOG_POST_PAGE_URL}

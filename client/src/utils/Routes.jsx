@@ -26,6 +26,7 @@ export const ADMIN_CALLBACK_FORM_PAGE_URL = '/admin/callback-forms';
 // Blog routes
 export const BLOG_PAGE_URL = '/blog';
 export const BLOG_POST_PAGE_URL = '/blog';
+export const BLOG_ADMIN_PAGE_URL = '/blog/admin';
 export const CREATE_BLOG_POST_PAGE_URL = '/blog/create-new-post';
 export const EDIT_BLOG_POST_PAGE_URL = '/blog/edit/postId';
 
