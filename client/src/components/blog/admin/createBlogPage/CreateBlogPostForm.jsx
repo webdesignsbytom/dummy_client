@@ -31,6 +31,7 @@ function slugify(s = '') {
 
 function CreateBlogPostForm() {
   const { user } = useUser();
+  const okMsgRef = useRef(null);
 
   const [blogPost, setBlogPost] = useState({
     title: '',
@@ -72,7 +73,8 @@ function CreateBlogPostForm() {
     }));
   };
 
-  const isObjectURL = (url) => typeof url === 'string' && url.startsWith('blob:');
+  const isObjectURL = (url) =>
+    typeof url === 'string' && url.startsWith('blob:');
 
   const validateFile = (file, kind) => {
     if (!file) return { ok: false, reason: 'No file' };
@@ -125,7 +127,8 @@ function CreateBlogPostForm() {
   const deleteContentItem = (index) => {
     setBlogPost((prev) => {
       const item = prev.content[index];
-      if (item?.previewUrl && isObjectURL(item.previewUrl)) URL.revokeObjectURL(item.previewUrl);
+      if (item?.previewUrl && isObjectURL(item.previewUrl))
+        URL.revokeObjectURL(item.previewUrl);
       const updated = prev.content.filter((_, i) => i !== index);
       return { ...prev, content: updated };
     });
@@ -146,8 +149,16 @@ function CreateBlogPostForm() {
       ...prev,
       content: reorderArray(prev.content, from, to),
     }));
-    fileInputRefs.current.image = reorderArray(fileInputRefs.current.image, from, to);
-    fileInputRefs.current.video = reorderArray(fileInputRefs.current.video, from, to);
+    fileInputRefs.current.image = reorderArray(
+      fileInputRefs.current.image,
+      from,
+      to
+    );
+    fileInputRefs.current.video = reorderArray(
+      fileInputRefs.current.video,
+      from,
+      to
+    );
   };
 
   const getTypeNumber = (type, index) =>
@@ -221,7 +232,12 @@ function CreateBlogPostForm() {
 
     try {
       const { title, slug, authorName } = blogPost;
-      console.log('handleSubmit title, slug, authorName', title, slug, authorName);
+      console.log(
+        'handleSubmit title, slug, authorName',
+        title,
+        slug,
+        authorName
+      );
 
       if (!title || !slug) {
         setErrMsg('Please provide both a title and a slug.');
@@ -263,6 +279,11 @@ function CreateBlogPostForm() {
       }
 
       setOkMsg(`Created: ${resp.data.post.title}`);
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        okMsgRef.current?.focus?.();
+      });
+
       // optional: reset form here
     } catch (err) {
       console.error('Create blog error', err);
@@ -279,6 +300,7 @@ function CreateBlogPostForm() {
 
   return (
     <form
+      ref={okMsgRef}
       onSubmit={handleSubmit}
       className='grid gap-6 px-4 py-8 bg-colour1 rounded border-2 border-solid border-colour2'
     >
@@ -375,7 +397,8 @@ function CreateBlogPostForm() {
             >
               <div className='grid grid-flow-col auto-cols-max items-center justify-between'>
                 <div className='font-semibold'>
-                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)} {number}
+                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{' '}
+                  {number}
                 </div>
                 <div className='grid grid-flow-col auto-cols-max gap-2'>
                   <button
@@ -437,7 +460,9 @@ function CreateBlogPostForm() {
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)</span>
+                      <span>
+                        Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)
+                      </span>
                     </div>
                   )}
 
@@ -501,7 +526,9 @@ function CreateBlogPostForm() {
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)</span>
+                      <span>
+                        Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)
+                      </span>
                     </div>
                   )}
 

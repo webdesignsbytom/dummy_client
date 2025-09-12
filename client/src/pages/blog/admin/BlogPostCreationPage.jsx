@@ -31,6 +31,7 @@ function BlogPostCreationPage() {
                   Create a new blog post by adding text, images or video in the
                   order you want them displayed
                 </p>
+                <p><strong>Be sure to set a image as thumbnail image using the checkbox!</strong></p>
               </div>
             </header>
           </div>

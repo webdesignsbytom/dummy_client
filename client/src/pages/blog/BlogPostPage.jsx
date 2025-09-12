@@ -30,7 +30,7 @@ console.log('[BlogPostPage] post', post);
 
       {/* Page */}
       <div className='grid min-h-screen overflow-hidden bg-colour1 text-colour2 dark:bg-colour2 dark:text-colour1 font-poppins'>
-        <div className='grid'>
+        <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
 
