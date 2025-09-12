@@ -61,6 +61,7 @@ export const GET_BLOG_POST_BY_SLUG_API = '/blog/get-blog-post-by-slug'; // appen
 export const GET_BLOG_POST_BY_ID_API = '/blog/get-blog-posts-by-id'; // append /:id
 export const CREATE_BLOG_POST_API = '/blog/create-blog-post';
 export const UPDATE_BLOG_POST_API = '/blog/update-blog-post'; // append /:id
+export const DELETE_BLOG_POST_API = '/blog/delete-blog-post'; // append /:id
 
 // =========================
 // Bookings

@@ -10,7 +10,8 @@ import EditBlogPageMainContainer from '../../../components/blog/admin/editBlogPa
 function BlogPostEditPage() {
   const location = useLocation();
   const postId = location.state?.postId || null;
-
+console.log('postId', postId);
+console.log('location.state', location.state);
   return (
     <>
       {/* Tab Data */}

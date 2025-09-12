@@ -1,26 +1,35 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 // Api
 import client from '../../../../api/client';
 // Constants
-import { GET_BLOG_SUMMARIES_API } from '../../../../utils/ApiRoutes';
+import {
+  DELETE_BLOG_POST_API,
+  GET_BLOG_SUMMARIES_API,
+} from '../../../../utils/ApiRoutes';
 import { formatDate } from '../../../../utils/functions/FormatDate';
 import { EDIT_BLOG_POST_PAGE_URL } from '../../../../utils/Routes';
+import { useBlog } from '../../../../context/BlogContext';
 
 function BlogSummaryComponent() {
-  const [summaries, setSummaries] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errMsg, setErrMsg] = useState('');
-  const [showAll, setShowAll] = useState(false);
-  const navigate = useNavigate();
+  const { blogSummaryData, setBlogSummaryData } = useBlog();
 
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState({}); // { [postId]: true }
+  const [errMsg, setErrMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [showAll, setShowAll] = useState(false);
+
+  // initial load
   useEffect(() => {
     setLoading(true);
+    setErrMsg('');
     client
       .get(GET_BLOG_SUMMARIES_API, false)
       .then((res) => {
-        setSummaries(Array.isArray(res?.data?.posts) ? res.data.posts : []);
-        setErrMsg('');
+        setBlogSummaryData(
+          Array.isArray(res?.data?.posts) ? res.data.posts : []
+        );
       })
       .catch((err) => {
         console.error('Unable to retrieve blog post data', err);
@@ -36,14 +45,44 @@ function BlogSummaryComponent() {
         );
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [setBlogSummaryData]);
+
+  // delete handler
+  const deleteBlogPost = async (id, title) => {
+    // mark this row as deleting
+    setDeleting((d) => ({ ...d, [id]: true }));
+    setErrMsg('');
+    setSuccessMsg('');
+
+    try {
+      const res = await client.delete(`${DELETE_BLOG_POST_API}/${id}`, true);
+      // remove from list
+      setBlogSummaryData((prev) => prev.filter((b) => b.id !== id));
+      setSuccessMsg(res?.data?.message || `Deleted “${title || 'post'}”.`);
+    } catch (err) {
+      console.error('Unable to delete blog post', err);
+      const apiMsg =
+        err?.response?.data?.message ||
+        err?.response?.data ||
+        err?.message ||
+        'Unable to delete blog post.';
+      setErrMsg(
+        typeof apiMsg === 'string' ? apiMsg : 'Unable to delete blog post.'
+      );
+    } finally {
+      setDeleting((d) => {
+        const next = { ...d };
+        delete next[id];
+        return next;
+      });
+    }
+  };
 
   const displayed = useMemo(
-    () => (showAll ? summaries : summaries.slice(0, 5)),
-    [showAll, summaries]
+    () => (showAll ? blogSummaryData : blogSummaryData.slice(0, 5)),
+    [showAll, blogSummaryData]
   );
-
-  const canToggle = summaries.length > 5;
+  const canToggle = blogSummaryData.length > 5;
 
   if (loading) {
     return (
@@ -58,7 +97,7 @@ function BlogSummaryComponent() {
     );
   }
 
-  if (errMsg) {
+  if (errMsg && !blogSummaryData.length) {
     return (
       <section className='p-4 rounded bg-colour1 border-2 border-solid border-colour2 text-colour2'>
         {errMsg}
@@ -66,7 +105,7 @@ function BlogSummaryComponent() {
     );
   }
 
-  if (!summaries.length) {
+  if (!blogSummaryData.length) {
     return (
       <section className='p-4 rounded bg-colour1 border-2 border-solid border-colour2 text-colour2'>
         No blog posts yet.
@@ -80,12 +119,24 @@ function BlogSummaryComponent() {
         <h3>Summary of blogs</h3>
       </article>
 
-      <div className='grid w-full h-fit'>
+      <div className='grid gap-y-2 w-full h-fit'>
+        {/* alerts */}
+        {successMsg ? (
+          <div className='px-4 py-2 h-fit rounded border-2 border-solid border-green-600 text-green-700 bg-green-50'>
+            {successMsg}
+          </div>
+        ) : null}
+        {errMsg ? (
+          <div className='px-4 py-2 h-fit rounded border-2 border-solid border-red-600 text-red-700 bg-red-50'>
+            {errMsg}
+          </div>
+        ) : null}
         <ul className='grid gap-2'>
           {displayed.map((p) => {
             const published = p.publishedAt ? formatDate(p.publishedAt) : '';
             const created = p.createdAt ? formatDate(p.createdAt) : '';
             const isPublished = Boolean(p.publishedAt);
+            const isRowDeleting = !!deleting[p.id];
 
             return (
               <li
@@ -119,21 +170,58 @@ function BlogSummaryComponent() {
                   </p>
                 </div>
 
-                {/* Right-side: date + Edit button */}
                 <div className='flex items-center gap-2 h-fit'>
                   <div className='hidden sm:block text-xs text-colour7 whitespace-nowrap'>
                     {isPublished ? published : created}
                   </div>
 
                   <Link
-                    to={EDIT_BLOG_POST_PAGE_URL} 
+                    to={EDIT_BLOG_POST_PAGE_URL}
                     state={{ postId: p.id }}
-                    className='inline-flex items-center px-4 py-1 text-xs font-medium rounded border-2 border-solid border-colour2 hover:bg-colour1'
+                    className={`inline-flex items-center px-4 py-1 text-xs font-medium rounded border-2 border-solid border-colour2 hover:bg-colour1 ${
+                      isRowDeleting ? 'opacity-50 pointer-events-none' : ''
+                    }`}
                     aria-label={`Edit ${p.title}`}
                     title={`Edit ${p.title}`}
                   >
                     Edit
                   </Link>
+
+                  <button
+                    onClick={() => deleteBlogPost(p.id, p.title)}
+                    className='inline-flex items-center gap-2 px-4 py-1 text-xs font-medium rounded border-2 border-solid border-colour2 hover:bg-colour1 disabled:opacity-50'
+                    aria-label={`Delete ${p.title}`}
+                    title={`Delete ${p.title}`}
+                    disabled={isRowDeleting}
+                  >
+                    {isRowDeleting ? (
+                      <>
+                        <svg
+                          className='h-4 w-4 animate-spin'
+                          viewBox='0 0 24 24'
+                          fill='none'
+                          aria-hidden='true'
+                        >
+                          <circle
+                            className='opacity-25'
+                            cx='12'
+                            cy='12'
+                            r='10'
+                            stroke='currentColor'
+                            strokeWidth='4'
+                          />
+                          <path
+                            className='opacity-75'
+                            fill='currentColor'
+                            d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
+                          />
+                        </svg>
+                        Deleting…
+                      </>
+                    ) : (
+                      'Delete'
+                    )}
+                  </button>
                 </div>
               </li>
             );
@@ -149,7 +237,7 @@ function BlogSummaryComponent() {
             aria-expanded={showAll}
             className='inline-flex items-center gap-2 px-4 py-2 text-sm rounded border-2 border-solid border-colour2 hover:bg-colour1'
           >
-            {showAll ? 'Show less' : `Show all ${summaries.length}`}
+            {showAll ? 'Show less' : `Show all ${blogSummaryData.length}`}
             <svg
               className={`h-4 w-4 transition-transform ${
                 showAll ? 'rotate-180' : ''
