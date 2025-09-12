@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import client from '../../../api/client';
 // Constants
 import { GET_BLOG_POSTS_API } from '../../../utils/ApiRoutes';
-// Data
-// import { tempBlogPosts } from '../../../utils/data/BlogData';
+// Context
+import { useBlog } from '../../../context/BlogContext';
 // Components
 import BlogPostPreview from './BlogPostPreview';
 import BlogPaginationButtons from '../pagination/BlogPaginationButtons';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function BlogPageMainContainer() {
-  const [displayedBlogPosts, setDisplayedBlogPosts] = useState([]);
+  const { displayedBlogPosts, setDisplayedBlogPosts } = useBlog()
   const [fetchCompleted, setFetchCompleted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);

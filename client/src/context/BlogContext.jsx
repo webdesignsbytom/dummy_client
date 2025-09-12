@@ -3,13 +3,14 @@ import React, { createContext, useContext, useState } from 'react';
 export const BlogContext = createContext();
 
 const BlogProvider = ({ children }) => {
-  const [blogData, setBlogData] = useState([]);
+  const [displayedBlogPosts, setDisplayedBlogPosts] = useState([]);
   const [blogSummaryData, setBlogSummaryData] = useState([]);
+
   return (
     <BlogContext.Provider
       value={{
-        blogData,
-        setBlogData,
+        displayedBlogPosts,
+        setDisplayedBlogPosts,
         blogSummaryData,
         setBlogSummaryData,
       }}
