@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // Constants
 import { CompanyName } from '../../utils/Constants';
 // Components
@@ -14,7 +14,7 @@ function BlogPostPage() {
   const [post, setPost] = useState(location.state?.post || null);
   const [loading, setLoading] = useState(!post);
   const [error, setError] = useState(null);
-
+console.log('[BlogPostPage] post', post);
   return (
     <>
       {/* Tab Data */}
@@ -30,7 +30,7 @@ function BlogPostPage() {
 
       {/* Page */}
       <div className='grid min-h-screen overflow-hidden bg-colour1 text-colour2 dark:bg-colour2 dark:text-colour1 font-poppins'>
-        <div className='grid'>
+        <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
 

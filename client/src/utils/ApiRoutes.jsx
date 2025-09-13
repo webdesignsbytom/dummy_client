@@ -54,8 +54,14 @@ export const GET_ALL_DRAFT_NEWSLETTERS_API = '/newsletter/get-all-newsletter-dra
 // Blog
 // =========================
 export const GET_BLOG_POSTS_API = '/blog/get-all-blog-posts';
-export const GET_BLOG_POST_BY_TITLE_API = '/blog/get-post-by-title';
-export const GET_BLOG_POST_BY_ID_API = '/blog/get-post-by-id';
+export const GET_PAGED_BLOG_POSTS_API = '/blog/get-paged-blog-posts';
+export const GET_BLOG_SUMMARIES_API = '/blog/get-blog-summaries';
+export const GET_BLOG_POSTS_BY_TAG_API = '/blog/get-blog-posts-by-tag'; // append /:tag
+export const GET_BLOG_POST_BY_SLUG_API = '/blog/get-blog-post-by-slug'; // append /:slug
+export const GET_BLOG_POST_BY_ID_API = '/blog/get-blog-posts-by-id'; // append /:id
+export const CREATE_BLOG_POST_API = '/blog/create-blog-post';
+export const UPDATE_BLOG_POST_API = '/blog/update-blog-post'; // append /:id
+export const DELETE_BLOG_POST_API = '/blog/delete-blog-post'; // append /:id
 
 // =========================
 // Bookings

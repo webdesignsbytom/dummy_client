@@ -42,7 +42,7 @@ const UserProvider = ({ children }) => {
       console.log('!!!decoded');
       return;
     }
-
+console.log('AAAA');
     // 3) Otherwise, fetch the real user exactly once per new token
     client
       .get(GET_LOGGED_IN_USER_API, true)

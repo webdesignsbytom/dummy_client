@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   FiUploadCloud,
   FiTrash2,
@@ -7,7 +7,7 @@ import {
   FiArrowDown,
 } from 'react-icons/fi';
 import client from '../../../../api/client';
-import { CREATE_BLOG_POST_API } from '../../../../utils/ApiRoutes';
+import { UPDATE_BLOG_POST_API } from '../../../../utils/ApiRoutes';
 import { presignAndUpload } from '../../../../utils/media/uploadViaMediaService';
 import {
   IMAGE_ACCEPT,
@@ -15,158 +15,210 @@ import {
   MAX_VIDEO_SIZE_MB,
   VIDEO_ACCEPT,
 } from '../../../../utils/media/mediaConstants';
-import { useUser } from '../../../../context/UserContext';
-import CreateBlogCoreFields from './CreateBlogCoreFields';
+import { mediaUrlFrom } from '../../../../utils/media/mediaUrl';
 
-const DRAFT_KEY = 'createBlogPostDraft:v1';
-const AUTOSAVE_MS = 600;
+const AUTOSAVE_MS = 600; // debounce
 
-function slugify(s = '') {
-  return String(s)
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+function toInitialStateFromPost(post) {
+  const tagsCsv = Array.isArray(post?.tags)
+    ? post.tags
+        .map((t) => (typeof t === 'string' ? t : t?.name))
+        .filter(Boolean)
+        .join(',')
+    : '';
+
+  const mediaLinks = Array.isArray(post?.mediaLinks) ? post.mediaLinks : [];
+  const thumbLink = mediaLinks.find((l) => l?.role === 'THUMBNAIL');
+  const thumbnailKey = thumbLink?.media?.key || post?.thumbnailImage || null;
+
+  const blocks = Array.isArray(post?.content) ? post.content : [];
+  const content = blocks.map((b) => {
+    if (b?.type === 'paragraph') {
+      return {
+        type: 'paragraph',
+        text: String(b?.text || ''),
+        file: null,
+        previewUrl: '',
+        isThumbnail: false,
+      };
+    }
+    if (b?.type === 'image') {
+      const key = b?.key || '';
+      return {
+        type: 'image',
+        text: '',
+        file: null,
+        key,
+        previewUrl: key ? mediaUrlFrom({ objectKey: key }) : '',
+        isThumbnail: thumbnailKey ? key === thumbnailKey : false,
+      };
+    }
+    if (b?.type === 'video') {
+      const key = b?.key || '';
+      return {
+        type: 'video',
+        text: '',
+        file: null,
+        key,
+        previewUrl: key ? mediaUrlFrom({ objectKey: key }) : '',
+        isThumbnail: false,
+      };
+    }
+    return {
+      type: 'paragraph',
+      text: '',
+      file: null,
+      previewUrl: '',
+      isThumbnail: false,
+    };
+  });
+
+  return {
+    title: post?.title || '',
+    slug: post?.slug || '',
+    subTitle: post?.subTitle || '',
+    subject: post?.subject || '',
+    location: post?.location || '',
+    authorName: post?.authorName || '',
+    tags: tagsCsv,
+    content,
+  };
 }
 
-const emptyState = {
-  title: '',
-  slug: '',
-  subTitle: '',
-  subject: '',
-  location: '',
-  content: [], // [{type:'paragraph'|'image'|'video', text?, file?, previewUrl?, isThumbnail?, key?}]
-  authorName: '',
-  tags: '',
-};
+function EditBlogPostForm({ initialPost }) {
+  // -----------------------
+  // DRAFT: key & helpers
+  // -----------------------
+  const DRAFT_KEY = useMemo(
+    () => (initialPost?.id ? `editBlogPostDraft:${initialPost.id}` : null),
+    [initialPost?.id]
+  );
 
-function CreateBlogPostForm() {
-  const { user } = useUser();
-  const okMsgRef = useRef(null);
+  const isObjectURL = (url) =>
+    typeof url === 'string' && url.startsWith('blob:');
 
-  const [blogPost, setBlogPost] = useState(emptyState);
+  const serializeForDraft = (state) => ({
+    ...state,
+    content: state.content.map((item) => {
+      if (item.type === 'paragraph') {
+        return { type: 'paragraph', text: item.text || '' };
+      }
+      if (item.type === 'image' || item.type === 'video') {
+        const out = {
+          type: item.type,
+          text: item.text || '',
+          isThumbnail: !!item.isThumbnail,
+        };
+        if (item.key) out.key = item.key; // keep remote key
+        if (item.previewUrl && !isObjectURL(item.previewUrl)) {
+          out.previewUrl = item.previewUrl; // keep remote preview
+        }
+        return out;
+      }
+      return { type: item.type };
+    }),
+  });
+
+  const deepEqualSerialized = (a, b) =>
+    JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+
+  // -----------------------
+  // State
+  // -----------------------
+  const [blogPost, setBlogPost] = useState(() =>
+    toInitialStateFromPost(initialPost)
+  );
   const [submitting, setSubmitting] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [okMsg, setOkMsg] = useState('');
-
   const fileInputRefs = useRef({ image: [], video: [] });
+  const okMsgRef = useRef(null);
 
-  // --- DRAFT helpers ---
-  const isObjectURL = (url) => typeof url === 'string' && url.startsWith('blob:');
+  // Keep a baseline to detect unsaved changes (vs loaded initial/draft)
+  const baselineRef = useRef(
+    serializeForDraft(toInitialStateFromPost(initialPost))
+  );
+  const autosaveTimerRef = useRef(null);
 
-  const serializeForDraft = (state) => {
-    const draft = {
-      ...state,
-      content: state.content.map((item) => {
-        if (item.type === 'paragraph') {
-          return { type: 'paragraph', text: item.text || '' };
-        }
-        if (item.type === 'image' || item.type === 'video') {
-          const out = {
-            type: item.type,
-            text: item.text || '',
-            isThumbnail: !!item.isThumbnail,
-          };
-          if (item.key) out.key = item.key;
-          if (item.previewUrl && !isObjectURL(item.previewUrl)) {
-            out.previewUrl = item.previewUrl;
-          }
-          return out;
-        }
-        return { type: item.type };
-      }),
-    };
-    return draft;
-  };
-
-  const hasMeaningfulData = (state) => {
-    if (!state) return false;
-    if (
-      state.title ||
-      state.slug ||
-      state.subTitle ||
-      state.subject ||
-      state.location ||
-      state.authorName ||
-      state.tags
-    ) {
-      return true;
-    }
-    return state.content && state.content.length > 0;
-  };
-
-  // Load draft
+  // Re-init when initialPost changes: prefer local draft if present
   useEffect(() => {
+    const init = toInitialStateFromPost(initialPost);
+    let next = init;
     try {
-      const raw = localStorage.getItem(DRAFT_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object') {
-          setBlogPost({ ...emptyState, ...parsed });
+      if (DRAFT_KEY) {
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if (raw) {
+          const draft = JSON.parse(raw);
+          // merge draft over init to keep any new server fields
+          next = { ...init, ...draft, content: draft?.content ?? init.content };
         }
       }
-    } catch { /* ignore */ }
-  }, []);
-
-  // AUTOSAVE (debounced) — with "skip once" protection
-  const autosaveTimerRef = useRef(null);
-  const skipNextAutosaveRef = useRef(false);
-
-  useEffect(() => {
-    // skip exactly one autosave (used right after successful submit)
-    if (skipNextAutosaveRef.current) {
-      skipNextAutosaveRef.current = false;
-      return;
+    } catch {
+      // ignore malformed draft
     }
+    setBlogPost(next);
+    baselineRef.current = serializeForDraft(next);
+    // clear any pending timer when switching posts
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+  }, [initialPost, DRAFT_KEY]);
 
-    if (!hasMeaningfulData(blogPost) || submitting) return;
+  // Are there unsaved changes?
+  const hasUnsaved = useMemo(() => {
+    const current = serializeForDraft(blogPost);
+    return !deepEqualSerialized(current, baselineRef.current);
+  }, [blogPost]);
 
+  // DRAFT: autosave with debounce
+  useEffect(() => {
+    if (!DRAFT_KEY) return;
     if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
     autosaveTimerRef.current = setTimeout(() => {
       try {
-        const draft = serializeForDraft(blogPost);
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-      } catch { /* ignore */ }
-    }, AUTOSAVE_MS);
-
-    return () => {
-      if (autosaveTimerRef.current) {
-        clearTimeout(autosaveTimerRef.current);
-        autosaveTimerRef.current = null;
+        const serialized = serializeForDraft(blogPost);
+        if (hasUnsaved) {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(serialized));
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+        }
+      } catch {
+        /* ignore quota errors */
       }
+    }, AUTOSAVE_MS);
+    return () => {
+      if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
     };
-  }, [blogPost, submitting]);
+  }, [blogPost, hasUnsaved, DRAFT_KEY]);
 
-  // Warn on unload if there's work
+  // Warn on page close if there are unsaved edits
   useEffect(() => {
     const handler = (e) => {
-      if (submitting) return;
-      if (hasMeaningfulData(blogPost)) {
-        e.preventDefault();
-        e.returnValue = '';
-      }
+      if (submitting || !hasUnsaved) return;
+      e.preventDefault();
+      e.returnValue = '';
     };
     window.addEventListener('beforeunload', handler);
     return () => window.removeEventListener('beforeunload', handler);
-  }, [blogPost, submitting]);
+  }, [hasUnsaved, submitting]);
 
   const discardDraft = () => {
-    localStorage.removeItem(DRAFT_KEY);
-    setBlogPost(emptyState);
+    if (DRAFT_KEY) localStorage.removeItem(DRAFT_KEY);
+    const reset = toInitialStateFromPost(initialPost);
+    setBlogPost(reset);
+    baselineRef.current = serializeForDraft(reset);
     setErrMsg('');
     setOkMsg('');
   };
 
-  // --- Your existing logic ---
+  // -----------------------
+  // Your existing editor logic
+  // -----------------------
+  useEffect(() => {
+    // if initial changes (navigating between posts), re-init handled above
+  }, [initialPost]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setBlogPost((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleTitleBlur = () => {
-    if (!blogPost.slug && blogPost.title) {
-      setBlogPost((prev) => ({ ...prev, slug: slugify(prev.title) }));
-    }
   };
 
   const handleAddContent = (type) => {
@@ -188,7 +240,8 @@ function CreateBlogPostForm() {
       return { ok: false, reason: 'Please select a video file.' };
     const sizeMB = file.size / (1024 * 1024);
     const limit = isImage ? MAX_IMAGE_SIZE_MB : MAX_VIDEO_SIZE_MB;
-    if (sizeMB > limit) return { ok: false, reason: `File too large (>${limit}MB).` };
+    if (sizeMB > limit)
+      return { ok: false, reason: `File too large (>${limit}MB).` };
     return { ok: true };
   };
 
@@ -202,7 +255,12 @@ function CreateBlogPostForm() {
       if (isObjectURL(prevUrl)) URL.revokeObjectURL(prevUrl);
 
       const url = URL.createObjectURL(file);
-      updated[index] = { ...updated[index], file, previewUrl: url };
+      updated[index] = {
+        ...updated[index],
+        file,
+        previewUrl: url,
+        key: undefined, // replacing any existing remote key
+      };
       return { ...prev, content: updated };
     });
   };
@@ -291,41 +349,48 @@ function CreateBlogPostForm() {
       }
 
       if (item.type === 'image') {
+        let key = item.key;
         if (item.file) {
-          const { key } = await presignAndUpload({
+          const { key: uploadedKey } = await presignAndUpload({
             resource: 'blog',
             file: item.file,
             filename: item.file.name,
           });
+          key = uploadedKey;
+        }
+        if (key) {
           galleryKeys.push(key);
           if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
           orderedContent.push({ type: 'image', key });
-        } else if (item.key) {
-          galleryKeys.push(item.key);
-          if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = item.key;
-          orderedContent.push({ type: 'image', key: item.key });
         }
         continue;
       }
 
       if (item.type === 'video') {
+        let key = item.key;
         if (item.file) {
-          const { key } = await presignAndUpload({
+          const { key: uploadedKey } = await presignAndUpload({
             resource: 'blog',
             file: item.file,
             filename: item.file.name,
           });
+          key = uploadedKey;
+        }
+        if (key) {
           embedKeys.push(key);
           orderedContent.push({ type: 'video', key });
-        } else if (item.key) {
-          embedKeys.push(item.key);
-          orderedContent.push({ type: 'video', key: item.key });
         }
         continue;
       }
     }
 
-    return { orderedContent, galleryKeys, embedKeys, thumbnailImageKey };
+    const uniq = (arr) => Array.from(new Set(arr));
+    return {
+      orderedContent,
+      galleryKeys: uniq(galleryKeys),
+      embedKeys: uniq(embedKeys),
+      thumbnailImageKey,
+    };
   }
 
   const handleSubmit = async (e) => {
@@ -335,7 +400,14 @@ function CreateBlogPostForm() {
     setSubmitting(true);
 
     try {
+      const id = initialPost?.id;
       const { title, slug, authorName } = blogPost;
+
+      if (!id) {
+        setErrMsg('Missing post id.');
+        setSubmitting(false);
+        return;
+      }
       if (!title || !slug) {
         setErrMsg('Please provide both a title and a slug.');
         setSubmitting(false);
@@ -352,47 +424,49 @@ function CreateBlogPostForm() {
 
       const payload = {
         title,
+        slug,
         subTitle: blogPost.subTitle || null,
         subject: blogPost.subject || null,
         location: blogPost.location || null,
-        slug,
-        content: orderedContent,
-        authorId: user?.id ?? null,
         authorName: authorName || null,
-        tags: tagNames,
-        thumbnailImageKey,
+        replaceTagsWith: tagNames,
+        content: orderedContent,
+        thumbnailImageKey: thumbnailImageKey ?? null,
         galleryKeys,
         embedKeys,
       };
 
-      const resp = await client.post(CREATE_BLOG_POST_API, payload, true);
+      const resp = await client.patch(
+        `${UPDATE_BLOG_POST_API}/${id}`,
+        payload,
+        true
+      );
+
       if (!resp?.data?.post) {
-        setErrMsg('Create failed.');
+        setErrMsg('Update failed.');
         setSubmitting(false);
         return;
       }
 
-      // SUCCESS: stop any pending autosave, remove draft, and skip the next autosave tick
-      if (autosaveTimerRef.current) {
-        clearTimeout(autosaveTimerRef.current);
-        autosaveTimerRef.current = null;
-      }
-      localStorage.removeItem(DRAFT_KEY);
-      skipNextAutosaveRef.current = true;
+      // SUCCESS: clear draft and reset baseline to the new saved state
+      if (DRAFT_KEY) localStorage.removeItem(DRAFT_KEY);
+      const savedState = toInitialStateFromPost(resp.data.post);
+      setBlogPost(savedState);
+      baselineRef.current = serializeForDraft(savedState);
 
-      setOkMsg(`Created blog post: ${resp.data.post.title}`);
+      setOkMsg(`Updated: ${resp.data.post.title}`);
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         okMsgRef.current?.focus?.();
       });
-      // setBlogPost(emptyState); // optional
     } catch (err) {
+      console.error('Update blog error', err);
       const apiMsg =
         err?.response?.data?.message ||
         err?.response?.data ||
         err?.message ||
-        'Create blog failed.';
-      setErrMsg(typeof apiMsg === 'string' ? apiMsg : 'Create blog failed.');
+        'Update blog failed.';
+      setErrMsg(typeof apiMsg === 'string' ? apiMsg : 'Update blog failed.');
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         okMsgRef.current?.focus?.();
@@ -404,12 +478,12 @@ function CreateBlogPostForm() {
 
   return (
     <form
-      ref={okMsgRef}
       onSubmit={handleSubmit}
+      ref={okMsgRef}
       className='grid gap-6 px-4 py-8 bg-colour1 rounded border-2 border-solid border-colour2'
     >
       <section className='grid text-center'>
-        <h3 className='font-semibold'>Create Blog Post</h3>
+        <h3 className='font-semibold'>Edit Blog Post</h3>
       </section>
 
       {errMsg && (
@@ -423,28 +497,82 @@ function CreateBlogPostForm() {
         </section>
       )}
 
-      {/* DRAFT banner */}
-      {hasMeaningfulData(blogPost) && !okMsg && (
+      {/* Draft banner */}
+      {hasUnsaved && (
         <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-colour7'>
-          Draft is being autosaved.{' '}
+          Draft changes are being autosaved.{' '}
           <button
             type='button'
             onClick={discardDraft}
             className='underline underline-offset-2'
           >
-            Click to discard draft
+            Discard draft
           </button>
         </section>
       )}
 
-      {/* Core fields (extracted) */}
-      <CreateBlogCoreFields
-        blogPost={blogPost}
-        onChange={handleChange}
-        onTitleBlur={handleTitleBlur}
-      />
 
-      {/* Content builder */}
+      {/* core fields */}
+      <section className='grid gap-2'>
+        <input
+          type='text'
+          name='title'
+          placeholder='Title'
+          value={blogPost.title}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+        <input
+          type='text'
+          name='slug'
+          placeholder='Slug'
+          value={blogPost.slug}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+        <input
+          type='text'
+          name='subTitle'
+          placeholder='Subtitle'
+          value={blogPost.subTitle}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+        <input
+          type='text'
+          name='subject'
+          placeholder='Subject'
+          value={blogPost.subject}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+        <input
+          type='text'
+          name='location'
+          placeholder='Location'
+          value={blogPost.location}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+        <input
+          type='text'
+          name='authorName'
+          placeholder='Author Name'
+          value={blogPost.authorName}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+        <input
+          type='text'
+          name='tags'
+          placeholder='Tags (comma-separated)'
+          value={blogPost.tags}
+          onChange={handleChange}
+          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+        />
+      </section>
+
+      {/* content builder */}
       <section className='grid gap-3'>
         <div className='grid text-center'>
           <h3 className='font-semibold'>Content Sections</h3>
@@ -462,7 +590,8 @@ function CreateBlogPostForm() {
             >
               <div className='grid grid-flow-col auto-cols-max items-center justify-between'>
                 <div className='font-semibold'>
-                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)} {number}
+                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{' '}
+                  {number}
                 </div>
                 <div className='grid grid-flow-col auto-cols-max gap-2'>
                   <button
@@ -518,13 +647,15 @@ function CreateBlogPostForm() {
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
                     <div
-                      className='grid place-items-center gap-1 w-full p-4 border-2 bg-colour4/50 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
+                      className='grid place-items-center gap-1 w-full p-4 bg-colour4/50 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
                       onClick={() => openFileDialog(index, 'image')}
                       onDrop={(e) => handleDrop(e, index, 'image')}
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)</span>
+                      <span>
+                        Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)
+                      </span>
                     </div>
                   )}
 
@@ -581,13 +712,15 @@ function CreateBlogPostForm() {
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
                     <div
-                      className='grid place-items-center gap-1 w-full p-4 border-2 bg-colour4/50 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
+                      className='grid place-items-center gap-1 w-full p-4 bg-colour4/50 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
                       onClick={() => openFileDialog(index, 'video')}
                       onDrop={(e) => handleDrop(e, index, 'video')}
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)</span>
+                      <span>
+                        Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)
+                      </span>
                     </div>
                   )}
 
@@ -658,13 +791,13 @@ function CreateBlogPostForm() {
         <button
           type='submit'
           disabled={submitting}
-          className='bg-colour5 text-colour1 px-3 py-2 rounded border-2 border-solid border-colour2 shadow-cardShadow'
+          className='bg-colour5 text-colour1 px-3 py-2 rounded border-2 border-solid border-colour2'
         >
-          {submitting ? 'Submitting…' : 'Submit Post'}
+          {submitting ? 'Updating…' : 'Update Post'}
         </button>
       </section>
     </form>
   );
 }
 
-export default CreateBlogPostForm;
+export default EditBlogPostForm;

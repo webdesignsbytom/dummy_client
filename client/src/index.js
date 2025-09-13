@@ -9,6 +9,7 @@ import App from './App';
 // Context
 import UserProvider from './context/UserContext';
 import BookingProvider from './context/BookingContext';
+import BlogProvider from './context/BlogContext';
 // Styles
 import './styles/index.css';
 import './styles/components.css';
@@ -25,7 +26,9 @@ root.render(
   <BrowserRouter>
     <UserProvider>
       <BookingProvider>
-        <App />
+        <BlogProvider>
+          <App />
+        </BlogProvider>
       </BookingProvider>
     </UserProvider>
   </BrowserRouter>

@@ -1,7 +1,23 @@
 import React from 'react';
+import { mediaUrlFrom } from '../../../utils/media/mediaUrl'; // adjust path if needed
+
+function resolveMediaSrc(key) {
+  if (!key) return '';
+  return mediaUrlFrom({ objectKey: key });
+}
 
 function BlogArticle({ post }) {
+  console.log('[BlogArticle] post', post);
   if (!post) return <p>Loading...</p>;
+
+  const blocks = Array.isArray(post.content) ? post.content : [];
+
+  // Build a quick map: key -> media.id (for signed URLs)
+  const mediaIdByKey = new Map(
+    (Array.isArray(post.mediaLinks) ? post.mediaLinks : [])
+      .map((l) => [l?.media?.key, l?.media?.id])
+      .filter(([k, v]) => k && v)
+  );
 
   return (
     <section className='grid w-full'>
@@ -13,102 +29,81 @@ function BlogArticle({ post }) {
               <h1 className='text-3xl font-bold text-colour6 dark:text-colour1'>
                 {post.title}
               </h1>
-              <h2 className='text-lg text-colour9'>{post.subTitle}</h2>
+              {post.subTitle ? (
+                <h2 className='text-lg text-colour9'>{post.subTitle}</h2>
+              ) : null}
             </div>
           </header>
 
-          {/* Meta Info */}
+          {/* Meta */}
           <section className='grid grid-flow-col py-4 text-colour6 dark:text-colour6 text-sm justify-between'>
-            <span>By {post.authorName}</span>
-            <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+            <span>{post.authorName ? `By ${post.authorName}` : ''}</span>
+            <span>
+              {post.publishedAt
+                ? new Date(post.publishedAt).toLocaleDateString()
+                : ''}
+            </span>
           </section>
 
-          {/* Featured Image */}
-          {post.featuredImage && (
-            <img
-              src={post.featuredImage}
-              alt={post.title}
-              className='w-full h-64 object-cover rounded-lg'
-            />
-          )}
-
-          {/* Blog Content */}
+          {/* Ordered Content */}
           <section className='grid gap-4 text-colour9 dark:text-gray-200 space-y-4'>
-            {post.content.map((block, index) => {
-              if (block.type === 'paragraph') {
+            {blocks.map((block, index) => {
+              if (block?.type === 'paragraph' && typeof block?.text === 'string') {
                 return (
                   <p className='text-center lg:text-left' key={index}>
                     {block.text}
                   </p>
                 );
               }
-              if (block.type === 'heading') {
-                return (
-                  <h2 key={index} className='text-xl font-semibold text-colour6 dark:text-colour1'>
-                    {block.text}
-                  </h2>
-                );
-              }
-              if (block.type === 'list') {
-                return (
-                  <ul key={index} className='list-disc pl-5 grid gap-y-2'>
-                    {block.items.map((item, itemIndex) => (
-                      <li key={itemIndex}>{item}</li>
-                    ))}
-                  </ul>
-                );
-              }
-              if (block.type === 'image') {
+
+              if (block?.type === 'image' && typeof block?.key === 'string') {
+                const src = resolveMediaSrc(block.key, mediaIdByKey);
                 return (
                   <figure key={index} className='grid gap-2 text-center'>
-                    <img
-                      src={block.imageUrl}
-                      alt={block.imageTitle}
-                      className='w-full rounded-lg'
-                    />
+                    <img src={src} alt='' className='w-full rounded-lg' />
                     {block.description && (
-                      <figcaption className='text-sm'>
-                        {block.description}
-                      </figcaption>
+                      <figcaption className='text-sm'>{block.description}</figcaption>
                     )}
                   </figure>
                 );
               }
-              if (block.type === 'video') {
+
+              if (block?.type === 'video' && typeof block?.key === 'string') {
+                const src = resolveMediaSrc(block.key, mediaIdByKey);
                 return (
                   <aside key={index} className='grid gap-4 text-center'>
                     <video controls className='w-full rounded-lg'>
-                      <source src={block.videoUrl} type='video/mp4' />
-                      Your browser does not support the video tag.
+                      <source src={src} type='video/mp4' />
                     </video>
                     {block.description && (
-                      <div className=''>
-                        <p className='text-sm'>{block.description}</p>
-                      </div>
+                      <div><p className='text-sm'>{block.description}</p></div>
                     )}
                   </aside>
                 );
               }
+
               return null;
             })}
           </section>
 
           {/* Tags */}
-          <div className='mt-6'>
-            <h3 className='text-lg font-semibold mb-2 text-colour6 dark:text-colour6'>
-              Tags:
-            </h3>
-            <div className='flex flex-wrap gap-2'>
-              {post.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className='bg-colour5 text-colour1 dark:bg-colour5 dark:text-colour1 px-3 py-1 text-sm rounded-full shadow-cardShadow shadow-colour6/80'
-                >
-                  {tag}
-                </span>
-              ))}
+          {Array.isArray(post.tags) && post.tags.length ? (
+            <div className='mt-6'>
+              <h3 className='text-lg font-semibold mb-2 text-colour6 dark:text-colour6'>
+                Tags:
+              </h3>
+              <div className='flex flex-wrap gap-2'>
+                {post.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className='bg-colour5 text-colour1 dark:bg-colour5 dark:text-colour1 px-3 py-1 text-sm rounded-full shadow-cardShadow shadow-colour6/80'
+                  >
+                    {typeof tag === 'string' ? tag : tag?.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
         </article>
       </div>
     </section>
