@@ -57,6 +57,14 @@ const BlogProvider = ({ children }) => {
         );
         const { posts, totalPages } = extractPostsAndPages(res);
         setPageData(page, limit, { posts, totalPages });
+      } catch (err) {
+        // Swallow the error and provide a safe fallback so the UI doesn't crash
+        console.error(
+          'Unable to retrieve blog posts:',
+          err?.response?.data?.message || err?.message || err
+        );
+        // Cache an empty page so `loading` becomes false and your UI renders "No posts available"
+        setPageData(page, limit, { posts: [], totalPages: 1 });
       } finally {
         pendingRef.current[key] = false;
       }
@@ -189,7 +197,8 @@ const BlogProvider = ({ children }) => {
 
 export const useBlogContext = () => {
   const ctx = useContext(BlogContext);
-  if (!ctx) throw new Error('useBlogContext must be used within a BlogProvider');
+  if (!ctx)
+    throw new Error('useBlogContext must be used within a BlogProvider');
   return ctx;
 };
 
@@ -212,7 +221,7 @@ export function useBlogPosts(page, limit) {
   return {
     posts: cached?.posts ?? [],
     totalPages: cached?.totalPages ?? 1,
-    loading: !cached,                 // only show spinner on very first load of this page
+    loading: !cached, // only show spinner on very first load of this page
     refresh: () => fetchPage(page, limit),
   };
 }
