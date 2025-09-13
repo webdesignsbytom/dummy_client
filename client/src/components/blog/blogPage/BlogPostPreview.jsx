@@ -77,7 +77,7 @@ const BlogPostPreview = ({ post }) => {
       aria-labelledby={`post-title-${post?.slug}`}
       aria-label={`Read more about ${post?.title ?? 'blog post'}`}
       title={`Read more about ${post?.title ?? 'blog post'}`}
-      className="grid border-2 border-solid border-colour2 px-6 py-5 rounded shadow-cardShadow hover:shadow-cardShadow cursor-pointer"
+      className="grid border-2 border-solid border-colour2 hover:brightness-110 px-6 py-5 rounded shadow-cardShadow hover:shadow-cardShadow cursor-pointer"
       onClick={handleCardClick}
     >
       {/* Phone and desktop */}

@@ -21,10 +21,15 @@ export const getNavLinkItemsArray = (user) => [
   ...(user?.email
     ? user.role === 'ADMIN' || user.role === 'DEVELOPER'
       ? [
-          { path: ADMIN_PAGE_URL, label: 'Admin' },
-          { path: BOOKING_ADMIN_PAGE_URL, label: 'Booking Admin' },
-          { path: BLOG_ADMIN_PAGE_URL, label: 'Blog Admin' },
-          { path: NEWSLETTER_ADMIN_PAGE_URL, label: 'Newsletter Admin' },
+          {
+            label: 'Admin',
+            subpages: [
+              { path: ADMIN_PAGE_URL, label: 'Dashboard' },
+              { path: BOOKING_ADMIN_PAGE_URL, label: 'Booking Admin' },
+              { path: BLOG_ADMIN_PAGE_URL, label: 'Blog Admin' },
+              { path: NEWSLETTER_ADMIN_PAGE_URL, label: 'Newsletter Admin' },
+            ],
+          },
         ]
       : []
     : [
