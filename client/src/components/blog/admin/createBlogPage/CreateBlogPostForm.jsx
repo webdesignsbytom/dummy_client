@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   FiUploadCloud,
   FiTrash2,
@@ -6,13 +6,9 @@ import {
   FiArrowUp,
   FiArrowDown,
 } from 'react-icons/fi';
-// Api
 import client from '../../../../api/client';
-// Routes
 import { CREATE_BLOG_POST_API } from '../../../../utils/ApiRoutes';
-// Upload
 import { presignAndUpload } from '../../../../utils/media/uploadViaMediaService';
-// Media constraints
 import {
   IMAGE_ACCEPT,
   MAX_IMAGE_SIZE_MB,
@@ -20,6 +16,10 @@ import {
   VIDEO_ACCEPT,
 } from '../../../../utils/media/mediaConstants';
 import { useUser } from '../../../../context/UserContext';
+import CreateBlogCoreFields from './CreateBlogCoreFields';
+
+const DRAFT_KEY = 'createBlogPostDraft:v1';
+const AUTOSAVE_MS = 600;
 
 function slugify(s = '') {
   return String(s)
@@ -29,29 +29,135 @@ function slugify(s = '') {
     .replace(/(^-|-$)/g, '');
 }
 
+const emptyState = {
+  title: '',
+  slug: '',
+  subTitle: '',
+  subject: '',
+  location: '',
+  content: [], // [{type:'paragraph'|'image'|'video', text?, file?, previewUrl?, isThumbnail?, key?}]
+  authorName: '',
+  tags: '',
+};
+
 function CreateBlogPostForm() {
   const { user } = useUser();
   const okMsgRef = useRef(null);
 
-  const [blogPost, setBlogPost] = useState({
-    title: '',
-    slug: '',
-    subTitle: '',
-    subject: '',
-    location: '',
-    // [{ type:'paragraph'|'image'|'video', text?, file?, previewUrl?, isThumbnail? }]
-    content: [],
-    authorName: '',
-    tags: '', // comma-separated
-  });
-  console.log('[CreateBlogPostForm], blogPosty', blogPost);
-
+  const [blogPost, setBlogPost] = useState(emptyState);
   const [submitting, setSubmitting] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [okMsg, setOkMsg] = useState('');
 
   const fileInputRefs = useRef({ image: [], video: [] });
 
+  // --- DRAFT helpers ---
+  const isObjectURL = (url) => typeof url === 'string' && url.startsWith('blob:');
+
+  const serializeForDraft = (state) => {
+    const draft = {
+      ...state,
+      content: state.content.map((item) => {
+        if (item.type === 'paragraph') {
+          return { type: 'paragraph', text: item.text || '' };
+        }
+        if (item.type === 'image' || item.type === 'video') {
+          const out = {
+            type: item.type,
+            text: item.text || '',
+            isThumbnail: !!item.isThumbnail,
+          };
+          if (item.key) out.key = item.key;
+          if (item.previewUrl && !isObjectURL(item.previewUrl)) {
+            out.previewUrl = item.previewUrl;
+          }
+          return out;
+        }
+        return { type: item.type };
+      }),
+    };
+    return draft;
+  };
+
+  const hasMeaningfulData = (state) => {
+    if (!state) return false;
+    if (
+      state.title ||
+      state.slug ||
+      state.subTitle ||
+      state.subject ||
+      state.location ||
+      state.authorName ||
+      state.tags
+    ) {
+      return true;
+    }
+    return state.content && state.content.length > 0;
+  };
+
+  // Load draft
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          setBlogPost({ ...emptyState, ...parsed });
+        }
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // AUTOSAVE (debounced) — with "skip once" protection
+  const autosaveTimerRef = useRef(null);
+  const skipNextAutosaveRef = useRef(false);
+
+  useEffect(() => {
+    // skip exactly one autosave (used right after successful submit)
+    if (skipNextAutosaveRef.current) {
+      skipNextAutosaveRef.current = false;
+      return;
+    }
+
+    if (!hasMeaningfulData(blogPost) || submitting) return;
+
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    autosaveTimerRef.current = setTimeout(() => {
+      try {
+        const draft = serializeForDraft(blogPost);
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      } catch { /* ignore */ }
+    }, AUTOSAVE_MS);
+
+    return () => {
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current);
+        autosaveTimerRef.current = null;
+      }
+    };
+  }, [blogPost, submitting]);
+
+  // Warn on unload if there's work
+  useEffect(() => {
+    const handler = (e) => {
+      if (submitting) return;
+      if (hasMeaningfulData(blogPost)) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [blogPost, submitting]);
+
+  const discardDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setBlogPost(emptyState);
+    setErrMsg('');
+    setOkMsg('');
+  };
+
+  // --- Your existing logic ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setBlogPost((prev) => ({ ...prev, [name]: value }));
@@ -73,9 +179,6 @@ function CreateBlogPostForm() {
     }));
   };
 
-  const isObjectURL = (url) =>
-    typeof url === 'string' && url.startsWith('blob:');
-
   const validateFile = (file, kind) => {
     if (!file) return { ok: false, reason: 'No file' };
     const isImage = kind === 'image';
@@ -85,8 +188,7 @@ function CreateBlogPostForm() {
       return { ok: false, reason: 'Please select a video file.' };
     const sizeMB = file.size / (1024 * 1024);
     const limit = isImage ? MAX_IMAGE_SIZE_MB : MAX_VIDEO_SIZE_MB;
-    if (sizeMB > limit)
-      return { ok: false, reason: `File too large (>${limit}MB).` };
+    if (sizeMB > limit) return { ok: false, reason: `File too large (>${limit}MB).` };
     return { ok: true };
   };
 
@@ -164,7 +266,6 @@ function CreateBlogPostForm() {
   const getTypeNumber = (type, index) =>
     blogPost.content.slice(0, index + 1).filter((c) => c.type === type).length;
 
-  // if you ever want to enforce exactly one thumbnail, flip others off when one is set true.
   const setThumbnailIndex = (idx) => {
     setBlogPost((prev) => ({
       ...prev,
@@ -174,10 +275,7 @@ function CreateBlogPostForm() {
     }));
   };
 
-  // Upload once, build ordered content for DB (paragraphs + {image|video, key}),
-  // and return normalized key arrays for join table.
   async function submitUploadsAndBuildContent() {
-    console.log('[CreateBlogPostForm] submitUploadsAndBuildContent()');
     const orderedContent = [];
     const galleryKeys = [];
     const embedKeys = [];
@@ -192,30 +290,37 @@ function CreateBlogPostForm() {
         continue;
       }
 
-      if (item.type === 'image' && item.file) {
-        const { key } = await presignAndUpload({
-          resource: 'blog',
-          file: item.file,
-          filename: item.file.name,
-        });
-        console.log('[upload:image] key', key);
-
-        galleryKeys.push(key);
-        if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
-        orderedContent.push({ type: 'image', key });
+      if (item.type === 'image') {
+        if (item.file) {
+          const { key } = await presignAndUpload({
+            resource: 'blog',
+            file: item.file,
+            filename: item.file.name,
+          });
+          galleryKeys.push(key);
+          if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
+          orderedContent.push({ type: 'image', key });
+        } else if (item.key) {
+          galleryKeys.push(item.key);
+          if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = item.key;
+          orderedContent.push({ type: 'image', key: item.key });
+        }
         continue;
       }
 
-      if (item.type === 'video' && item.file) {
-        const { key } = await presignAndUpload({
-          resource: 'blog',
-          file: item.file,
-          filename: item.file.name,
-        });
-        console.log('[upload:video] key', key);
-
-        embedKeys.push(key);
-        orderedContent.push({ type: 'video', key });
+      if (item.type === 'video') {
+        if (item.file) {
+          const { key } = await presignAndUpload({
+            resource: 'blog',
+            file: item.file,
+            filename: item.file.name,
+          });
+          embedKeys.push(key);
+          orderedContent.push({ type: 'video', key });
+        } else if (item.key) {
+          embedKeys.push(item.key);
+          orderedContent.push({ type: 'video', key: item.key });
+        }
         continue;
       }
     }
@@ -228,17 +333,9 @@ function CreateBlogPostForm() {
     setErrMsg('');
     setOkMsg('');
     setSubmitting(true);
-    console.log('handleSubmit');
 
     try {
       const { title, slug, authorName } = blogPost;
-      console.log(
-        'handleSubmit title, slug, authorName',
-        title,
-        slug,
-        authorName
-      );
-
       if (!title || !slug) {
         setErrMsg('Please provide both a title and a slug.');
         setSubmitting(false);
@@ -259,34 +356,37 @@ function CreateBlogPostForm() {
         subject: blogPost.subject || null,
         location: blogPost.location || null,
         slug,
-        content: orderedContent, // <— ordered mix of paragraphs/images/videos
+        content: orderedContent,
         authorId: user?.id ?? null,
         authorName: authorName || null,
         tags: tagNames,
-        thumbnailImageKey, // may be null
+        thumbnailImageKey,
         galleryKeys,
         embedKeys,
       };
 
-      console.log('payload', payload);
       const resp = await client.post(CREATE_BLOG_POST_API, payload, true);
-      console.log('resp', resp);
-
       if (!resp?.data?.post) {
         setErrMsg('Create failed.');
         setSubmitting(false);
         return;
       }
 
-      setOkMsg(`Created: ${resp.data.post.title}`);
+      // SUCCESS: stop any pending autosave, remove draft, and skip the next autosave tick
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current);
+        autosaveTimerRef.current = null;
+      }
+      localStorage.removeItem(DRAFT_KEY);
+      skipNextAutosaveRef.current = true;
+
+      setOkMsg(`Created blog post: ${resp.data.post.title}`);
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         okMsgRef.current?.focus?.();
       });
-
-      // optional: reset form here
+      // setBlogPost(emptyState); // optional
     } catch (err) {
-      console.error('Create blog error', err);
       const apiMsg =
         err?.response?.data?.message ||
         err?.response?.data ||
@@ -313,77 +413,38 @@ function CreateBlogPostForm() {
       </section>
 
       {errMsg && (
-        <section className='p-3 rounded border-2 border-solid border-colour2 text-red-700'>
+        <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-red-700'>
           {errMsg}
         </section>
       )}
       {okMsg && (
-        <section className='p-3 rounded border-2 border-solid border-colour2 text-green-700'>
+        <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-green-700'>
           {okMsg}
         </section>
       )}
 
-      <section className='grid gap-2'>
-        <input
-          type='text'
-          name='title'
-          placeholder='Title'
-          value={blogPost.title}
-          onChange={handleChange}
-          onBlur={handleTitleBlur}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='slug'
-          placeholder='Slug'
-          value={blogPost.slug}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='subTitle'
-          placeholder='Subtitle'
-          value={blogPost.subTitle}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='subject'
-          placeholder='Subject'
-          value={blogPost.subject}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='location'
-          placeholder='Location'
-          value={blogPost.location}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='authorName'
-          placeholder='Author Name'
-          value={blogPost.authorName}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='tags'
-          placeholder='Tags (comma-separated)'
-          value={blogPost.tags}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-      </section>
+      {/* DRAFT banner */}
+      {hasMeaningfulData(blogPost) && !okMsg && (
+        <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-colour7'>
+          Draft is being autosaved.{' '}
+          <button
+            type='button'
+            onClick={discardDraft}
+            className='underline underline-offset-2'
+          >
+            Click to discard draft
+          </button>
+        </section>
+      )}
 
-      {/* content builder */}
+      {/* Core fields (extracted) */}
+      <CreateBlogCoreFields
+        blogPost={blogPost}
+        onChange={handleChange}
+        onTitleBlur={handleTitleBlur}
+      />
+
+      {/* Content builder */}
       <section className='grid gap-3'>
         <div className='grid text-center'>
           <h3 className='font-semibold'>Content Sections</h3>
@@ -401,8 +462,7 @@ function CreateBlogPostForm() {
             >
               <div className='grid grid-flow-col auto-cols-max items-center justify-between'>
                 <div className='font-semibold'>
-                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{' '}
-                  {number}
+                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)} {number}
                 </div>
                 <div className='grid grid-flow-col auto-cols-max gap-2'>
                   <button
@@ -458,15 +518,13 @@ function CreateBlogPostForm() {
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
                     <div
-                      className='grid place-items-center gap-1 w-full p-4 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
+                      className='grid place-items-center gap-1 w-full p-4 border-2 bg-colour4/50 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
                       onClick={() => openFileDialog(index, 'image')}
                       onDrop={(e) => handleDrop(e, index, 'image')}
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>
-                        Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)
-                      </span>
+                      <span>Click or drop an image (max {MAX_IMAGE_SIZE_MB}MB)</span>
                     </div>
                   )}
 
@@ -486,7 +544,6 @@ function CreateBlogPostForm() {
                     />
                   )}
 
-                  {/* pick thumbnail here */}
                   <label className='inline-flex items-center gap-2'>
                     <input
                       type='checkbox'
@@ -524,15 +581,13 @@ function CreateBlogPostForm() {
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
                     <div
-                      className='grid place-items-center gap-1 w-full p-4 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
+                      className='grid place-items-center gap-1 w-full p-4 border-2 bg-colour4/50 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
                       onClick={() => openFileDialog(index, 'video')}
                       onDrop={(e) => handleDrop(e, index, 'video')}
                       onDragOver={handleDragOver}
                     >
                       <FiUploadCloud className='justify-self-center text-xl' />
-                      <span>
-                        Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)
-                      </span>
+                      <span>Click or drop a video (max {MAX_VIDEO_SIZE_MB}MB)</span>
                     </div>
                   )}
 
@@ -574,25 +629,25 @@ function CreateBlogPostForm() {
           );
         })}
 
-        <div className='grid gap-2'>
+        <div className='grid lg:grid-cols-3 gap-2'>
           <button
             type='button'
             onClick={() => handleAddContent('paragraph')}
-            className='bg-blue-600 text-colour1 px-2 py-2 rounded'
+            className='bg-blue-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Paragraph
           </button>
           <button
             type='button'
             onClick={() => handleAddContent('image')}
-            className='bg-green-600 text-colour1 px-2 py-2 rounded'
+            className='bg-green-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Image
           </button>
           <button
             type='button'
             onClick={() => handleAddContent('video')}
-            className='bg-orange-600 text-colour1 px-2 py-2 rounded'
+            className='bg-orange-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Video
           </button>
@@ -603,7 +658,7 @@ function CreateBlogPostForm() {
         <button
           type='submit'
           disabled={submitting}
-          className='bg-colour5 text-colour1 px-3 py-2 rounded border-2 border-solid border-colour2'
+          className='bg-colour5 text-colour1 px-3 py-2 rounded border-2 border-solid border-colour2 shadow-cardShadow'
         >
           {submitting ? 'Submitting…' : 'Submit Post'}
         </button>

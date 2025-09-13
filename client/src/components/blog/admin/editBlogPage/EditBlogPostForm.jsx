@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   FiUploadCloud,
   FiTrash2,
@@ -17,6 +17,8 @@ import {
 } from '../../../../utils/media/mediaConstants';
 import { mediaUrlFrom } from '../../../../utils/media/mediaUrl';
 
+const AUTOSAVE_MS = 600; // debounce
+
 function toInitialStateFromPost(post) {
   const tagsCsv = Array.isArray(post?.tags)
     ? post.tags
@@ -25,12 +27,10 @@ function toInitialStateFromPost(post) {
         .join(',')
     : '';
 
-  // find thumbnail key: prefer role=THUMBNAIL, fallback legacy column
   const mediaLinks = Array.isArray(post?.mediaLinks) ? post.mediaLinks : [];
   const thumbLink = mediaLinks.find((l) => l?.role === 'THUMBNAIL');
   const thumbnailKey = thumbLink?.media?.key || post?.thumbnailImage || null;
 
-  // turn content blocks into editor items
   const blocks = Array.isArray(post?.content) ? post.content : [];
   const content = blocks.map((b) => {
     if (b?.type === 'paragraph') {
@@ -73,8 +73,6 @@ function toInitialStateFromPost(post) {
     };
   });
 
-  // If there is a thumbnail but the image isn't in content (rare), the UI will still allow picking a new one.
-
   return {
     title: post?.title || '',
     slug: post?.slug || '',
@@ -88,6 +86,45 @@ function toInitialStateFromPost(post) {
 }
 
 function EditBlogPostForm({ initialPost }) {
+  // -----------------------
+  // DRAFT: key & helpers
+  // -----------------------
+  const DRAFT_KEY = useMemo(
+    () => (initialPost?.id ? `editBlogPostDraft:${initialPost.id}` : null),
+    [initialPost?.id]
+  );
+
+  const isObjectURL = (url) =>
+    typeof url === 'string' && url.startsWith('blob:');
+
+  const serializeForDraft = (state) => ({
+    ...state,
+    content: state.content.map((item) => {
+      if (item.type === 'paragraph') {
+        return { type: 'paragraph', text: item.text || '' };
+      }
+      if (item.type === 'image' || item.type === 'video') {
+        const out = {
+          type: item.type,
+          text: item.text || '',
+          isThumbnail: !!item.isThumbnail,
+        };
+        if (item.key) out.key = item.key; // keep remote key
+        if (item.previewUrl && !isObjectURL(item.previewUrl)) {
+          out.previewUrl = item.previewUrl; // keep remote preview
+        }
+        return out;
+      }
+      return { type: item.type };
+    }),
+  });
+
+  const deepEqualSerialized = (a, b) =>
+    JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+
+  // -----------------------
+  // State
+  // -----------------------
   const [blogPost, setBlogPost] = useState(() =>
     toInitialStateFromPost(initialPost)
   );
@@ -97,15 +134,87 @@ function EditBlogPostForm({ initialPost }) {
   const fileInputRefs = useRef({ image: [], video: [] });
   const okMsgRef = useRef(null);
 
+  // Keep a baseline to detect unsaved changes (vs loaded initial/draft)
+  const baselineRef = useRef(
+    serializeForDraft(toInitialStateFromPost(initialPost))
+  );
+  const autosaveTimerRef = useRef(null);
+
+  // Re-init when initialPost changes: prefer local draft if present
   useEffect(() => {
-    // if initial changes (navigating between posts), re-init
-    setBlogPost(toInitialStateFromPost(initialPost));
+    const init = toInitialStateFromPost(initialPost);
+    let next = init;
+    try {
+      if (DRAFT_KEY) {
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if (raw) {
+          const draft = JSON.parse(raw);
+          // merge draft over init to keep any new server fields
+          next = { ...init, ...draft, content: draft?.content ?? init.content };
+        }
+      }
+    } catch {
+      // ignore malformed draft
+    }
+    setBlogPost(next);
+    baselineRef.current = serializeForDraft(next);
+    // clear any pending timer when switching posts
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+  }, [initialPost, DRAFT_KEY]);
+
+  // Are there unsaved changes?
+  const hasUnsaved = useMemo(() => {
+    const current = serializeForDraft(blogPost);
+    return !deepEqualSerialized(current, baselineRef.current);
+  }, [blogPost]);
+
+  // DRAFT: autosave with debounce
+  useEffect(() => {
+    if (!DRAFT_KEY) return;
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    autosaveTimerRef.current = setTimeout(() => {
+      try {
+        const serialized = serializeForDraft(blogPost);
+        if (hasUnsaved) {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(serialized));
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+        }
+      } catch {
+        /* ignore quota errors */
+      }
+    }, AUTOSAVE_MS);
+    return () => {
+      if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    };
+  }, [blogPost, hasUnsaved, DRAFT_KEY]);
+
+  // Warn on page close if there are unsaved edits
+  useEffect(() => {
+    const handler = (e) => {
+      if (submitting || !hasUnsaved) return;
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [hasUnsaved, submitting]);
+
+  const discardDraft = () => {
+    if (DRAFT_KEY) localStorage.removeItem(DRAFT_KEY);
+    const reset = toInitialStateFromPost(initialPost);
+    setBlogPost(reset);
+    baselineRef.current = serializeForDraft(reset);
+    setErrMsg('');
+    setOkMsg('');
+  };
+
+  // -----------------------
+  // Your existing editor logic
+  // -----------------------
+  useEffect(() => {
+    // if initial changes (navigating between posts), re-init handled above
   }, [initialPost]);
-
-  console.log('[EditBlogPostForm] blogPost', blogPost);
-
-  const isObjectURL = (url) =>
-    typeof url === 'string' && url.startsWith('blob:');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -146,12 +255,11 @@ function EditBlogPostForm({ initialPost }) {
       if (isObjectURL(prevUrl)) URL.revokeObjectURL(prevUrl);
 
       const url = URL.createObjectURL(file);
-      // If replacing an existing key with a new file, clear the old key so we know to upload new
       updated[index] = {
         ...updated[index],
         file,
         previewUrl: url,
-        key: undefined,
+        key: undefined, // replacing any existing remote key
       };
       return { ...prev, content: updated };
     });
@@ -216,7 +324,6 @@ function EditBlogPostForm({ initialPost }) {
   const getTypeNumber = (type, index) =>
     blogPost.content.slice(0, index + 1).filter((c) => c.type === type).length;
 
-  // enforce only one image as thumbnail
   const setThumbnailIndex = (idx) => {
     setBlogPost((prev) => ({
       ...prev,
@@ -226,10 +333,7 @@ function EditBlogPostForm({ initialPost }) {
     }));
   };
 
-  // Upload only new files; keep existing keys.
-  // Build ordered content (paragraphs + {image|video,key}) and full key sets.
   async function submitUploadsAndBuildContent() {
-    console.log('[EditBlogPostForm] submitUploadsAndBuildContent()');
     const orderedContent = [];
     const galleryKeys = [];
     const embedKeys = [];
@@ -252,10 +356,8 @@ function EditBlogPostForm({ initialPost }) {
             file: item.file,
             filename: item.file.name,
           });
-          console.log('[upload:image] key', uploadedKey);
           key = uploadedKey;
         }
-
         if (key) {
           galleryKeys.push(key);
           if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
@@ -272,10 +374,8 @@ function EditBlogPostForm({ initialPost }) {
             file: item.file,
             filename: item.file.name,
           });
-          console.log('[upload:video] key', uploadedKey);
           key = uploadedKey;
         }
-
         if (key) {
           embedKeys.push(key);
           orderedContent.push({ type: 'video', key });
@@ -284,7 +384,6 @@ function EditBlogPostForm({ initialPost }) {
       }
     }
 
-    // de-dupe sets (safe even if same image used multiple times in content)
     const uniq = (arr) => Array.from(new Set(arr));
     return {
       orderedContent,
@@ -299,17 +398,10 @@ function EditBlogPostForm({ initialPost }) {
     setErrMsg('');
     setOkMsg('');
     setSubmitting(true);
-    console.log('[EditBlogPostForm] handleSubmit');
 
     try {
       const id = initialPost?.id;
       const { title, slug, authorName } = blogPost;
-      console.log(
-        '[EditBlogPostForm] title, slug, authorName',
-        title,
-        slug,
-        authorName
-      );
 
       if (!id) {
         setErrMsg('Missing post id.');
@@ -331,40 +423,36 @@ function EditBlogPostForm({ initialPost }) {
         .filter(Boolean);
 
       const payload = {
-        // scalars to update (only include if changed; backend tolerates partial)
         title,
         slug,
         subTitle: blogPost.subTitle || null,
         subject: blogPost.subject || null,
         location: blogPost.location || null,
         authorName: authorName || null,
-
-        // replace tags with these names ([] clears all)
         replaceTagsWith: tagNames,
-
-        // replace content blocks (ordered, paragraphs + image/video keys)
         content: orderedContent,
-
-        // replace media link sets
-        thumbnailImageKey: thumbnailImageKey ?? null, // null to clear, undefined to skip
-        galleryKeys, // [] allowed
-        embedKeys, // [] allowed
+        thumbnailImageKey: thumbnailImageKey ?? null,
+        galleryKeys,
+        embedKeys,
       };
-
-      console.log('[EditBlogPostForm] PATCH payload', payload);
 
       const resp = await client.patch(
         `${UPDATE_BLOG_POST_API}/${id}`,
         payload,
         true
       );
-      console.log('[EditBlogPostForm] PATCH resp', resp);
 
       if (!resp?.data?.post) {
         setErrMsg('Update failed.');
         setSubmitting(false);
         return;
       }
+
+      // SUCCESS: clear draft and reset baseline to the new saved state
+      if (DRAFT_KEY) localStorage.removeItem(DRAFT_KEY);
+      const savedState = toInitialStateFromPost(resp.data.post);
+      setBlogPost(savedState);
+      baselineRef.current = serializeForDraft(savedState);
 
       setOkMsg(`Updated: ${resp.data.post.title}`);
       requestAnimationFrame(() => {
@@ -408,6 +496,21 @@ function EditBlogPostForm({ initialPost }) {
           {okMsg}
         </section>
       )}
+
+      {/* Draft banner */}
+      {hasUnsaved && (
+        <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-colour7'>
+          Draft changes are being autosaved.{' '}
+          <button
+            type='button'
+            onClick={discardDraft}
+            className='underline underline-offset-2'
+          >
+            Discard draft
+          </button>
+        </section>
+      )}
+
 
       {/* core fields */}
       <section className='grid gap-2'>
@@ -544,7 +647,7 @@ function EditBlogPostForm({ initialPost }) {
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
                     <div
-                      className='grid place-items-center gap-1 w-full p-4 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
+                      className='grid place-items-center gap-1 w-full p-4 bg-colour4/50 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
                       onClick={() => openFileDialog(index, 'image')}
                       onDrop={(e) => handleDrop(e, index, 'image')}
                       onDragOver={handleDragOver}
@@ -609,7 +712,7 @@ function EditBlogPostForm({ initialPost }) {
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
                     <div
-                      className='grid place-items-center gap-1 w-full p-4 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
+                      className='grid place-items-center gap-1 w-full p-4 bg-colour4/50 border-2 border-dashed border-colour2 rounded text-sm text-center cursor-pointer'
                       onClick={() => openFileDialog(index, 'video')}
                       onDrop={(e) => handleDrop(e, index, 'video')}
                       onDragOver={handleDragOver}
@@ -659,25 +762,25 @@ function EditBlogPostForm({ initialPost }) {
           );
         })}
 
-        <div className='grid gap-2'>
+        <div className='grid lg:grid-cols-3 gap-2'>
           <button
             type='button'
             onClick={() => handleAddContent('paragraph')}
-            className='bg-blue-600 text-colour1 px-2 py-2 rounded'
+            className='bg-blue-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Paragraph
           </button>
           <button
             type='button'
             onClick={() => handleAddContent('image')}
-            className='bg-green-600 text-colour1 px-2 py-2 rounded'
+            className='bg-green-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Image
           </button>
           <button
             type='button'
             onClick={() => handleAddContent('video')}
-            className='bg-orange-600 text-colour1 px-2 py-2 rounded'
+            className='bg-orange-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Video
           </button>
