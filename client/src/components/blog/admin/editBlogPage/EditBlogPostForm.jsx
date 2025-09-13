@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   FiUploadCloud,
   FiTrash2,
@@ -95,6 +95,7 @@ function EditBlogPostForm({ initialPost }) {
   const [errMsg, setErrMsg] = useState('');
   const [okMsg, setOkMsg] = useState('');
   const fileInputRefs = useRef({ image: [], video: [] });
+  const okMsgRef = useRef(null);
 
   useEffect(() => {
     // if initial changes (navigating between posts), re-init
@@ -366,8 +367,10 @@ function EditBlogPostForm({ initialPost }) {
       }
 
       setOkMsg(`Updated: ${resp.data.post.title}`);
-      // optional: re-init form with fresh server data
-      // setBlogPost(toInitialStateFromPost(resp.data.post));
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        okMsgRef.current?.focus?.();
+      });
     } catch (err) {
       console.error('Update blog error', err);
       const apiMsg =
@@ -376,6 +379,10 @@ function EditBlogPostForm({ initialPost }) {
         err?.message ||
         'Update blog failed.';
       setErrMsg(typeof apiMsg === 'string' ? apiMsg : 'Update blog failed.');
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        okMsgRef.current?.focus?.();
+      });
     } finally {
       setSubmitting(false);
     }
@@ -384,6 +391,7 @@ function EditBlogPostForm({ initialPost }) {
   return (
     <form
       onSubmit={handleSubmit}
+      ref={okMsgRef}
       className='grid gap-6 px-4 py-8 bg-colour1 rounded border-2 border-solid border-colour2'
     >
       <section className='grid text-center'>
@@ -391,12 +399,12 @@ function EditBlogPostForm({ initialPost }) {
       </section>
 
       {errMsg && (
-        <section className='p-3 rounded border-2 border-solid border-colour2 text-red-700'>
+        <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-red-700'>
           {errMsg}
         </section>
       )}
       {okMsg && (
-        <section className='p-3 rounded border-2 border-solid border-colour2 text-green-700'>
+        <section className='p-2 text-center font-semibold rounded border-2 border-solid border-colour2 text-green-700'>
           {okMsg}
         </section>
       )}

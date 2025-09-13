@@ -3,14 +3,16 @@ import client from '../../../../api/client';
 import { GET_BLOG_POST_BY_ID_API } from '../../../../utils/ApiRoutes';
 import EditBlogPostForm from './EditBlogPostForm';
 
-function EditBlogPageMainContainer({ postId }) {
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+function EditBlogPageMainContainer({ postId, initialPost = null }) {
+  // If we already have a post via router state, start with it and skip spinner.
+  const [post, setPost] = useState(initialPost);
+  const [loading, setLoading] = useState(!initialPost);
   const [errMsg, setErrMsg] = useState('');
-  console.log('[EditBlogPageMainContainer] postId', postId);
-  console.log('[EditBlogPageMainContainer] post', post);
 
   useEffect(() => {
+    // If we have an initialPost, do nothing.
+    if (initialPost) return;
+
     if (!postId) {
       setErrMsg('Missing blog post ID.');
       setLoading(false);
@@ -18,12 +20,11 @@ function EditBlogPageMainContainer({ postId }) {
     }
 
     setLoading(true);
+    setErrMsg('');
     client
       .get(`${GET_BLOG_POST_BY_ID_API}/${postId}`, false)
       .then((res) => {
-        console.log('[EditBlogPageMainContainer] GET post resp', res);
         setPost(res?.data?.post || null);
-        setErrMsg('');
       })
       .catch((err) => {
         console.error('Unable to retrieve blog post by ID', err);
@@ -35,7 +36,7 @@ function EditBlogPageMainContainer({ postId }) {
         setErrMsg(typeof apiMsg === 'string' ? apiMsg : 'Unable to retrieve blog post.');
       })
       .finally(() => setLoading(false));
-  }, [postId]);
+  }, [postId, initialPost]);
 
   if (loading) {
     return (

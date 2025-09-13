@@ -293,6 +293,10 @@ function CreateBlogPostForm() {
         err?.message ||
         'Create blog failed.';
       setErrMsg(typeof apiMsg === 'string' ? apiMsg : 'Create blog failed.');
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        okMsgRef.current?.focus?.();
+      });
     } finally {
       setSubmitting(false);
     }
