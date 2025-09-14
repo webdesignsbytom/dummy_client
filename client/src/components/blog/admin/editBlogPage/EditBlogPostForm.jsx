@@ -16,9 +16,13 @@ import {
   VIDEO_ACCEPT,
 } from '../../../../utils/media/mediaConstants';
 import { mediaUrlFrom } from '../../../../utils/media/mediaUrl';
+import { runWithConcurrencyLimit } from '../../../../utils/functions/RunWithConcurrencyLimit';
+import { UPLOAD_CONCURRENCY } from '../../../../utils/Constants';
 
 const AUTOSAVE_MS = 600; // debounce
+const SCHEMA_VERSION = 'v2'; // bump if you change content shape
 
+// ---------- Normalized initial state from server post ----------
 function toInitialStateFromPost(post) {
   const tagsCsv = Array.isArray(post?.tags)
     ? post.tags
@@ -31,18 +35,66 @@ function toInitialStateFromPost(post) {
   const thumbLink = mediaLinks.find((l) => l?.role === 'THUMBNAIL');
   const thumbnailKey = thumbLink?.media?.key || post?.thumbnailImage || null;
 
-  const blocks = Array.isArray(post?.content) ? post.content : [];
-  const content = blocks.map((b) => {
-    if (b?.type === 'paragraph') {
+  const rawBlocks = Array.isArray(post?.content) ? post.content : [];
+
+  const normType = (b) => {
+    if (typeof b === 'string') return 'paragraph';
+    const t = String(b?.type || '').toLowerCase().trim();
+
+    if (t === 'title' || t === 'h1' || t === 'h2' || t === 'heading') return 'heading';
+    if (t === 'list' || t === 'bulleted-list' || t === 'bulletlist' || t === 'ul' || t === 'ol') return 'list';
+    if (t === 'image' || t === 'img') return 'image';
+    if (t === 'video' || t === 'vid') return 'video';
+    if (t === 'paragraph' || t === 'p') return 'paragraph';
+    return ''; // unknown -> skip
+  };
+
+  const normalize = (b) => {
+    if (typeof b === 'string') {
+      const text = b.trim();
+      return text
+        ? { type: 'paragraph', text, file: null, previewUrl: '', isThumbnail: false }
+        : null;
+    }
+
+    const t = normType(b);
+    if (!t) return null;
+
+    if (t === 'paragraph') {
       return {
         type: 'paragraph',
-        text: String(b?.text || ''),
+        text: String(b?.text || '').trim(),
         file: null,
         previewUrl: '',
         isThumbnail: false,
       };
     }
-    if (b?.type === 'image') {
+
+    if (t === 'heading') {
+      return {
+        type: 'heading',
+        text: String(b?.text || '').trim(),
+        file: null,
+        previewUrl: '',
+        isThumbnail: false,
+      };
+    }
+
+    if (t === 'list') {
+      const fromItems = Array.isArray(b?.items) ? b.items : [];
+      const fromText =
+        typeof b?.text === 'string' ? b.text.split(/\r?\n|\|/g) : [];
+      const items = [...fromItems, ...fromText]
+        .map(String)
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      return items.length
+        ? { type: 'list', items, file: null, previewUrl: '', isThumbnail: false }
+        : null;
+    }
+
+    if (t === 'image') {
       const key = b?.key || '';
       return {
         type: 'image',
@@ -53,7 +105,8 @@ function toInitialStateFromPost(post) {
         isThumbnail: thumbnailKey ? key === thumbnailKey : false,
       };
     }
-    if (b?.type === 'video') {
+
+    if (t === 'video') {
       const key = b?.key || '';
       return {
         type: 'video',
@@ -64,14 +117,11 @@ function toInitialStateFromPost(post) {
         isThumbnail: false,
       };
     }
-    return {
-      type: 'paragraph',
-      text: '',
-      file: null,
-      previewUrl: '',
-      isThumbnail: false,
-    };
-  });
+
+    return null;
+  };
+
+  const content = rawBlocks.map(normalize).filter(Boolean);
 
   return {
     title: post?.title || '',
@@ -86,11 +136,12 @@ function toInitialStateFromPost(post) {
 }
 
 function EditBlogPostForm({ initialPost }) {
-  // -----------------------
-  // DRAFT: key & helpers
-  // -----------------------
+  // ------------- DRAFT key -------------
   const DRAFT_KEY = useMemo(
-    () => (initialPost?.id ? `editBlogPostDraft:${initialPost.id}` : null),
+    () =>
+      initialPost?.id
+        ? `editBlogPostDraft:${SCHEMA_VERSION}:${initialPost.id}`
+        : null,
     [initialPost?.id]
   );
 
@@ -100,8 +151,14 @@ function EditBlogPostForm({ initialPost }) {
   const serializeForDraft = (state) => ({
     ...state,
     content: state.content.map((item) => {
-      if (item.type === 'paragraph') {
-        return { type: 'paragraph', text: item.text || '' };
+      if (item.type === 'paragraph' || item.type === 'heading') {
+        return { type: item.type, text: item.text || '' };
+      }
+      if (item.type === 'list') {
+        const items = Array.isArray(item.items)
+          ? item.items.map(String).map((s) => s.trim()).filter(Boolean)
+          : [];
+        return { type: 'list', items };
       }
       if (item.type === 'image' || item.type === 'video') {
         const out = {
@@ -122,9 +179,7 @@ function EditBlogPostForm({ initialPost }) {
   const deepEqualSerialized = (a, b) =>
     JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
-  // -----------------------
-  // State
-  // -----------------------
+  // ------------- State -------------
   const [blogPost, setBlogPost] = useState(() =>
     toInitialStateFromPost(initialPost)
   );
@@ -134,13 +189,12 @@ function EditBlogPostForm({ initialPost }) {
   const fileInputRefs = useRef({ image: [], video: [] });
   const okMsgRef = useRef(null);
 
-  // Keep a baseline to detect unsaved changes (vs loaded initial/draft)
   const baselineRef = useRef(
     serializeForDraft(toInitialStateFromPost(initialPost))
   );
   const autosaveTimerRef = useRef(null);
 
-  // Re-init when initialPost changes: prefer local draft if present
+  // Re-init with server (prefer meaningful local draft if present)
   useEffect(() => {
     const init = toInitialStateFromPost(initialPost);
     let next = init;
@@ -149,20 +203,24 @@ function EditBlogPostForm({ initialPost }) {
         const raw = localStorage.getItem(DRAFT_KEY);
         if (raw) {
           const draft = JSON.parse(raw);
-          // merge draft over init to keep any new server fields
-          next = { ...init, ...draft, content: draft?.content ?? init.content };
+          const hasMeaningfulDraft =
+            draft?.title ||
+            draft?.slug ||
+            (Array.isArray(draft?.content) && draft.content.length > 0);
+          if (hasMeaningfulDraft) {
+            // merge draft over init to keep any new server fields
+            next = { ...init, ...draft, content: draft?.content ?? init.content };
+          }
         }
       }
     } catch {
-      // ignore malformed draft
+      /* ignore malformed draft */
     }
     setBlogPost(next);
     baselineRef.current = serializeForDraft(next);
-    // clear any pending timer when switching posts
     if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
   }, [initialPost, DRAFT_KEY]);
 
-  // Are there unsaved changes?
   const hasUnsaved = useMemo(() => {
     const current = serializeForDraft(blogPost);
     return !deepEqualSerialized(current, baselineRef.current);
@@ -189,7 +247,7 @@ function EditBlogPostForm({ initialPost }) {
     };
   }, [blogPost, hasUnsaved, DRAFT_KEY]);
 
-  // Warn on page close if there are unsaved edits
+  // Warn on unload
   useEffect(() => {
     const handler = (e) => {
       if (submitting || !hasUnsaved) return;
@@ -209,25 +267,21 @@ function EditBlogPostForm({ initialPost }) {
     setOkMsg('');
   };
 
-  // -----------------------
-  // Your existing editor logic
-  // -----------------------
-  useEffect(() => {
-    // if initial changes (navigating between posts), re-init handled above
-  }, [initialPost]);
-
+  // ------------- Editor logic -------------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setBlogPost((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAddContent = (type) => {
+    const base = { type, text: '', file: null, previewUrl: '', isThumbnail: false };
+    const block =
+      type === 'list'
+        ? { type: 'list', items: [''], file: null, previewUrl: '', isThumbnail: false }
+        : base;
     setBlogPost((prev) => ({
       ...prev,
-      content: [
-        ...prev.content,
-        { type, text: '', file: null, previewUrl: '', isThumbnail: false },
-      ],
+      content: [...prev.content, block],
     }));
   };
 
@@ -333,50 +387,102 @@ function EditBlogPostForm({ initialPost }) {
     }));
   };
 
+  // list helpers
+  const addListItem = (blockIdx) => {
+    setBlogPost((p) => {
+      const c = [...p.content];
+      const items = Array.isArray(c[blockIdx].items) ? [...c[blockIdx].items] : [];
+      items.push('');
+      c[blockIdx] = { ...c[blockIdx], items };
+      return { ...p, content: c };
+    });
+  };
+  const updateListItem = (blockIdx, itemIdx, val) => {
+    setBlogPost((p) => {
+      const c = [...p.content];
+      const items = [...(c[blockIdx].items || [])];
+      items[itemIdx] = val;
+      c[blockIdx] = { ...c[blockIdx], items };
+      return { ...p, content: c };
+    });
+  };
+  const removeListItem = (blockIdx, itemIdx) => {
+    setBlogPost((p) => {
+      const c = [...p.content];
+      const items = [...(c[blockIdx].items || [])];
+      items.splice(itemIdx, 1);
+      c[blockIdx] = { ...c[blockIdx], items };
+      return { ...p, content: c };
+    });
+  };
+
+  // ------------- Upload + payload build (parallel with limit) -------------
   async function submitUploadsAndBuildContent() {
+    const { content } = blogPost;
+
+    // 1) collect only *new* files (existing keys skip upload)
+    const pending = [];
+    for (let i = 0; i < content.length; i++) {
+      const item = content[i];
+      if ((item.type === 'image' || item.type === 'video') && item.file) {
+        pending.push({
+          index: i,
+          type: item.type,
+          file: item.file,
+          isThumb: !!item.isThumbnail,
+        });
+      }
+    }
+
+    // 2) upload with a concurrency cap
+    const uploadResults = await runWithConcurrencyLimit(
+      UPLOAD_CONCURRENCY,
+      pending,
+      async (p) => {
+        const { key } = await presignAndUpload({
+          resource: 'blog',
+          file: p.file,
+          filename: p.file.name,
+        });
+        return { index: p.index, type: p.type, key, isThumb: p.isThumb };
+      }
+    );
+
+    // 3) map: contentIndex -> uploaded key
+    const uploadedKeyByIndex = new Map(uploadResults.map((r) => [r.index, r.key]));
+
+    // 4) build ordered content + media lists (keep original order)
     const orderedContent = [];
     const galleryKeys = [];
     const embedKeys = [];
     let thumbnailImageKey = null;
 
-    for (let i = 0; i < blogPost.content.length; i++) {
-      const item = blogPost.content[i];
+    for (let i = 0; i < content.length; i++) {
+      const item = content[i];
 
-      if (item.type === 'paragraph') {
-        const text = item.text?.trim();
-        if (text) orderedContent.push({ type: 'paragraph', text });
+      if (item.type === 'paragraph' || item.type === 'heading') {
+        const text = String(item.text || '').trim();
+        if (text) orderedContent.push({ type: item.type, text });
         continue;
       }
 
-      if (item.type === 'image') {
-        let key = item.key;
-        if (item.file) {
-          const { key: uploadedKey } = await presignAndUpload({
-            resource: 'blog',
-            file: item.file,
-            filename: item.file.name,
-          });
-          key = uploadedKey;
-        }
-        if (key) {
+      if (item.type === 'list') {
+        const items = Array.isArray(item.items)
+          ? item.items.map((s) => String(s).trim()).filter(Boolean)
+          : [];
+        if (items.length) orderedContent.push({ type: 'list', items });
+        continue;
+      }
+
+      if (item.type === 'image' || item.type === 'video') {
+        const key = item.key || uploadedKeyByIndex.get(i);
+        if (!key) continue;
+
+        if (item.type === 'image') {
           galleryKeys.push(key);
           if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
           orderedContent.push({ type: 'image', key });
-        }
-        continue;
-      }
-
-      if (item.type === 'video') {
-        let key = item.key;
-        if (item.file) {
-          const { key: uploadedKey } = await presignAndUpload({
-            resource: 'blog',
-            file: item.file,
-            filename: item.file.name,
-          });
-          key = uploadedKey;
-        }
-        if (key) {
+        } else {
           embedKeys.push(key);
           orderedContent.push({ type: 'video', key });
         }
@@ -511,7 +617,6 @@ function EditBlogPostForm({ initialPost }) {
         </section>
       )}
 
-
       {/* core fields */}
       <section className='grid gap-2'>
         <input
@@ -590,8 +695,7 @@ function EditBlogPostForm({ initialPost }) {
             >
               <div className='grid grid-flow-col auto-cols-max items-center justify-between'>
                 <div className='font-semibold'>
-                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{' '}
-                  {number}
+                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)} {number}
                 </div>
                 <div className='grid grid-flow-col auto-cols-max gap-2'>
                   <button
@@ -619,6 +723,7 @@ function EditBlogPostForm({ initialPost }) {
                 </div>
               </div>
 
+              {/* paragraph */}
               {item.type === 'paragraph' && (
                 <div className='grid gap-2'>
                   <textarea
@@ -643,6 +748,75 @@ function EditBlogPostForm({ initialPost }) {
                 </div>
               )}
 
+              {/* heading */}
+              {item.type === 'heading' && (
+                <div className='grid gap-2'>
+                  <input
+                    type='text'
+                    placeholder='Heading text'
+                    value={item.text || ''}
+                    onChange={(e) => {
+                      const updated = [...blogPost.content];
+                      updated[index].text = e.target.value;
+                      setBlogPost((prev) => ({ ...prev, content: updated }));
+                    }}
+                    className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+                  />
+                  <div className='grid grid-flow-col auto-cols-max gap-2 justify-start'>
+                    <button
+                      type='button'
+                      onClick={() => deleteContentItem(index)}
+                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded'
+                    >
+                      <FiTrash2 /> Delete
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* list */}
+              {item.type === 'list' && (
+                <div className='grid gap-2'>
+                  <div className='grid gap-2'>
+                    {(item.items || []).map((val, iIdx) => (
+                      <div key={iIdx} className='grid grid-flow-col auto-cols-fr gap-2'>
+                        <input
+                          type='text'
+                          placeholder={`List item ${iIdx + 1}`}
+                          value={val}
+                          onChange={(e) => updateListItem(index, iIdx, e.target.value)}
+                          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+                        />
+                        <button
+                          type='button'
+                          onClick={() => removeListItem(index, iIdx)}
+                          className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded'
+                        >
+                          <FiTrash2 /> Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className='grid grid-flow-col auto-cols-max gap-2 justify-start'>
+                    <button
+                      type='button'
+                      onClick={() => addListItem(index)}
+                      className='bg-blue-600 text-colour1 px-2 py-1 rounded'
+                    >
+                      Add item
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => deleteContentItem(index)}
+                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded'
+                    >
+                      <FiTrash2 /> Delete block
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* image */}
               {item.type === 'image' && (
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
@@ -708,6 +882,7 @@ function EditBlogPostForm({ initialPost }) {
                 </div>
               )}
 
+              {/* video */}
               {item.type === 'video' && (
                 <div className='grid gap-2'>
                   {!item.previewUrl && (
@@ -783,6 +958,22 @@ function EditBlogPostForm({ initialPost }) {
             className='bg-orange-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add Video
+          </button>
+        </div>
+        <div className='grid lg:grid-cols-3 gap-2'>
+          <button
+            type='button'
+            onClick={() => handleAddContent('heading')}
+            className='bg-blue-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
+          >
+            Add Heading
+          </button>
+          <button
+            type='button'
+            onClick={() => handleAddContent('list')}
+            className='bg-green-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
+          >
+            Add List
           </button>
         </div>
       </section>

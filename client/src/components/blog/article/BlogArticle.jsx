@@ -7,12 +7,11 @@ function resolveMediaSrc(key) {
 }
 
 function BlogArticle({ post }) {
-  console.log('[BlogArticle] post', post);
   if (!post) return <p>Loading...</p>;
 
   const blocks = Array.isArray(post.content) ? post.content : [];
 
-  // Build a quick map: key -> media.id (for signed URLs)
+  // Build a quick map: key -> media.id (for signed URLs) – currently unused
   const mediaIdByKey = new Map(
     (Array.isArray(post.mediaLinks) ? post.mediaLinks : [])
       .map((l) => [l?.media?.key, l?.media?.id])
@@ -26,17 +25,17 @@ function BlogArticle({ post }) {
           {/* Title & Subtitle */}
           <header className='grid h-fit text-center'>
             <div className='grid gap-4'>
-              <h1 className='text-3xl font-bold text-colour6 dark:text-colour1'>
+              <h1 className='text-3xl font-bold text-colour2 dark:text-colour1'>
                 {post.title}
               </h1>
               {post.subTitle ? (
-                <h2 className='text-lg text-colour9'>{post.subTitle}</h2>
+                <h2 className='text-lg text-colour2'>{post.subTitle}</h2>
               ) : null}
             </div>
           </header>
 
           {/* Meta */}
-          <section className='grid grid-flow-col py-4 text-colour6 dark:text-colour6 text-sm justify-between'>
+          <section className='grid grid-flow-col py-4 text-colour2 dark:text-colour2 text-sm justify-between'>
             <span>{post.authorName ? `By ${post.authorName}` : ''}</span>
             <span>
               {post.publishedAt
@@ -46,8 +45,9 @@ function BlogArticle({ post }) {
           </section>
 
           {/* Ordered Content */}
-          <section className='grid gap-4 text-colour9 dark:text-gray-200 space-y-4'>
+          <section className='grid gap-4 text-colour2 dark:text-gray-200 space-y-4'>
             {blocks.map((block, index) => {
+              // Paragraph
               if (block?.type === 'paragraph' && typeof block?.text === 'string') {
                 return (
                   <p className='text-center lg:text-left' key={index}>
@@ -56,6 +56,32 @@ function BlogArticle({ post }) {
                 );
               }
 
+              // Heading (new)
+              if (block?.type === 'heading' && typeof block?.text === 'string') {
+                return (
+                  <h3
+                    key={index}
+                    className='text-xl font-semibold text-colour2 dark:text-colour1 text-center lg:text-left'
+                  >
+                    {block.text}
+                  </h3>
+                );
+              }
+
+              // List (new)
+              if (block?.type === 'list' && Array.isArray(block?.items)) {
+                const items = block.items.filter((s) => typeof s === 'string' && s.trim().length);
+                if (!items.length) return null;
+                return (
+                  <ul key={index} className='list-disc list-inside text-left space-y-1'>
+                    {items.map((it, i) => (
+                      <li key={i}>{it}</li>
+                    ))}
+                  </ul>
+                );
+              }
+
+              // Image
               if (block?.type === 'image' && typeof block?.key === 'string') {
                 const src = resolveMediaSrc(block.key, mediaIdByKey);
                 return (
@@ -68,6 +94,7 @@ function BlogArticle({ post }) {
                 );
               }
 
+              // Video
               if (block?.type === 'video' && typeof block?.key === 'string') {
                 const src = resolveMediaSrc(block.key, mediaIdByKey);
                 return (
@@ -89,7 +116,7 @@ function BlogArticle({ post }) {
           {/* Tags */}
           {Array.isArray(post.tags) && post.tags.length ? (
             <div className='mt-6'>
-              <h3 className='text-lg font-semibold mb-2 text-colour6 dark:text-colour6'>
+              <h3 className='text-lg font-semibold mb-2 text-colour2 dark:text-colour2'>
                 Tags:
               </h3>
               <div className='flex flex-wrap gap-2'>

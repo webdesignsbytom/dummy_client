@@ -47,3 +47,5 @@ export const GoogleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=YOUR-EMB
 
 // Bot Data
 export const BotName = 'Jerry'
+
+export const UPLOAD_CONCURRENCY = 4;
