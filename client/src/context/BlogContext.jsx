@@ -119,7 +119,7 @@ const BlogProvider = ({ children }) => {
     summariesPendingRef.current = true;
     setSummariesError('');
     try {
-      const res = await client.get(GET_BLOG_SUMMARIES_API, false);
+      const res = await client.get(GET_BLOG_SUMMARIES_API, true);
       const posts = Array.isArray(res?.data?.posts) ? res.data.posts : [];
       setBlogSummaryData(posts);
       setSummariesFetchedAt(Date.now());

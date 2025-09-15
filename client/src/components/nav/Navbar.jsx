@@ -82,7 +82,7 @@ function Navbar() {
 
                   {/* Dropdown menu (desktop hover) */}
                   <ul
-                    className="absolute left-0 top-full grid gap-2 bg-colour2 shadow-cardShadowBold rounded-md p-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200"
+                    className="absolute left-0 top-full grid gap-2 bg-colour2 shadow-cardShadowBold rounded-md p-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200 min-w-32"
                     role="menu"
                     aria-label={`${label} submenu`}
                   >
@@ -101,7 +101,7 @@ function Navbar() {
             {user?.email && (
               <li>
                 <button
-                  className="text-xl lg:text-base text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75"
+                  className="text-xl md:text-sm text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75"
                   onClick={handleLogout}
                 >
                   Logout
@@ -160,7 +160,7 @@ function Navbar() {
           {user?.email && (
             <li>
               <button
-                className="text-xl md:text-lg text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75"
+                className="text-xl md:text-sm text-colour1 font-semibold font-titleFont hover:brightness-90 duration-200 active:scale-75"
                 onClick={handleLogout}
               >
                 Logout
