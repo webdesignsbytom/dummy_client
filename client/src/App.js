@@ -69,6 +69,7 @@ import ReviewsPage from './pages/reviews/ReviewsPage';
 import NewsletterValidationPage from './pages/newsletter/NewsletterValidationPage';
 import NewsletterUnsubscribePage from './pages/newsletter/NewsletterUnsubscribePage';
 import BlogAdminMainPage from './pages/blog/admin/BlogAdminMainPage';
+import useScrollToTopOnRouteChange from './utils/functions/ScrollToTop';
 
 // Components
 const CookieConsentModal = lazy(() =>
@@ -78,6 +79,8 @@ const CookieConsentModal = lazy(() =>
 function App() {
   const [isVisible, setIsVisible] = useState(false);
   const [hasAgreedToCookies, setHasAgreedToCookies] = useState(true);
+
+  useScrollToTopOnRouteChange();
 
   useEffect(() => {
     const cookie = localStorage.getItem(CookiePolicyName);
