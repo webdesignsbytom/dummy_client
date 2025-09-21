@@ -9,6 +9,7 @@ import FooterComponent from '../../components/footer/FooterComponent';
 import HomePageMainContainer from '../../components/home/HomePageMainContainer';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import { CompanyName } from '../../utils/Constants';
+import HomePageHeader from '../../components/home/HomePageHeader';
 
 
 const HomePage = React.memo(() => {
@@ -18,7 +19,7 @@ const HomePage = React.memo(() => {
     <>
       {/* Tab Data */}
       <HelmetItem
-        PageName='Contact'
+        PageName='Home'
         desc={`Get in touch with ${CompanyName} for expert web and circuit design services. We're here to help with your inquiries, quotes, or support needs.`}
         keywords={`contact, web design, circuit design, ${CompanyName}, customer support, inquiries, quotes, UK`}
         additionalMeta={homePageAdditionalMeta}
@@ -30,6 +31,7 @@ const HomePage = React.memo(() => {
         <div className='grid'>
           {/* Navigation */}
           <Navbar />
+          <HomePageHeader />
 
           {/* Main page content */}
           <HomePageMainContainer />
