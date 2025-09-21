@@ -1,5 +1,5 @@
 import React from 'react';
-// Constants
+import SocialMediaPin from './SocialMediaPin';
 import {
   FACEBOOK_URL,
   INSTAGRAM_URL,
@@ -8,79 +8,73 @@ import {
   APPLE_URL,
   X_URL,
 } from '../../utils/Constants';
-// Images
-import FacebookLogo from '../../assets/images/media_icons/facebook_fb_social_media_logo_icon_64px.png';
-import InstagramLogo from '../../assets/images/media_icons/instagram_camera_social_media_netowrking_logo_icon_64px.png';
-import GoogleLogo from '../../assets/images/media_icons/google_brand_branding_logo_network_icon_64px.png';
-import AppleLogo from '../../assets/images/media_icons/apple_computers_black_logo_icon_64px.png';
-import GithubLogo from '../../assets/images/media_icons/github_code_octopus_logo_icon_64px.png';
-import XLogo from '../../assets/images/media_icons/x_twitter_social_media_black_logo_icon_64px.png';
-// Components
-import SocialMediaPin from './SocialMediaPin';
+
+// React Icons
+import { FaFacebookF, FaInstagram, FaGoogle, FaGithub, FaApple } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 function SocialMediaCTA() {
   const navigateToSocialMedia = (url) => {
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const socialMediaPins = [
     {
       serviceName: 'Facebook',
-      icon: FacebookLogo,
-      service: 'Facebook',
+      icon: <FaFacebookF size={20} aria-hidden="true" focusable="false" />,
       url: FACEBOOK_URL,
-      background: { background: '#1877F2' },
+      ariaLabel: 'Open Facebook in a new tab',
+      title: 'Facebook',
     },
     {
       serviceName: 'Instagram',
-      icon: InstagramLogo,
-      service: 'Instagram',
+      icon: <FaInstagram size={20} aria-hidden="true" focusable="false" />,
       url: INSTAGRAM_URL,
-      background: {
-        background:
-          'linear-gradient(45deg, #fccc63, #fbad50, #cd486b, #4c68d7)',
-      },
+      ariaLabel: 'Open Instagram in a new tab',
+      title: 'Instagram',
     },
     {
       serviceName: 'Google',
-      icon: GoogleLogo,
-      service: 'Google',
+      icon: <FaGoogle size={20} aria-hidden="true" focusable="false" />,
       url: GOOGLE_URL,
-      background: { background: '#4285F4' },
+      ariaLabel: 'Continue with Google',
+      title: 'Google',
     },
     {
       serviceName: 'GitHub',
-      icon: GithubLogo,
-      service: 'Github',
+      icon: <FaGithub size={20} aria-hidden="true" focusable="false" />,
       url: GITHUB_URL,
-      background: { background: '#333' },
+      ariaLabel: 'Open GitHub in a new tab',
+      title: 'GitHub',
     },
     {
       serviceName: 'Apple',
-      icon: AppleLogo,
-      service: 'Apple',
+      icon: <FaApple size={20} aria-hidden="true" focusable="false" />,
       url: APPLE_URL,
-      background: { background: '#000' },
+      ariaLabel: 'Open Apple in a new tab',
+      title: 'Apple',
     },
     {
       serviceName: 'X',
-      icon: XLogo,
-      service: 'Twitter',
+      icon: <FaXTwitter size={20} aria-hidden="true" focusable="false" />,
       url: X_URL,
-      background: { background: '#1DA1F2' },
+      ariaLabel: 'Open X (Twitter) in a new tab',
+      title: 'X (Twitter)',
     },
   ];
 
   return (
-    <section className='grid w-fit mx-auto'>
-      <div className='grid grid-flow-col gap-2'>
+    <section className="grid w-fit mx-auto">
+      <div className="grid grid-flow-col gap-2">
         {socialMediaPins.map((pin) => (
           <SocialMediaPin
             key={pin.serviceName}
             serviceName={pin.serviceName}
             icon={pin.icon}
-            func={() => navigateToSocialMedia(pin.url)}
-            background={pin.background}
+            url={pin.url}
+            ariaLabel={pin.ariaLabel}
+            title={pin.title}
+            className="text-white"
           />
         ))}
       </div>
