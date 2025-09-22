@@ -9,30 +9,34 @@ import {
 } from '../../utils/Constants';
 
 function FooterSocialCTA() {
-  const navigateToSocialMedia = (url) => {
-    window.open(url, '_blank');
-  };
-
   const socialMediaLinks = [
     {
       serviceName: 'Facebook',
       icon: <FaFacebookF size={24} />,
       url: FACEBOOK_URL,
+      ariaLabel: 'Open Fetlife profile in a new tab',
+      title: 'Fetlife',
     },
     {
       serviceName: 'Instagram',
       icon: <FaInstagram size={24} />,
       url: INSTAGRAM_URL,
+      ariaLabel: 'Open Fetlife profile in a new tab',
+      title: 'Fetlife',
     },
     {
       serviceName: 'Google',
       icon: <FaGoogle size={24} />,
       url: GOOGLE_URL,
+      ariaLabel: 'Open Fetlife profile in a new tab',
+      title: 'Fetlife',
     },
     {
       serviceName: 'GitHub',
       icon: <FaGithub size={24} />,
       url: GITHUB_URL,
+      ariaLabel: 'Open Fetlife profile in a new tab',
+      title: 'Fetlife',
     },
   ];
 
@@ -44,7 +48,9 @@ function FooterSocialCTA() {
             key={social.serviceName}
             serviceName={social.serviceName}
             icon={social.icon}
-            func={() => navigateToSocialMedia(social.url)}
+            url={social.url}
+            ariaLabel={social.ariaLabel}
+            title={social.title}
           />
         ))}
       </div>
