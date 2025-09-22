@@ -24,7 +24,7 @@ function ContactFormAdminPageMainContainer() {
 
   const fetchContactForms = () => {
     client
-      .get(GET_ALL_CONTACT_FROMS_API, false)
+      .get(GET_ALL_CONTACT_FROMS_API, true)
       .then((res) => {
         if (res?.data?.contactForms) {
           setContactForms(res.data.contactForms);
@@ -54,7 +54,7 @@ function ContactFormAdminPageMainContainer() {
       message: 'Are you sure you want to delete this contact form?',
       action: () => {
         client
-          .delete(`${DELETE_CONTACT_FORM_API}/${id}`, false)
+          .delete(`${DELETE_CONTACT_FORM_API}/${id}`, true)
           .then(() => {
             setContactForms((prev) => prev.filter((form) => form.id !== id));
           })
@@ -72,7 +72,7 @@ function ContactFormAdminPageMainContainer() {
         'Are you sure you want to delete all contact forms? This cannot be undone.',
       action: () => {
         client
-          .delete(DELETE_ALL_CONTACT_FORM_API, false)
+          .delete(DELETE_ALL_CONTACT_FORM_API, true)
           .then(() => {
             setContactForms([]);
           })
