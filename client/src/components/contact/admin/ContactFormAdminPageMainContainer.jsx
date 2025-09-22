@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
@@ -11,29 +11,42 @@ import { CompanyName } from '../../../utils/Constants';
 // Components
 import ConfirmModal from '../../modals/ConfirmModal';
 import ContactFormItem from './ContactFormItem';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function ContactFormAdminPageMainContainer() {
   const [contactForms, setContactForms] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
   const [modalContent, setModalContent] = useState({ header: '', message: '' });
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
+    isMountedRef.current = true;
     fetchContactForms();
+    return () => {
+      isMountedRef.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchContactForms = () => {
+    setLoading(true);
     client
       .get(GET_ALL_CONTACT_FROMS_API, true)
       .then((res) => {
-        if (res?.data?.contactForms) {
-          setContactForms(res.data.contactForms);
-        } else {
-          console.error('No contact forms found');
-        }
+        if (!isMountedRef.current) return;
+        const list = res?.data?.contactForms ?? [];
+        setContactForms(Array.isArray(list) ? list : []);
       })
       .catch((err) => {
         console.error('Unable to retrieve contact form data', err);
+        if (!isMountedRef.current) return;
+        setContactForms([]); // fall back to empty
+      })
+      .finally(() => {
+        if (!isMountedRef.current) return;
+        setLoading(false);
       });
   };
 
@@ -56,6 +69,7 @@ function ContactFormAdminPageMainContainer() {
         client
           .delete(`${DELETE_CONTACT_FORM_API}/${id}`, true)
           .then(() => {
+            // Remove from array immediately
             setContactForms((prev) => prev.filter((form) => form.id !== id));
           })
           .catch((err) => {
@@ -84,10 +98,13 @@ function ContactFormAdminPageMainContainer() {
   };
 
   return (
-    <main role='main' className='grid w-full h-full' aria-label='Admin contact form page'>
+    <main
+      role='main'
+      className='grid w-full h-full pt-[84px]'
+      aria-label='Admin contact form page'
+    >
       <section className='grid w-full'>
         <div className='grid grid-rows-reg gap-y-4 w-full px-8 py-8 lg:container lg:mx-auto'>
-          
           {/* Header */}
           <section
             className='grid w-full bg-colour5 px-2 md:px-4 lg:px-6 py-2'
@@ -97,7 +114,7 @@ function ContactFormAdminPageMainContainer() {
               <h1 className='sm:text-lg md:text-xl lg:text-2xl font-bold'>
                 Contact Forms
               </h1>
-              {contactForms.length > 0 && (
+              {!loading && contactForms.length > 0 && (
                 <>
                   <button
                     onClick={handleDeleteAll}
@@ -115,10 +132,24 @@ function ContactFormAdminPageMainContainer() {
           </section>
 
           {/* Contact forms */}
-          <section className='grid w-full p-1'  aria-label={`List of submitted contact forms for ${CompanyName}`}>
-            {contactForms.length === 0 ? (
+          <section
+            className='grid w-full p-1'
+            aria-label={`List of submitted contact forms for ${CompanyName}`}
+          >
+            {loading ? (
+              // Centered spinner while loading
               <section
-                className='grid items-center justify-center h-full w-full'
+                className='grid place-items-center h-64 w-full'
+                role='status'
+                aria-live='polite'
+                aria-label='Loading contact forms'
+              >
+                <LoadingSpinner />
+              </section>
+            ) : contactForms.length === 0 ? (
+              // Only show this AFTER loading completes
+              <section
+                className='grid items-center justify-center h-32 w-full'
                 role='status'
                 aria-live='polite'
               >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // Api
 import client from '../../../api/client';
 // Constants
@@ -11,29 +11,42 @@ import { CompanyName } from '../../../utils/Constants';
 // Components
 import ConfirmModal from '../../modals/ConfirmModal';
 import CallbackFormItem from './CallbackFormItem';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 
 function CallbackFormAdminPageMainContainer() {
   const [callbackForms, setCallbackForms] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
   const [modalContent, setModalContent] = useState({ header: '', message: '' });
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
+    isMountedRef.current = true;
     fetchCallbackForms();
+    return () => {
+      isMountedRef.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCallbackForms = () => {
+    setLoading(true);
     client
       .get(GET_ALL_CALLBACK_FROMS_API, false)
       .then((res) => {
-        if (res?.data?.callbackForms) {
-          setCallbackForms(res.data.callbackForms);
-        } else {
-          console.error('No callback forms found');
-        }
+        if (!isMountedRef.current) return;
+        const list = res?.data?.callbackForms ?? [];
+        setCallbackForms(Array.isArray(list) ? list : []);
       })
       .catch((err) => {
         console.error('Unable to retrieve callback form data', err);
+        if (!isMountedRef.current) return;
+        setCallbackForms([]);
+      })
+      .finally(() => {
+        if (!isMountedRef.current) return;
+        setLoading(false);
       });
   };
 
@@ -84,10 +97,13 @@ function CallbackFormAdminPageMainContainer() {
   };
 
   return (
-    <main role='main' className='grid w-full h-full' aria-label='Admin callback form page'>
+    <main
+      role='main'
+      className='grid w-full h-full pt-[84px]'
+      aria-label='Admin callback form page'
+    >
       <section className='grid w-full'>
         <div className='grid grid-rows-reg gap-y-4 w-full px-8 py-8 lg:container lg:mx-auto'>
-          
           {/* Header */}
           <section
             className='grid w-full bg-colour5 px-2 md:px-4 lg:px-6 py-2'
@@ -97,7 +113,7 @@ function CallbackFormAdminPageMainContainer() {
               <h1 className='sm:text-lg md:text-xl lg:text-2xl font-bold'>
                 Callback Forms
               </h1>
-              {callbackForms.length > 0 && (
+              {!loading && callbackForms.length > 0 && (
                 <>
                   <button
                     onClick={handleDeleteAll}
@@ -115,10 +131,23 @@ function CallbackFormAdminPageMainContainer() {
           </section>
 
           {/* Callback forms */}
-          <section className='grid w-full p-1' aria-label={`List of submitted callback forms for ${CompanyName}`}>
-            {callbackForms.length === 0 ? (
+          <section
+            className='grid w-full p-1'
+            aria-label={`List of submitted callback forms for ${CompanyName}`}
+          >
+            {loading ? (
+              // Centered spinner while loading
               <section
-                className='grid items-center justify-center h-full w-full'
+                className='grid place-items-center h-64 w-full'
+                role='status'
+                aria-live='polite'
+                aria-label='Loading callback forms'
+              >
+                <LoadingSpinner />
+              </section>
+            ) : callbackForms.length === 0 ? (
+              <section
+                className='grid items-center justify-center h-32 w-full'
                 role='status'
                 aria-live='polite'
               >
