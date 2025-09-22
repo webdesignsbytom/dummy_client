@@ -10,6 +10,7 @@ import {
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
 import ContactPageMainContainer from '../../components/contact/ContactPageMainContainer';
+import ContactPageHeader from '../../components/contact/ContactPageHeader';
 
 function ContactPage() {
   return (
@@ -23,19 +24,21 @@ function ContactPage() {
         structuredData={contactPageStructuredData}
       />
 
+      {/* Skip link (a11y) */}
+      <a
+        href='#main-content'
+        className='sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:outline-none focus:ring-2'
+      >
+        Skip to main content
+      </a>
+
       {/* Page */}
       <div className='grid min-h-screen overflow-hidden bg-colour1 text-colour2 dark:bg-colour2 dark:text-colour1 font-poppins'>
         <div className='grid grid-rows-reg'>
           {/* Navigation */}
           <Navbar />
           {/* Header */}
-          <header className='grid w-full'>
-            <div className='grid w-full px-6 lg:container lg:mx-auto text-center py-6'>
-              <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
-                Contact Us
-              </h1>
-            </div>
-          </header>
+          <ContactPageHeader />
         </div>
 
         {/* Main page content */}
