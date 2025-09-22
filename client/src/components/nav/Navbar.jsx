@@ -147,7 +147,7 @@ function Navbar() {
                 {openMobileDropdown === label && (
                   <ul
                     id={`mobile-submenu-${label}`}
-                    className='grid gap-4 bg-colour2 py-6 shadow-md shadow-colour2/50'
+                    className='grid gap-y-8 py-6 shadow-md'
                     role='menu'
                     aria-label={`${label} submenu`}
                   >
