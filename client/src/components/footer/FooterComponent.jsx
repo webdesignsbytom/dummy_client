@@ -6,6 +6,8 @@ import {
   CompanyName,
   CompanyPhoneNumber,
   CompanyEmailAddress,
+  LocationCity,
+  LocationCountry,
 } from '../../utils/Constants';
 // Components
 import FooterSocialCTA from './FooterSocialCTA';
@@ -110,8 +112,8 @@ function FooterComponent() {
             {/* Short address */}
             <div>
               <p>
-                <span className='font-semibold'>Location: </span> Tavistock,
-                Devon, United Kingdom
+                <span className='font-semibold'>Location: </span> {LocationCity}
+                , {LocationCountry}
               </p>
             </div>
             {/* Long address */}
