@@ -15,6 +15,7 @@ Live Link [ByteToast-Studio](https://bytetoast-studio.co.uk)
     - [Checklist](#checklist)
     - [Build](#build)
   - [Installs](#installs)
+  - [Media](#media)
 
 ## General Info
 
@@ -80,9 +81,9 @@ Login to google tags and create one for each site and get the DNS code.
 `npm i react-helmet`
 `npm i react-ga4`
 `npm i react-intersection-observer`
-import { useInView } from 'react-intersection-observer';
-const { ref, inView } = useInView({
-triggerOnce: true,
-threshold: 0.4,
-});
-ref={ref}
+
+## Media
+
+1. Reduce the media with ffmpeg using covnert.sh
+2. ../../../../../convert-to-webp.sh
+3. ../../../../../convert-videos.sh
