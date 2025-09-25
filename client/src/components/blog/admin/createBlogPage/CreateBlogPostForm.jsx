@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom'
 import { FiUploadCloud, FiTrash2, FiEdit2, FiArrowUp, FiArrowDown } from 'react-icons/fi';
 import client from '../../../../api/client';
 import { CREATE_BLOG_POST_API } from '../../../../utils/ApiRoutes';
@@ -22,7 +23,7 @@ const emptyState = {
   subTitle: '',
   subject: '',
   location: '',
-  // content now supports: paragraph | heading | list | image | video
+  // content supports: paragraph | heading | list | image | video | link
   content: [],
   authorName: '',
   tags: '',
@@ -52,6 +53,12 @@ function CreateBlogPostForm() {
         if (item.type === 'list') {
           const items = Array.isArray(item.items) ? item.items.map(String).map(s => s.trim()).filter(Boolean) : [];
           return { type: 'list', items };
+        }
+        if (item.type === 'link') {
+          const text = String(item.text || '').trim();
+          const href = String(item.href || '').trim();
+          const internal = !!item.internal;
+          return { type: 'link', text, href, internal };
         }
         if (item.type === 'image' || item.type === 'video') {
           const out = { type: item.type, text: item.text || '', isThumbnail: !!item.isThumbnail };
@@ -136,7 +143,14 @@ function CreateBlogPostForm() {
 
   const handleAddContent = (type) => {
     const base = { type, text: '', file: null, previewUrl: '', isThumbnail: false };
-    const block = type === 'list' ? { type: 'list', items: [''] } : base;
+    let block = base;
+
+    if (type === 'list') {
+      block = { type: 'list', items: [''] };
+    } else if (type === 'link') {
+      block = { type: 'link', text: '', href: '', internal: true }; // internal true means external=false
+    }
+
     setBlogPost((prev) => ({ ...prev, content: [...prev.content, block] }));
   };
 
@@ -223,76 +237,86 @@ function CreateBlogPostForm() {
     });
   };
 
- async function submitUploadsAndBuildContent() {
-  const { content } = blogPost;
+  async function submitUploadsAndBuildContent() {
+    const { content } = blogPost;
 
-  // 1) Collect items that need uploads (new files only)
-  const pending = [];
-  for (let i = 0; i < content.length; i++) {
-    const item = content[i];
-    if ((item.type === 'image' || item.type === 'video') && item.file) {
-      pending.push({ index: i, type: item.type, file: item.file, isThumb: !!item.isThumbnail });
-    }
-  }
-
-  // 2) Upload in parallel with a cap
-  const uploadResults = await runWithConcurrencyLimit(
-    UPLOAD_CONCURRENCY,
-    pending,
-    async (p) => {
-      const { key } = await presignAndUpload({
-        resource: 'blog',
-        file: p.file,
-        filename: p.file.name,
-      });
-      return { index: p.index, type: p.type, key, isThumb: p.isThumb };
-    }
-  );
-
-  // 3) Make a map: contentIndex -> uploaded key
-  const uploadedKeyByIndex = new Map(uploadResults.map(r => [r.index, r.key]));
-
-  // 4) Build orderedContent + key lists in one pass (preserve original order)
-  const orderedContent = [];
-  const galleryKeys = [];
-  const embedKeys = [];
-  let thumbnailImageKey = null;
-
-  for (let i = 0; i < content.length; i++) {
-    const item = content[i];
-
-    if (item.type === 'paragraph' || item.type === 'heading') {
-      const text = String(item.text || '').trim();
-      if (text) orderedContent.push({ type: item.type, text });
-      continue;
-    }
-
-    if (item.type === 'list') {
-      const items = Array.isArray(item.items)
-        ? item.items.map((s) => String(s).trim()).filter(Boolean)
-        : [];
-      if (items.length) orderedContent.push({ type: 'list', items });
-      continue;
-    }
-
-    if (item.type === 'image' || item.type === 'video') {
-      const key = item.key || uploadedKeyByIndex.get(i);
-      if (!key) continue;
-
-      if (item.type === 'image') {
-        galleryKeys.push(key);
-        if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
-        orderedContent.push({ type: 'image', key });
-      } else {
-        embedKeys.push(key);
-        orderedContent.push({ type: 'video', key });
+    // 1) Collect items that need uploads (new files only)
+    const pending = [];
+    for (let i = 0; i < content.length; i++) {
+      const item = content[i];
+      if ((item.type === 'image' || item.type === 'video') && item.file) {
+        pending.push({ index: i, type: item.type, file: item.file, isThumb: !!item.isThumbnail });
       }
-      continue;
     }
-  }
 
-  return { orderedContent, galleryKeys, embedKeys, thumbnailImageKey };
-}
+    // 2) Upload in parallel with a cap
+    const uploadResults = await runWithConcurrencyLimit(
+      UPLOAD_CONCURRENCY,
+      pending,
+      async (p) => {
+        const { key } = await presignAndUpload({
+          resource: 'blog',
+          file: p.file,
+          filename: p.file.name,
+        });
+        return { index: p.index, type: p.type, key, isThumb: p.isThumb };
+      }
+    );
+
+    // 3) Make a map: contentIndex -> uploaded key
+    const uploadedKeyByIndex = new Map(uploadResults.map(r => [r.index, r.key]));
+
+    // 4) Build orderedContent + key lists in one pass (preserve original order)
+    const orderedContent = [];
+    const galleryKeys = [];
+    const embedKeys = [];
+    let thumbnailImageKey = null;
+
+    for (let i = 0; i < content.length; i++) {
+      const item = content[i];
+
+      if (item.type === 'paragraph' || item.type === 'heading') {
+        const text = String(item.text || '').trim();
+        if (text) orderedContent.push({ type: item.type, text });
+        continue;
+      }
+
+      if (item.type === 'list') {
+        const items = Array.isArray(item.items)
+          ? item.items.map((s) => String(s).trim()).filter(Boolean)
+          : [];
+        if (items.length) orderedContent.push({ type: 'list', items });
+        continue;
+      }
+
+      if (item.type === 'link') {
+        const text = String(item.text || '').trim();
+        const href = String(item.href || '').trim();
+        const internal = !!item.internal; // true = internal, false = external
+        if (text && href) {
+          orderedContent.push({ type: 'link', text, href, internal });
+        }
+        continue;
+      }
+
+      if (item.type === 'image' || item.type === 'video') {
+        const key = item.key || uploadedKeyByIndex.get(i);
+        if (!key) continue;
+
+        if (item.type === 'image') {
+          galleryKeys.push(key);
+          if (item.isThumbnail && !thumbnailImageKey) thumbnailImageKey = key;
+          orderedContent.push({ type: 'image', key });
+        } else {
+          embedKeys.push(key);
+          orderedContent.push({ type: 'video', key });
+        }
+        continue;
+      }
+    }
+
+    return { orderedContent, galleryKeys, embedKeys, thumbnailImageKey };
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -459,6 +483,75 @@ function CreateBlogPostForm() {
                 </div>
               )}
 
+              {/* link */}
+              {item.type === 'link' && (
+                <div className='grid gap-2'>
+                  <div className='grid gap-2'>
+                    <input
+                      type='text'
+                      placeholder='Link text (what readers see)'
+                      value={item.text || ''}
+                      onChange={(e) => {
+                        const updated = [...blogPost.content];
+                        updated[index].text = e.target.value;
+                        setBlogPost((prev) => ({ ...prev, content: updated }));
+                      }}
+                      className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+                    />
+                    <input
+                      type='text'
+                      placeholder={item.internal ? 'Internal path (e.g., /about)' : 'External URL (e.g., https://example.com)'}
+                      value={item.href || ''}
+                      onChange={(e) => {
+                        const updated = [...blogPost.content];
+                        updated[index].href = e.target.value;
+                        setBlogPost((prev) => ({ ...prev, content: updated }));
+                      }}
+                      className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+                    />
+
+                    <div className='grid grid-flow-col auto-cols-max gap-4 items-center'>
+                      <label className='inline-flex items-center gap-2'>
+                        <input
+                          type='checkbox'
+                          checked={!!item.internal}
+                          onChange={() => {
+                            const updated = [...blogPost.content];
+                            updated[index].internal = true; // internal = true
+                            setBlogPost((prev) => ({ ...prev, content: updated }));
+                          }}
+                        />
+                        <span>Internal</span>
+                      </label>
+
+                      <label className='inline-flex items-center gap-2'>
+                        <input
+                          type='checkbox'
+                          checked={!item.internal}
+                          onChange={() => {
+                            const updated = [...blogPost.content];
+                            updated[index].internal = false; // internal = false => external
+                            setBlogPost((prev) => ({ ...prev, content: updated }));
+                          }}
+                        />
+                        <span>External</span>
+                      </label>
+                    </div>
+
+                    <div className='text-sm text-colour7'>
+                      {item.internal
+                        ? 'Will be rendered with internal link to a page of your site.'
+                        : 'Will be rendered with link to a different website.'}
+                    </div>
+                  </div>
+                  <div className='grid grid-flow-col auto-cols-max gap-2 justify-start'>
+                    <button type='button' onClick={() => deleteContentItem(index)} className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded'>
+                      <FiTrash2 /> Delete
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* image */}
               {item.type === 'image' && (
                 <div className='grid gap-2'>
@@ -544,6 +637,7 @@ function CreateBlogPostForm() {
         <div className='grid lg:grid-cols-3 gap-2'>
           <button type='button' onClick={() => handleAddContent('heading')} className='bg-blue-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'>Add Heading</button>
           <button type='button' onClick={() => handleAddContent('list')} className='bg-green-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'>Add List</button>
+          <button type='button' onClick={() => handleAddContent('link')} className='bg-purple-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'>Add Link</button>
         </div>
       </section>
 

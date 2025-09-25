@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { mediaUrlFrom } from '../../../utils/media/mediaUrl'; // adjust path if needed
 
 function resolveMediaSrc(key) {
@@ -8,7 +9,7 @@ function resolveMediaSrc(key) {
 
 function BlogArticle({ post }) {
   if (!post) return <p>Loading...</p>;
-
+console.log('post', post);
   const blocks = Array.isArray(post.content) ? post.content : [];
 
   // Build a quick map: key -> media.id (for signed URLs) – currently unused
@@ -22,6 +23,7 @@ function BlogArticle({ post }) {
     <section className='grid w-full'>
       <div className='grid w-full px-6 sm:px-8 md:px-12 lg:px-20 lg:container lg:mx-auto'>
         <article className='grid gap-4 w-full max-w-3xl mx-auto py-8 px-4 sm:px-8 bg-colour4 shadow-cardShadow shadow-colour6/80 rounded-lg'>
+
           {/* Title & Subtitle */}
           <header className='grid h-fit text-center'>
             <div className='grid gap-4'>
@@ -56,7 +58,7 @@ function BlogArticle({ post }) {
                 );
               }
 
-              // Heading (new)
+              // Heading
               if (block?.type === 'heading' && typeof block?.text === 'string') {
                 return (
                   <h3
@@ -68,7 +70,7 @@ function BlogArticle({ post }) {
                 );
               }
 
-              // List (new)
+              // List
               if (block?.type === 'list' && Array.isArray(block?.items)) {
                 const items = block.items.filter((s) => typeof s === 'string' && s.trim().length);
                 if (!items.length) return null;
@@ -78,6 +80,52 @@ function BlogArticle({ post }) {
                       <li key={i}>{it}</li>
                     ))}
                   </ul>
+                );
+              }
+
+              // Link (with title + aria-label)
+              if (block?.type === 'link' && typeof block?.text === 'string' && typeof block?.href === 'string') {
+                const text = block.text;
+                const href = block.href;
+                const isInternal = !!block.internal; // true = use <Link>, false = external <a>
+
+                // Prefer explicit metadata if provided; otherwise generate accessible defaults.
+                const titleText =
+                  typeof block.title === 'string' && block.title.trim().length
+                    ? block.title.trim()
+                    : text;
+
+                const aria =
+                  typeof block.ariaLabel === 'string' && block.ariaLabel.trim().length
+                    ? block.ariaLabel.trim()
+                    : isInternal
+                      ? `Navigate to ${text}`
+                      : `Opens external link: ${text} (new tab)`;
+
+                return (
+                  <p key={index} className='text-center lg:text-left'>
+                    {isInternal ? (
+                      <Link
+                        to={href}
+                        className='underline underline-offset-2 text-blue-700 hover:text-blue-900'
+                        title={titleText}
+                        aria-label={aria}
+                      >
+                        {text}
+                      </Link>
+                    ) : (
+                      <a
+                        href={href}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='underline underline-offset-2 text-blue-700 hover:text-blue-900'
+                        title={titleText}
+                        aria-label={aria}
+                      >
+                        {text}
+                      </a>
+                    )}
+                  </p>
                 );
               }
 

@@ -18,6 +18,7 @@ import {
 import { mediaUrlFrom } from '../../../../utils/media/mediaUrl';
 import { runWithConcurrencyLimit } from '../../../../utils/functions/RunWithConcurrencyLimit';
 import { UPLOAD_CONCURRENCY } from '../../../../utils/Constants';
+import EditCoreFields from './EditCoreFields';
 
 const AUTOSAVE_MS = 600; // debounce
 const SCHEMA_VERSION = 'v2'; // bump if you change content shape
@@ -39,12 +40,23 @@ function toInitialStateFromPost(post) {
 
   const normType = (b) => {
     if (typeof b === 'string') return 'paragraph';
-    const t = String(b?.type || '').toLowerCase().trim();
+    const t = String(b?.type || '')
+      .toLowerCase()
+      .trim();
 
-    if (t === 'title' || t === 'h1' || t === 'h2' || t === 'heading') return 'heading';
-    if (t === 'list' || t === 'bulleted-list' || t === 'bulletlist' || t === 'ul' || t === 'ol') return 'list';
+    if (t === 'title' || t === 'h1' || t === 'h2' || t === 'heading')
+      return 'heading';
+    if (
+      t === 'list' ||
+      t === 'bulleted-list' ||
+      t === 'bulletlist' ||
+      t === 'ul' ||
+      t === 'ol'
+    )
+      return 'list';
     if (t === 'image' || t === 'img') return 'image';
     if (t === 'video' || t === 'vid') return 'video';
+    if (t === 'link') return 'link'; // <-- added
     if (t === 'paragraph' || t === 'p') return 'paragraph';
     return ''; // unknown -> skip
   };
@@ -53,7 +65,13 @@ function toInitialStateFromPost(post) {
     if (typeof b === 'string') {
       const text = b.trim();
       return text
-        ? { type: 'paragraph', text, file: null, previewUrl: '', isThumbnail: false }
+        ? {
+            type: 'paragraph',
+            text,
+            file: null,
+            previewUrl: '',
+            isThumbnail: false,
+          }
         : null;
     }
 
@@ -90,8 +108,27 @@ function toInitialStateFromPost(post) {
         .filter(Boolean);
 
       return items.length
-        ? { type: 'list', items, file: null, previewUrl: '', isThumbnail: false }
+        ? {
+            type: 'list',
+            items,
+            file: null,
+            previewUrl: '',
+            isThumbnail: false,
+          }
         : null;
+    }
+
+    if (t === 'link') {
+      // <-- added: pass-through for link blocks
+      return {
+        type: 'link',
+        text: String(b?.text || '').trim(),
+        href: String(b?.href || '').trim(),
+        internal: !!b?.internal,
+        file: null,
+        previewUrl: '',
+        isThumbnail: false,
+      };
     }
 
     if (t === 'image') {
@@ -156,9 +193,19 @@ function EditBlogPostForm({ initialPost }) {
       }
       if (item.type === 'list') {
         const items = Array.isArray(item.items)
-          ? item.items.map(String).map((s) => s.trim()).filter(Boolean)
+          ? item.items
+              .map(String)
+              .map((s) => s.trim())
+              .filter(Boolean)
           : [];
         return { type: 'list', items };
+      }
+      if (item.type === 'link') {
+        // <-- added
+        const text = String(item.text || '').trim();
+        const href = String(item.href || '').trim();
+        const internal = !!item.internal;
+        return { type: 'link', text, href, internal };
       }
       if (item.type === 'image' || item.type === 'video') {
         const out = {
@@ -208,13 +255,16 @@ function EditBlogPostForm({ initialPost }) {
             draft?.slug ||
             (Array.isArray(draft?.content) && draft.content.length > 0);
           if (hasMeaningfulDraft) {
-            // merge draft over init to keep any new server fields
-            next = { ...init, ...draft, content: draft?.content ?? init.content };
+            next = {
+              ...init,
+              ...draft,
+              content: draft?.content ?? init.content,
+            };
           }
         }
       }
     } catch {
-      /* ignore malformed draft */
+      /* ignore */
     }
     setBlogPost(next);
     baselineRef.current = serializeForDraft(next);
@@ -239,7 +289,7 @@ function EditBlogPostForm({ initialPost }) {
           localStorage.removeItem(DRAFT_KEY);
         }
       } catch {
-        /* ignore quota errors */
+        /* ignore */
       }
     }, AUTOSAVE_MS);
     return () => {
@@ -274,11 +324,36 @@ function EditBlogPostForm({ initialPost }) {
   };
 
   const handleAddContent = (type) => {
-    const base = { type, text: '', file: null, previewUrl: '', isThumbnail: false };
-    const block =
-      type === 'list'
-        ? { type: 'list', items: [''], file: null, previewUrl: '', isThumbnail: false }
-        : base;
+    const base = {
+      type,
+      text: '',
+      file: null,
+      previewUrl: '',
+      isThumbnail: false,
+    };
+    let block = base;
+
+    if (type === 'list') {
+      block = {
+        type: 'list',
+        items: [''],
+        file: null,
+        previewUrl: '',
+        isThumbnail: false,
+      };
+    } else if (type === 'link') {
+      // <-- added
+      block = {
+        type: 'link',
+        text: '',
+        href: '',
+        internal: true,
+        file: null,
+        previewUrl: '',
+        isThumbnail: false,
+      };
+    }
+
     setBlogPost((prev) => ({
       ...prev,
       content: [...prev.content, block],
@@ -391,7 +466,9 @@ function EditBlogPostForm({ initialPost }) {
   const addListItem = (blockIdx) => {
     setBlogPost((p) => {
       const c = [...p.content];
-      const items = Array.isArray(c[blockIdx].items) ? [...c[blockIdx].items] : [];
+      const items = Array.isArray(c[blockIdx].items)
+        ? [...c[blockIdx].items]
+        : [];
       items.push('');
       c[blockIdx] = { ...c[blockIdx], items };
       return { ...p, content: c };
@@ -449,7 +526,9 @@ function EditBlogPostForm({ initialPost }) {
     );
 
     // 3) map: contentIndex -> uploaded key
-    const uploadedKeyByIndex = new Map(uploadResults.map((r) => [r.index, r.key]));
+    const uploadedKeyByIndex = new Map(
+      uploadResults.map((r) => [r.index, r.key])
+    );
 
     // 4) build ordered content + media lists (keep original order)
     const orderedContent = [];
@@ -471,6 +550,17 @@ function EditBlogPostForm({ initialPost }) {
           ? item.items.map((s) => String(s).trim()).filter(Boolean)
           : [];
         if (items.length) orderedContent.push({ type: 'list', items });
+        continue;
+      }
+
+      if (item.type === 'link') {
+        // <-- added
+        const text = String(item.text || '').trim();
+        const href = String(item.href || '').trim();
+        const internal = !!item.internal;
+        if (text && href) {
+          orderedContent.push({ type: 'link', text, href, internal });
+        }
         continue;
       }
 
@@ -618,64 +708,7 @@ function EditBlogPostForm({ initialPost }) {
       )}
 
       {/* core fields */}
-      <section className='grid gap-2'>
-        <input
-          type='text'
-          name='title'
-          placeholder='Title'
-          value={blogPost.title}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='slug'
-          placeholder='Slug'
-          value={blogPost.slug}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='subTitle'
-          placeholder='Subtitle'
-          value={blogPost.subTitle}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='subject'
-          placeholder='Subject'
-          value={blogPost.subject}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='location'
-          placeholder='Location'
-          value={blogPost.location}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='authorName'
-          placeholder='Author Name'
-          value={blogPost.authorName}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-        <input
-          type='text'
-          name='tags'
-          placeholder='Tags (comma-separated)'
-          value={blogPost.tags}
-          onChange={handleChange}
-          className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
-        />
-      </section>
+      <EditCoreFields blogPost={blogPost} handleChange={handleChange} />
 
       {/* content builder */}
       <section className='grid gap-3'>
@@ -695,7 +728,8 @@ function EditBlogPostForm({ initialPost }) {
             >
               <div className='grid grid-flow-col auto-cols-max items-center justify-between'>
                 <div className='font-semibold'>
-                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)} {number}
+                  {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{' '}
+                  {number}
                 </div>
                 <div className='grid grid-flow-col auto-cols-max gap-2'>
                   <button
@@ -779,12 +813,17 @@ function EditBlogPostForm({ initialPost }) {
                 <div className='grid gap-2'>
                   <div className='grid gap-2'>
                     {(item.items || []).map((val, iIdx) => (
-                      <div key={iIdx} className='grid grid-flow-col auto-cols-fr gap-2'>
+                      <div
+                        key={iIdx}
+                        className='grid grid-flow-col auto-cols-fr gap-2'
+                      >
                         <input
                           type='text'
                           placeholder={`List item ${iIdx + 1}`}
                           value={val}
-                          onChange={(e) => updateListItem(index, iIdx, e.target.value)}
+                          onChange={(e) =>
+                            updateListItem(index, iIdx, e.target.value)
+                          }
                           className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
                         />
                         <button
@@ -811,6 +850,89 @@ function EditBlogPostForm({ initialPost }) {
                       className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded'
                     >
                       <FiTrash2 /> Delete block
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* link (added) */}
+              {item.type === 'link' && (
+                <div className='grid gap-2'>
+                  <div className='grid gap-2'>
+                    <input
+                      type='text'
+                      placeholder='Link text (what readers see)'
+                      value={item.text || ''}
+                      onChange={(e) => {
+                        const updated = [...blogPost.content];
+                        updated[index].text = e.target.value;
+                        setBlogPost((prev) => ({ ...prev, content: updated }));
+                      }}
+                      className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+                    />
+                    <input
+                      type='text'
+                      placeholder={
+                        item.internal
+                          ? 'Internal path (e.g., /about)'
+                          : 'External URL (e.g., https://example.com)'
+                      }
+                      value={item.href || ''}
+                      onChange={(e) => {
+                        const updated = [...blogPost.content];
+                        updated[index].href = e.target.value;
+                        setBlogPost((prev) => ({ ...prev, content: updated }));
+                      }}
+                      className='border-2 border-solid border-colour2 px-2 py-2 rounded-md'
+                    />
+
+                    <div className='grid grid-flow-col auto-cols-max gap-4 items-center'>
+                      <label className='inline-flex items-center gap-2'>
+                        <input
+                          type='checkbox'
+                          checked={!!item.internal}
+                          onChange={() => {
+                            const updated = [...blogPost.content];
+                            updated[index].internal = true; // internal = true
+                            setBlogPost((prev) => ({
+                              ...prev,
+                              content: updated,
+                            }));
+                          }}
+                        />
+                        <span>Internal</span>
+                      </label>
+
+                      <label className='inline-flex items-center gap-2'>
+                        <input
+                          type='checkbox'
+                          checked={!item.internal}
+                          onChange={() => {
+                            const updated = [...blogPost.content];
+                            updated[index].internal = false; // external
+                            setBlogPost((prev) => ({
+                              ...prev,
+                              content: updated,
+                            }));
+                          }}
+                        />
+                        <span>External</span>
+                      </label>
+                    </div>
+
+                    <div className='text-sm text-colour7'>
+                      {item.internal
+                        ? 'Will be rendered with internal link to a page of your site.'
+                        : 'Will be rendered with link to a different website.'}
+                    </div>
+                  </div>
+                  <div className='grid grid-flow-col auto-cols-max gap-2 justify-start'>
+                    <button
+                      type='button'
+                      onClick={() => deleteContentItem(index)}
+                      className='grid grid-flow-col auto-cols-max items-center gap-2 bg-red-600 text-colour1 px-2 py-1 rounded'
+                    >
+                      <FiTrash2 /> Delete
                     </button>
                   </div>
                 </div>
@@ -974,6 +1096,13 @@ function EditBlogPostForm({ initialPost }) {
             className='bg-green-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
           >
             Add List
+          </button>
+          <button
+            type='button'
+            onClick={() => handleAddContent('link')}
+            className='bg-purple-600 text-colour1 px-2 py-2 rounded shadow-cardShadow'
+          >
+            Add Link
           </button>
         </div>
       </section>

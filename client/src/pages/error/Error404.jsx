@@ -1,6 +1,6 @@
 import React from 'react';
 // Images
-import CatNotFound from '../../assets/images/pages/404-page-not-found-cat.png';
+import CatNotFound from '../../assets/images/pages/404-page-not-found-cat.webp';
 // Components
 import Navbar from '../../components/nav/Navbar';
 import { HelmetItem } from '../../components/utils/HelmetItem';
